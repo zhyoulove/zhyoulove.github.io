@@ -13,19 +13,24 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/tags/数据结构/"/>
+    <link rel="canonical" href="http://example.com/2024/04/01/flume的开发/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="个人成长">
-<meta property="og:type" content="website">
-<meta property="og:title" content="小贺的博客">
-<meta property="og:url" content="http://example.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
+        <meta name="description" content="大数据相关技术学习1.flume特点和主要作用 动态采集，流式处理 只能处理log data，（视频，音频等不能处理） 将本地服务器日志文件上传到hdfs（不手动上传的作用就是：实时读取）  2.flume的使用案例1 使用flume监听端口   编写配置文件 12345678910111213141516171819202122# example.conf: A single-node Flum">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flume的开发">
+<meta property="og:url" content="http://example.com/2024/04/01/Flume%E7%9A%84%E5%BC%80%E5%8F%91/index.html">
 <meta property="og:site_name" content="小贺的博客">
-<meta property="og:description" content="个人成长">
+<meta property="og:description" content="大数据相关技术学习1.flume特点和主要作用 动态采集，流式处理 只能处理log data，（视频，音频等不能处理） 将本地服务器日志文件上传到hdfs（不手动上传的作用就是：实时读取）  2.flume的使用案例1 使用flume监听端口   编写配置文件 12345678910111213141516171819202122# example.conf: A single-node Flum">
 <meta property="og:locale">
+<meta property="article:published_time" content="2024-04-01T13:12:30.000Z">
+<meta property="article:modified_time" content="2024-04-01T13:15:30.378Z">
 <meta property="article:author" content="Mr.zh">
+<meta property="article:tag" content="数据采集">
+<meta property="article:tag" content="大数据技术">
+<meta property="article:tag" content="Fluem">
 <meta name="twitter:card" content="summary">
     
     
@@ -38,7 +43,7 @@
     
     <title>
         
-            Tag: 数据结构 -
+            Flume的开发 -
         
         Mr.z博客
     </title>
@@ -637,7 +642,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -645,7 +650,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -665,46 +670,228 @@
             <div class="main-content">
 
                 
-                    <div class="tag-container">
-	<div class="tag-name">
-		<i class="fa-solid fa-tag"></i>&nbsp;数据结构
-	</div>
-	<div class="tag-post-list">
-		
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
 
-<div class="archive-list-container">
-    
-        <section class="archive-item mb-spacing-unit last:mb-0">
-            <div class="archive-item-header flex flex-row items-center mb-2">
-                <span class="archive-year font-semibold text-3xl mr-2">2024</span>
-                <span class="archive-year-post-count text-xs md:text-sm font-bold rounded-small bg-third-background-color py-[2px] px-[10px] border border-border-color">1</span>
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Flume的开发</h1>
+                </div>
+            
             </div>
-            <ul class="article-list pl-0 md:pl-8 text-lg leading-[1.5]">
-              
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Mr.zh</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-04-01 21:12:30</span>
+        <span class="mobile">2024-04-01 21:12:30</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-04-01 21:15:30</span>
+            <span class="mobile">2024-04-01 21:15:30</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
                 
                     
-                    <li class="article-item space-y-2 px-6 pt-10 pb-2 text-xl relative border-l-2 border-border-color" date-is='04-01'>
+                        
+                        <li>
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>&nbsp;
+                        </li>
+                    
+                    
                 
-                    
-                        <a href="/2024/04/01/%E6%88%91%E7%9A%84%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/" class="block overflow-hidden w-fit">
-                            <span class="article-title mb-0.5 text-2xl">我的测试博客</span>
-                        </a>
-                    
-              
             </ul>
-        </section>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86/">数据采集</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/">大数据技术</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Fluem/">Fluem</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>282 Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>1 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
     
 </div>
 
-	</div>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="大数据相关技术学习"><a href="#大数据相关技术学习" class="headerlink" title="大数据相关技术学习"></a>大数据相关技术学习</h2><h3 id="1-flume特点和主要作用"><a href="#1-flume特点和主要作用" class="headerlink" title="1.flume特点和主要作用"></a>1.flume特点和主要作用</h3><ol>
+<li>动态采集，流式处理</li>
+<li>只能处理log data，（视频，音频等不能处理）</li>
+<li>将本地服务器日志文件上传到hdfs（不手动上传的作用就是：实时读取）</li>
+</ol>
+<h3 id="2-flume的使用案例1"><a href="#2-flume的使用案例1" class="headerlink" title="2.flume的使用案例1"></a>2.flume的使用案例1</h3><ul>
+<li>使用flume监听端口</li>
+</ul>
+<ol>
+<li><p>编写配置文件</p>
+<div class="highlight-container" data-rel="Coffeescript"><figure class="iseeu highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># example.conf: A single-node Flume configuration</span></span><br><span class="line"><span class="comment"># Name the components on this agent</span></span><br><span class="line">a1.sources = r1 </span><br><span class="line">a1.sinks = k1</span><br><span class="line">a1.channels = c1</span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe/configure the source</span></span><br><span class="line">a1.sources.r1.type = netcat</span><br><span class="line">a1.sources.r1.bind = localhost</span><br><span class="line">a1.sources.r1.port = <span class="number">44444</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe the sink</span></span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use a channel which buffers events in memory</span></span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line">a1.channels.c1.capacity = <span class="number">1000</span></span><br><span class="line">a1.channels.c1.transactionCapacity = <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Bind the source and sink to the channel</span></span><br><span class="line">a1.sources.r1.channels = c1</span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>进行启动</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 第一种写法：</span><br><span class="line">[atguigu@hadoop102 flume]$ bin/flume-ng agent --conf conf/ --name </span><br><span class="line">a1 --conf-file job/flume-netcat-logger.conf -Dflume.root.logger=INFO,console</span><br><span class="line"># 第二种写法：</span><br><span class="line">[atguigu@hadoop102 flume]$ bin/flume-ng agent -c conf/ -n a1 -f </span><br><span class="line">job/flume-netcat-logger.conf -Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>借助nc开启客户端</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nc localhost 44444</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>此时即可监控到传输信息，信息格式如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2024-03-11 19:38:04,410 INFO sink.LoggerSink: Event: &#123; headers:&#123;&#125; body: 6E 69 68 61 6F 79 61                            nihaoya &#125;</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> Flume的开发</li>
+        <li><strong>Author:</strong> Mr.zh</li>
+        <li><strong>Created at
+                :</strong> 2024-04-01 21:12:30</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-04-01 21:15:30
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/04/01/Flume的开发/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
 </div>
 
-<div class="tag-paginator">
-	<div class="paginator">
-    <span class="page-number current">1</span>
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E6%95%B0%E6%8D%AE%E9%87%87%E9%9B%86/">#数据采集</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/">#大数据技术</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/Fluem/">#Fluem</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/04/01/%E6%88%91%E7%9A%84%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">我的第一遍博客</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">Flume的开发</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%A7%E6%95%B0%E6%8D%AE%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%E5%AD%A6%E4%B9%A0"><span class="nav-text">大数据相关技术学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-flume%E7%89%B9%E7%82%B9%E5%92%8C%E4%B8%BB%E8%A6%81%E4%BD%9C%E7%94%A8"><span class="nav-text">1.flume特点和主要作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-flume%E7%9A%84%E4%BD%BF%E7%94%A8%E6%A1%88%E4%BE%8B1"><span class="nav-text">2.flume的使用案例1</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
 </div>
 
-</div>
 
 
                 
@@ -730,11 +917,11 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        1 posts in total
+                        2 posts in total
                     </span>
                     
                         <span>
-                            15 words in total
+                            1k words in total
                         </span>
                     
                 </p>
@@ -791,6 +978,23 @@
         </div>
     </div>
 
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
     
 
     <div class="right-side-tools-container">

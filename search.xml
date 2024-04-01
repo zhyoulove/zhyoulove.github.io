@@ -1,17 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>我的测试博客</title>
+    <title>Flume的开发</title>
+    <url>/2024/04/01/Flume%E7%9A%84%E5%BC%80%E5%8F%91/</url>
+    <content><![CDATA[<h2 id="大数据相关技术学习"><a href="#大数据相关技术学习" class="headerlink" title="大数据相关技术学习"></a>大数据相关技术学习</h2><h3 id="1-flume特点和主要作用"><a href="#1-flume特点和主要作用" class="headerlink" title="1.flume特点和主要作用"></a>1.flume特点和主要作用</h3><ol>
+<li>动态采集，流式处理</li>
+<li>只能处理log data，（视频，音频等不能处理）</li>
+<li>将本地服务器日志文件上传到hdfs（不手动上传的作用就是：实时读取）</li>
+</ol>
+<h3 id="2-flume的使用案例1"><a href="#2-flume的使用案例1" class="headerlink" title="2.flume的使用案例1"></a>2.flume的使用案例1</h3><ul>
+<li>使用flume监听端口</li>
+</ul>
+<ol>
+<li><p>编写配置文件</p>
+<div class="highlight-container" data-rel="Coffeescript"><figure class="iseeu highlight coffeescript"><table><tr><td class="code"><pre><span class="line"><span class="comment"># example.conf: A single-node Flume configuration</span></span><br><span class="line"><span class="comment"># Name the components on this agent</span></span><br><span class="line">a1.sources = r1 </span><br><span class="line">a1.sinks = k1</span><br><span class="line">a1.channels = c1</span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe/configure the source</span></span><br><span class="line">a1.sources.r1.type = netcat</span><br><span class="line">a1.sources.r1.bind = localhost</span><br><span class="line">a1.sources.r1.port = <span class="number">44444</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe the sink</span></span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use a channel which buffers events in memory</span></span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line">a1.channels.c1.capacity = <span class="number">1000</span></span><br><span class="line">a1.channels.c1.transactionCapacity = <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Bind the source and sink to the channel</span></span><br><span class="line">a1.sources.r1.channels = c1</span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>进行启动</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 第一种写法：</span><br><span class="line">[atguigu@hadoop102 flume]$ bin/flume-ng agent --conf conf/ --name </span><br><span class="line">a1 --conf-file job/flume-netcat-logger.conf -Dflume.root.logger=INFO,console</span><br><span class="line"># 第二种写法：</span><br><span class="line">[atguigu@hadoop102 flume]$ bin/flume-ng agent -c conf/ -n a1 -f </span><br><span class="line">job/flume-netcat-logger.conf -Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>借助nc开启客户端</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">nc localhost 44444</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>此时即可监控到传输信息，信息格式如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">2024-03-11 19:38:04,410 INFO sink.LoggerSink: Event: &#123; headers:&#123;&#125; body: 6E 69 68 61 6F 79 61                            nihaoya &#125;</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+]]></content>
+      <categories>
+        <category>大数据</category>
+      </categories>
+      <tags>
+        <tag>数据采集</tag>
+        <tag>大数据技术</tag>
+        <tag>Fluem</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>我的第一遍博客</title>
     <url>/2024/04/01/%E6%88%91%E7%9A%84%E6%B5%8B%E8%AF%95%E5%8D%9A%E5%AE%A2/</url>
-    <content><![CDATA[<h2 id="内容我"><a href="#内容我" class="headerlink" title="内容我"></a>内容我</h2><h2 id="内容我-1"><a href="#内容我-1" class="headerlink" title="内容我"></a>内容我</h2><h2 id="内容我-2"><a href="#内容我-2" class="headerlink" title="内容我"></a>内容我</h2><h2 id="内容我-3"><a href="#内容我-3" class="headerlink" title="内容我"></a>内容我</h2><h2 id="内容我-4"><a href="#内容我-4" class="headerlink" title="内容我"></a>内容我</h2>]]></content>
+    <content><![CDATA[<h3 id="冬日随笔"><a href="#冬日随笔" class="headerlink" title="冬日随笔"></a>冬日随笔</h3><h4 id="小年"><a href="#小年" class="headerlink" title="小年"></a>小年</h4><div class="highlight-container" data-rel="Go"><figure class="iseeu highlight go"><table><tr><td class="code"><pre><span class="line">只觉的年纪渐渐变大，一路走来，丢掉了许多东西，也放弃了很多儿时心血来潮的<span class="string">&#x27;梦想&#x27;</span>，其中一个就是成为作家；犹记得高中迷上了各种各样的小说，有雨果的，有村上春树的，还有东野圭吾的，当然也少不了鲁迅先生的，对于鲁迅先生尤其想多说两句，不仅仅是先生的文笔犀利的原因，也不仅仅是先生写小说写的有<span class="string">&#x27;趣&#x27;</span>的原因，最让我在对先生印象深刻的主要原因就是，读不懂先生写的文章，短篇小说还好，但是每次读起先生的散文时，着实令我头疼，甚至于连这篇散文的题目有几层涵义都难以明白，加之从小学便经常听起先生的大名，所以，对鲁迅先生尤其印象深刻。近日也是闲来无事，天气寒冷也懒得外出，便在家突然想写些什么，思来想去，便写下这些文字，也就算是对我已经放弃的梦想的缅怀吧。</span><br><span class="line">已然不记得，自己初中还是高中写的一篇作文，算是抒情，也算是描景，也可能是四不像。其中写道：我最喜欢四季中的冬季，冰天雪地、银装素裹的冬季。想起今年的冬季，自己还一场雪也没遇到呢，但可能是要马上过年，老天爷便实现了我的心愿，看一场雪。没错，今日小年，早醒之后，穿衣，拉开窗帘，忽然被眼前的冰天雪地、银装素裹的冬季所愣到了，然后惊喜，便不顾寒冷，打开窗，抓了一小撮窗沿上的雪，凉凉的，又赶紧用手搓了搓雪，还是那个沙沙的感觉。心中就感叹到雪没变！望向远处，村庄的高楼也好，瓦舍也罢，都被这忽然而来的雪所点缀，所覆盖，只剩下几棵光秃秃的树，没被这白雪所包裹，不过，倒也是别有一番风味。</span><br><span class="line">今日小年，吃了母亲包的饺子，东嘴八舌也吃了很多称自己心意的年货，（东嘴八舌哈哈哈，自己造的成语，就想形容自己吃了好多种）饭后心情格外愉悦，便想出门观雪，观景，想起友人，家旁边便有自己很多发小，但自己想了一下，还是决定独自去看，一来天气寒冷，马上新年，得疾却是不好;二来考虑自己，独行和同行，观雪心境总是不同。换衣，戴帽，开门，迈腿，收腿，关门，抬头一看，我的心愿仍然在下，不过小了很多，不影响出门，便在小年这天出门观雪。步行走了几十丈，竟有些喘气......</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="回忆吧，回忆吧"><a href="#回忆吧，回忆吧" class="headerlink" title="回忆吧，回忆吧"></a>回忆吧，回忆吧</h4><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">.......	</span><br></pre></td></tr></table></figure></div>
+
+]]></content>
       <categories>
         <category>杂文</category>
         <category>随笔</category>
-        <category>Java</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>数据结构</tag>
+        <tag>随笔</tag>
+        <tag>杂文</tag>
       </tags>
   </entry>
 </search>
