@@ -1,6 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Flume的开发</title>
+    <url>/2024/04/01/Flume%E7%9A%84%E5%BC%80%E5%8F%91/</url>
+    <content><![CDATA[<h2 id="大数据相关技术学习"><a href="#大数据相关技术学习" class="headerlink" title="大数据相关技术学习"></a>大数据相关技术学习</h2><h3 id="1-flume特点和主要作用"><a href="#1-flume特点和主要作用" class="headerlink" title="1.flume特点和主要作用"></a>1.flume特点和主要作用</h3><ol>
+<li>动态采集，流式处理</li>
+<li>只能处理log data，（视频，音频等不能处理）</li>
+<li>将本地服务器日志文件上传到hdfs（不手动上传的作用就是：实时读取）</li>
+</ol>
+<h3 id="2-flume的使用案例1"><a href="#2-flume的使用案例1" class="headerlink" title="2.flume的使用案例1"></a>2.flume的使用案例1</h3><ul>
+<li>使用flume监听端口</li>
+</ul>
+<ol>
+<li><p>编写配置文件</p>
+<div class="highlight-container" data-rel="Coffeescript"><figure class="iseeu highlight coffeescript"><table><tr><td class="code"><pre><span class="line"><span class="comment"># example.conf: A single-node Flume configuration</span></span><br><span class="line"><span class="comment"># Name the components on this agent</span></span><br><span class="line">a1.sources = r1 </span><br><span class="line">a1.sinks = k1</span><br><span class="line">a1.channels = c1</span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe/configure the source</span></span><br><span class="line">a1.sources.r1.type = netcat</span><br><span class="line">a1.sources.r1.bind = localhost</span><br><span class="line">a1.sources.r1.port = <span class="number">44444</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe the sink</span></span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use a channel which buffers events in memory</span></span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line">a1.channels.c1.capacity = <span class="number">1000</span></span><br><span class="line">a1.channels.c1.transactionCapacity = <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Bind the source and sink to the channel</span></span><br><span class="line">a1.sources.r1.channels = c1</span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>进行启动</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 第一种写法：</span><br><span class="line">[atguigu@hadoop102 flume]$ bin/flume-ng agent --conf conf/ --name </span><br><span class="line">a1 --conf-file job/flume-netcat-logger.conf -Dflume.root.logger=INFO,console</span><br><span class="line"># 第二种写法：</span><br><span class="line">[atguigu@hadoop102 flume]$ bin/flume-ng agent -c conf/ -n a1 -f </span><br><span class="line">job/flume-netcat-logger.conf -Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>借助nc开启客户端</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">nc localhost 44444</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>此时即可监控到传输信息，信息格式如下</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">2024-03-11 19:38:04,410 INFO sink.LoggerSink: Event: &#123; headers:&#123;&#125; body: 6E 69 68 61 6F 79 61                            nihaoya &#125;</span><br></pre></td></tr></table></figure></div></li>
+</ol>
+]]></content>
+      <categories>
+        <category>大数据</category>
+      </categories>
+      <tags>
+        <tag>数据采集</tag>
+        <tag>大数据技术</tag>
+        <tag>Fluem</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java刷题技巧</title>
     <url>/2024/04/01/Java%E5%88%B7%E9%A2%98%E6%8A%80%E6%9C%AF/</url>
     <content><![CDATA[<h3 id="1-Arrays-sort自定义排序规则"><a href="#1-Arrays-sort自定义排序规则" class="headerlink" title="1.Arrays.sort自定义排序规则"></a>1.<code>Arrays.sort</code>自定义排序规则</h3><div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span>[][] reconstructQueue(<span class="type">int</span>[][] people) &#123;</span><br><span class="line">       <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> people.length;</span><br><span class="line">       List&lt;<span class="type">int</span>[]&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">       <span class="comment">// 自定义二维数组的排序规则： 首先按照数组的第一个元素进行从大到小排序，如果相同，按照第二元素从小到大排序</span></span><br><span class="line">       Arrays.sort(people , Comparator.comparingInt((<span class="type">int</span>[] a )-&gt; a[<span class="number">0</span>]).reversed().thenComparing(</span><br><span class="line">               (<span class="type">int</span>[] a) -&gt; a[<span class="number">1</span>]</span><br><span class="line">       ));</span><br><span class="line"></span><br><span class="line">       Arrays.sort(people, (a , b) -&gt; &#123;</span><br><span class="line">           <span class="keyword">if</span> (a[<span class="number">0</span>] == b[<span class="number">0</span>])&#123;</span><br><span class="line">               <span class="keyword">return</span> a[<span class="number">1</span>] - b[<span class="number">1</span>];</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               <span class="keyword">return</span> b[<span class="number">0</span>] - a[<span class="number">0</span>];</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;);</span><br><span class="line"></span><br><span class="line">       Arrays.sort(people , (a , b) -&gt; &#123;</span><br><span class="line">           <span class="keyword">if</span> (a[<span class="number">0</span>] == b[<span class="number">0</span>])&#123;</span><br><span class="line">               <span class="keyword">return</span> a[<span class="number">1</span>] - b[<span class="number">1</span>];</span><br><span class="line">           &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               <span class="keyword">return</span> b[<span class="number">0</span>] - a[<span class="number">0</span>];</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;);</span><br><span class="line">       <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; people.length; i++) &#123;</span><br><span class="line">           System.out.println(people[i][<span class="number">0</span>] + <span class="string">&quot;:&quot;</span>+people[i][<span class="number">1</span>]);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// 相当于此时已经按照身高排好序了，只需按照k进行插入即可</span></span><br><span class="line">       <span class="keyword">for</span> (<span class="type">int</span>[] person : people) &#123;</span><br><span class="line">           list.add(person[<span class="number">1</span>] , person);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> list.toArray(<span class="keyword">new</span> <span class="title class_">int</span>[people.length][]);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></div>
@@ -39,40 +73,6 @@
         <tag>数据结构</tag>
         <tag>Java</tag>
         <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Flume的开发</title>
-    <url>/2024/04/01/Flume%E7%9A%84%E5%BC%80%E5%8F%91/</url>
-    <content><![CDATA[<h2 id="大数据相关技术学习"><a href="#大数据相关技术学习" class="headerlink" title="大数据相关技术学习"></a>大数据相关技术学习</h2><h3 id="1-flume特点和主要作用"><a href="#1-flume特点和主要作用" class="headerlink" title="1.flume特点和主要作用"></a>1.flume特点和主要作用</h3><ol>
-<li>动态采集，流式处理</li>
-<li>只能处理log data，（视频，音频等不能处理）</li>
-<li>将本地服务器日志文件上传到hdfs（不手动上传的作用就是：实时读取）</li>
-</ol>
-<h3 id="2-flume的使用案例1"><a href="#2-flume的使用案例1" class="headerlink" title="2.flume的使用案例1"></a>2.flume的使用案例1</h3><ul>
-<li>使用flume监听端口</li>
-</ul>
-<ol>
-<li><p>编写配置文件</p>
-<div class="highlight-container" data-rel="Coffeescript"><figure class="iseeu highlight coffeescript"><table><tr><td class="code"><pre><span class="line"><span class="comment"># example.conf: A single-node Flume configuration</span></span><br><span class="line"><span class="comment"># Name the components on this agent</span></span><br><span class="line">a1.sources = r1 </span><br><span class="line">a1.sinks = k1</span><br><span class="line">a1.channels = c1</span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe/configure the source</span></span><br><span class="line">a1.sources.r1.type = netcat</span><br><span class="line">a1.sources.r1.bind = localhost</span><br><span class="line">a1.sources.r1.port = <span class="number">44444</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe the sink</span></span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use a channel which buffers events in memory</span></span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line">a1.channels.c1.capacity = <span class="number">1000</span></span><br><span class="line">a1.channels.c1.transactionCapacity = <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Bind the source and sink to the channel</span></span><br><span class="line">a1.sources.r1.channels = c1</span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>进行启动</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 第一种写法：</span><br><span class="line">[atguigu@hadoop102 flume]$ bin/flume-ng agent --conf conf/ --name </span><br><span class="line">a1 --conf-file job/flume-netcat-logger.conf -Dflume.root.logger=INFO,console</span><br><span class="line"># 第二种写法：</span><br><span class="line">[atguigu@hadoop102 flume]$ bin/flume-ng agent -c conf/ -n a1 -f </span><br><span class="line">job/flume-netcat-logger.conf -Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>借助nc开启客户端</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">nc localhost 44444</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>此时即可监控到传输信息，信息格式如下</p>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">2024-03-11 19:38:04,410 INFO sink.LoggerSink: Event: &#123; headers:&#123;&#125; body: 6E 69 68 61 6F 79 61                            nihaoya &#125;</span><br></pre></td></tr></table></figure></div></li>
-</ol>
-]]></content>
-      <categories>
-        <category>大数据</category>
-      </categories>
-      <tags>
-        <tag>数据采集</tag>
-        <tag>大数据技术</tag>
-        <tag>Fluem</tag>
       </tags>
   </entry>
   <entry>
