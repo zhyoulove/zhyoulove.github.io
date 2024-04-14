@@ -18,20 +18,24 @@
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="测试图片上传服务器功能1老身今自由。心无疚，随意度春秋">
+        <meta name="description" content="测试图片上传服务器功能1老身今自由。心无疚，随意度春秋       1.爆炸函数  使用爆炸函数可以将数组转化为一列数据 123456select array(1,2,3,4)select explode(array(1,2,3,4))select sequence(1,100);  -- 生成1到100，数组数据# 配合爆炸函数快速生成一列数据select explode(sequence(1,">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库-SQL">
 <meta property="og:url" content="http://example.com/2024/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/index.html">
 <meta property="og:site_name" content="小贺的博客">
-<meta property="og:description" content="测试图片上传服务器功能1老身今自由。心无疚，随意度春秋">
+<meta property="og:description" content="测试图片上传服务器功能1老身今自由。心无疚，随意度春秋       1.爆炸函数  使用爆炸函数可以将数组转化为一列数据 123456select array(1,2,3,4)select explode(array(1,2,3,4))select sequence(1,100);  -- 生成1到100，数组数据# 配合爆炸函数快速生成一列数据select explode(sequence(1,">
 <meta property="og:locale">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-c67b050921ab84a8a5188cb2559fe9ad_720w.jpg">
 <meta property="og:image" content="https://pic4.zhimg.com/80/v2-626d786cd1bc9423942de0f829a8ab17_720w.jpg">
 <meta property="og:image" content="https://pic4.zhimg.com/80/v2-5aac35005e06df7a489195614e4b4a23_720w.jpg">
 <meta property="og:image" content="https://pic1.zhimg.com/80/v2-d15d1d5889e528fa16de49eac88cab10_720w.webp">
 <meta property="og:image" content="https://pic1.zhimg.com/80/v2-6b96910eb06b006568a6043458c22aac_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-96f65907b5db27165ac8a0c35ded999d_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-978c9ada3d323e31b62dc0f86cbdd2c3_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-b0c6c4532bbdbd9733312b1611ed9875_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-f957d4006d4d9ea8491601b5248e4d97_720w.webp">
 <meta property="article:published_time" content="2024-04-10T11:50:12.000Z">
-<meta property="article:modified_time" content="2024-04-10T11:56:27.928Z">
+<meta property="article:modified_time" content="2024-04-11T11:44:20.112Z">
 <meta property="article:author" content="Mr.zh">
 <meta property="article:tag" content="大数据技术">
 <meta property="article:tag" content="人生感悟">
@@ -709,8 +713,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-04-10 19:56:27</span>
-            <span class="mobile">2024-04-10 19:56:27</span>
+            <span class="desktop">2024-04-11 19:44:20</span>
+            <span class="mobile">2024-04-11 19:44:20</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -752,7 +756,7 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>25 Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>351 Words</span>
         </span>
     
     
@@ -808,7 +812,52 @@
                      data-src="https://pic1.zhimg.com/80/v2-6b96910eb06b006568a6043458c22aac_720w.webp"
                      
                 ></p>
-
+<h2 id="1-爆炸函数"><a href="#1-爆炸函数" class="headerlink" title="1.爆炸函数"></a>1.爆炸函数</h2><hr>
+<ol>
+<li><p>使用爆炸函数可以将数组转化为<strong>一列</strong>数据</p>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">array</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line"><span class="keyword">select</span> explode(<span class="keyword">array</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> sequence(<span class="number">1</span>,<span class="number">100</span>);  <span class="comment">-- 生成1到100，数组数据</span></span><br><span class="line"># 配合爆炸函数快速生成一列数据</span><br><span class="line"><span class="keyword">select</span> explode(sequence(<span class="number">1</span>,<span class="number">100</span>)) <span class="keyword">as</span> id  <span class="comment">-- 可以生成一列从1，到100的数组</span></span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>快速生成表的数据</p>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> stack(</span><br><span class="line">	<span class="number">2</span>,   <span class="comment">-- 这个参数指定表中有几条数据</span></span><br><span class="line">	<span class="number">1</span>,<span class="string">&#x27;张三&#x27;</span>,<span class="number">23</span>,</span><br><span class="line">	<span class="number">2</span>,<span class="string">&#x27;李四&#x27;</span>,<span class="number">22</span>    <span class="comment">-- 这两行指定表的数据内容</span></span><br><span class="line">);</span><br><span class="line"># 也可以指定表中每一列的字段名称</span><br><span class="line"><span class="keyword">select</span> stack(</span><br><span class="line">	<span class="number">2</span>,   <span class="comment">-- 这个参数指定表中有几条数据</span></span><br><span class="line">	<span class="number">1</span>,<span class="string">&#x27;张三&#x27;</span>,<span class="number">23</span>,</span><br><span class="line">	<span class="number">2</span>,<span class="string">&#x27;李四&#x27;</span>,<span class="number">22</span>    <span class="comment">-- 这两行指定表的数据内容</span></span><br><span class="line">) <span class="keyword">as</span> (id , name , age);</span><br></pre></td></tr></table></figure></div>
+</li>
+<li><p>操作生成表的数据的方式</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-96f65907b5db27165ac8a0c35ded999d_720w.webp"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-978c9ada3d323e31b62dc0f86cbdd2c3_720w.webp"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-b0c6c4532bbdbd9733312b1611ed9875_720w.webp"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-f957d4006d4d9ea8491601b5248e4d97_720w.webp"
+                     
+                ></p>
+</li>
+</ol>
+<h2 id="2-SparkSQL的执行引擎"><a href="#2-SparkSQL的执行引擎" class="headerlink" title="2.SparkSQL的执行引擎"></a>2.SparkSQL的执行引擎</h2><ul>
+<li>解析器 ： 将sql语句转化为语法树</li>
+<li>分析器 ： 语法树中被查询的字段数据类型-读取元数据声明被查询的字段类型</li>
+<li>优化器 ： 将语法树进行优化<ul>
+<li>谓词下推 ： 比如先进行where的过滤条件，将过滤结果在进行join操作</li>
+<li>列值裁减 ： 只查询需要的字段</li>
+</ul>
+</li>
+<li>执行器 ： 将最终语法树转化为rdd，交给spark进行最终执行</li>
+</ul>
+<h2 id="3-电商案例"><a href="#3-电商案例" class="headerlink" title="3. 电商案例"></a>3. 电商案例</h2>
         </div>
 
         
@@ -822,7 +871,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-04-10 19:56:27
+                    :</strong> 2024-04-11 19:44:20
             </li>
         
         <li>
@@ -892,7 +941,7 @@
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">数据库-SQL</div>
-        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%9F%E8%83%BD"><span class="nav-text">测试图片上传服务器功能</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%9F%E8%83%BD"><span class="nav-text">测试图片上传服务器功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%88%86%E7%82%B8%E5%87%BD%E6%95%B0"><span class="nav-text">1.爆炸函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-SparkSQL%E7%9A%84%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E"><span class="nav-text">2.SparkSQL的执行引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%94%B5%E5%95%86%E6%A1%88%E4%BE%8B"><span class="nav-text">3. 电商案例</span></a>
 
     </div>
 </div>
@@ -929,7 +978,7 @@
                     </span>
                     
                         <span>
-                            3.5k words in total
+                            5.1k words in total
                         </span>
                     
                 </p>
