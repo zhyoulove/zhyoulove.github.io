@@ -13,38 +13,42 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/2024/04/10/数据库-sql/"/>
+    <link rel="canonical" href="http://example.com/2024/04/15/spark-sql/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="测试图片上传服务器功能1老身今自由。心无疚，随意度春秋       1.爆炸函数  使用爆炸函数可以将数组转化为一列数据 123456select array(1,2,3,4)select explode(array(1,2,3,4))select sequence(1,100);  -- 生成1到100，数组数据# 配合爆炸函数快速生成一列数据select explode(sequence(1,">
+        <meta name="description" content="Spark SQL1. dataframe类型的详解  2. dataframe的创建  3. dataframe的使用3.1 使用df中的方法进行操作（dsl方法 — df提供）12345678910df数据的查询1. 指定查询的字段数据(指定字段的字符串格式，结果会返回一个新的df，可以使用df.show()查看	df.select(&#x27;name&#x27;)2. 指定多个字段--一次">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库-SQL">
-<meta property="og:url" content="http://example.com/2024/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/index.html">
+<meta property="og:title" content="Spark SQL">
+<meta property="og:url" content="http://example.com/2024/04/15/Spark-SQL/index.html">
 <meta property="og:site_name" content="小贺的博客">
-<meta property="og:description" content="测试图片上传服务器功能1老身今自由。心无疚，随意度春秋       1.爆炸函数  使用爆炸函数可以将数组转化为一列数据 123456select array(1,2,3,4)select explode(array(1,2,3,4))select sequence(1,100);  -- 生成1到100，数组数据# 配合爆炸函数快速生成一列数据select explode(sequence(1,">
+<meta property="og:description" content="Spark SQL1. dataframe类型的详解  2. dataframe的创建  3. dataframe的使用3.1 使用df中的方法进行操作（dsl方法 — df提供）12345678910df数据的查询1. 指定查询的字段数据(指定字段的字符串格式，结果会返回一个新的df，可以使用df.show()查看	df.select(&#x27;name&#x27;)2. 指定多个字段--一次">
 <meta property="og:locale">
-<meta property="og:image" content="https://pic2.zhimg.com/80/v2-c67b050921ab84a8a5188cb2559fe9ad_720w.jpg">
-<meta property="og:image" content="https://pic4.zhimg.com/80/v2-626d786cd1bc9423942de0f829a8ab17_720w.jpg">
-<meta property="og:image" content="https://pic4.zhimg.com/80/v2-5aac35005e06df7a489195614e4b4a23_720w.jpg">
-<meta property="og:image" content="https://pic1.zhimg.com/80/v2-d15d1d5889e528fa16de49eac88cab10_720w.webp">
-<meta property="og:image" content="https://pic1.zhimg.com/80/v2-6b96910eb06b006568a6043458c22aac_720w.webp">
-<meta property="og:image" content="https://pic2.zhimg.com/80/v2-96f65907b5db27165ac8a0c35ded999d_720w.webp">
-<meta property="og:image" content="https://pic4.zhimg.com/80/v2-978c9ada3d323e31b62dc0f86cbdd2c3_720w.webp">
-<meta property="og:image" content="https://pic2.zhimg.com/80/v2-b0c6c4532bbdbd9733312b1611ed9875_720w.webp">
-<meta property="og:image" content="https://pic4.zhimg.com/80/v2-f957d4006d4d9ea8491601b5248e4d97_720w.webp">
-<meta property="og:image" content="https://pic2.zhimg.com/80/v2-230eab3071260efdc00c1fe81eb4c71d_720w.webp">
-<meta property="og:image" content="https://pic3.zhimg.com/80/v2-82a74de1d91f0800e369bcf00f4dc736_720w.webp">
-<meta property="og:image" content="https://pic3.zhimg.com/80/v2-c6075985d1d94348edd19ad555c21362_720w.webp">
-<meta property="og:image" content="https://pic1.zhimg.com/80/v2-ee58c48091a9b74721b019bb437fa1ec_720w.webp">
-<meta property="article:published_time" content="2024-04-10T11:50:12.000Z">
-<meta property="article:modified_time" content="2024-04-15T08:52:41.056Z">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-3d4646adbdc8dffdbdf5e4d5471d0065_r.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-9973137e99ffcba2e005275e7ccee435_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-896a75d1c541fa7ea3e48ec796a223a2_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-d2bde66b53464be453bc0146b41e6c36_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-8d036e7f21c29ee7acc86b9354c7b5cf_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-550a1afb4cb03613679d0e1069c26979_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-700c483397a510330ca7de2707f25655_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-3e8dacd73984d322bed1d8413352aaca_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-c8c57fd77bc297648d1b43286fe44879_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-57e95d180036f75c974003f974c9beae_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-325b8dae62fcf9f0dd9a18e9813812be_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-0dba6e23b1d01568ae72d85f5a1b758a_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-fec57c303f7f458e06b1d5cbc852d52e_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-924a9ed6806e53131145c930ce0b023e_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-414651540dc98062801a1fa16f4a7a4d_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-c4ad6c77cf47edd6c79d6f4fd2b1478f_720w.webp">
+<meta property="og:image" content="https://pic2.zhimg.com/80/v2-79a388b17fb470113442687d1ce7b099_720w.webp">
+<meta property="article:published_time" content="2024-04-15T09:06:08.000Z">
+<meta property="article:modified_time" content="2024-04-15T09:07:55.908Z">
 <meta property="article:author" content="Mr.zh">
 <meta property="article:tag" content="大数据技术">
-<meta property="article:tag" content="人生感悟">
+<meta property="article:tag" content="SQL">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://pic2.zhimg.com/80/v2-c67b050921ab84a8a5188cb2559fe9ad_720w.jpg">
+<meta name="twitter:image" content="https://pic2.zhimg.com/v2-3d4646adbdc8dffdbdf5e4d5471d0065_r.jpg">
     
     
     <!--- Icon Part-->
@@ -56,7 +60,7 @@
     
     <title>
         
-            数据库-SQL -
+            Spark SQL -
         
         Mr.z博客
     </title>
@@ -689,7 +693,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">数据库-SQL</h1>
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">Spark SQL</h1>
                 </div>
             
             </div>
@@ -710,15 +714,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-04-10 19:50:12</span>
-        <span class="mobile">2024-04-10 19:50:12</span>
+        <span class="desktop">2024-04-15 17:06:08</span>
+        <span class="mobile">2024-04-15 17:06:08</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-04-15 16:52:41</span>
-            <span class="mobile">2024-04-15 16:52:41</span>
+            <span class="desktop">2024-04-15 17:07:55</span>
+            <span class="mobile">2024-04-15 17:07:55</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -750,7 +754,7 @@
                     </li>
                 
                     <li>
-                        | <a href="/tags/%E4%BA%BA%E7%94%9F%E6%84%9F%E6%82%9F/">人生感悟</a>&nbsp;
+                        | <a href="/tags/SQL/">SQL</a>&nbsp;
                     </li>
                 
             </ul>
@@ -760,12 +764,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>783 Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.8k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>3 Mins</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>11 Mins</span>
         </span>
     
     
@@ -784,127 +788,202 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <h3 id="测试图片上传服务器功能"><a href="#测试图片上传服务器功能" class="headerlink" title="测试图片上传服务器功能"></a>测试图片上传服务器功能</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">老身今自由。心无疚，随意度春秋</span><br></pre></td></tr></table></figure></div>
+            <h2 id="Spark-SQL"><a href="#Spark-SQL" class="headerlink" title="Spark SQL"></a>Spark SQL</h2><h3 id="1-dataframe类型的详解"><a href="#1-dataframe类型的详解" class="headerlink" title="1. dataframe类型的详解"></a>1. dataframe类型的详解</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/v2-3d4646adbdc8dffdbdf5e4d5471d0065_r.jpg"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-9973137e99ffcba2e005275e7ccee435_720w.webp"
+                     
+                ></p>
+<h3 id="2-dataframe的创建"><a href="#2-dataframe的创建" class="headerlink" title="2. dataframe的创建"></a>2. dataframe的创建</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic3.zhimg.com/80/v2-896a75d1c541fa7ea3e48ec796a223a2_720w.webp"
+                     
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic3.zhimg.com/80/v2-d2bde66b53464be453bc0146b41e6c36_720w.webp"
+                     
+                ></p>
+<h3 id="3-dataframe的使用"><a href="#3-dataframe的使用" class="headerlink" title="3. dataframe的使用"></a>3. dataframe的使用</h3><h4 id="3-1-使用df中的方法进行操作（dsl方法-—-df提供）"><a href="#3-1-使用df中的方法进行操作（dsl方法-—-df提供）" class="headerlink" title="3.1 使用df中的方法进行操作（dsl方法 — df提供）"></a>3.1 使用df中的方法进行操作（dsl方法 — df提供）</h4><div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">df数据的查询</span><br><span class="line"><span class="number">1.</span> 指定查询的字段数据(指定字段的字符串格式，结果会返回一个新的df，可以使用df.show()查看</span><br><span class="line">	df.select(<span class="string">&#x27;name&#x27;</span>)</span><br><span class="line"><span class="number">2.</span> 指定多个字段<span class="comment">--一次查询多个字段（将字段放入列表中，注意需要使用字符串的形式）</span></span><br><span class="line">	df.select([<span class="string">&#x27;name&#x27;</span>,<span class="string">&#x27;age&#x27;</span>])</span><br><span class="line"><span class="number">3.</span> 直接使用df进行查询</span><br><span class="line">	df.select(df[<span class="string">&#x27;name&#x27;</span>],df[<span class="string">&#x27;age&#x27;</span>])</span><br><span class="line"><span class="number">4.</span> 展示所有数据<span class="comment">---&gt; 直接使用df.show() 即可将所有结果查询出来</span></span><br><span class="line">	df.show()   # 此时就是对所有字段进行处理</span><br><span class="line"><span class="number">5.</span> df.show(num)  可以指定展示多少条数据，默认是<span class="number">20</span>条数据，同时<span class="keyword">show</span>()方法不会返回新的df</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">df的条件过滤</span><br><span class="line"><span class="number">1.</span> df.where(<span class="string">&#x27;age &gt; 20&#x27;</span>) # 相当于将所有数据都进行过滤，返回一个新的df</span><br><span class="line"><span class="number">2.</span> df.where(<span class="string">&#x27;age &gt; 20&#x27;</span>) # 相当于将所有数据都进行过滤，返回一个新的df，并且，没有指定行</span><br><span class="line">	相当于得到年龄大于<span class="number">20</span>的全部过滤出来</span><br><span class="line"><span class="number">3.</span> 多个条件的与或非（<span class="keyword">and</span> , <span class="keyword">or</span> , ）</span><br><span class="line">	df.where(<span class="string">&#x27;age &gt;= 20 and gender = &quot;男&quot;&#x27;</span>) # 注意单双引号的嵌套使用</span><br><span class="line">	</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">group</span> <span class="keyword">by</span>（分组操作，一般结合聚合操作）的操作</span><br><span class="line"><span class="number">1.</span> df.groupby(<span class="string">&#x27;gender&#x27;</span>).<span class="built_in">sum</span>(<span class="string">&#x27;age&#x27;</span>)</span><br><span class="line">	# 相当于对性别进行分组操作，同时对两个组中的年龄进行累加</span><br><span class="line">	# <span class="keyword">select</span> gender , <span class="built_in">sum</span>(<span class="string">&#x27;age&#x27;</span>) <span class="keyword">from</span> df <span class="keyword">group</span> <span class="keyword">by</span> gender</span><br><span class="line">	# 常见的聚合函数：<span class="built_in">sum</span>()，<span class="built_in">avg</span>() , <span class="built_in">min</span>() , <span class="built_in">max</span>()</span><br><span class="line"><span class="number">2.</span> 对于多个分组字段的使用，和进行查询的时候一样，使用一个列表进行</span><br><span class="line">	# 相当于先对性别进行一个分组，然后在两个性别中在对每一个科目在进行一个分组</span><br><span class="line">	df.groupby([<span class="string">&#x27;gender , cls&#x27;</span>]).<span class="built_in">avg</span>(<span class="string">&#x27;age&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">分组后的数据过滤</span><br><span class="line"><span class="number">1.</span> # 注意的点就是分组后的过滤，也不需要使用<span class="keyword">having</span>，而是同样使用<span class="keyword">where</span></span><br><span class="line">	df.groupby(<span class="string">&#x27;gender&#x27;</span>).<span class="built_in">sum</span>(<span class="string">&#x27;age&#x27;</span>).<span class="keyword">where</span>(<span class="string">&#x27;sum(age) &gt; 80&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">排序操作 orderBy()</span><br><span class="line"><span class="number">1.</span> df.orderBy(<span class="string">&#x27;age&#x27;</span>) </span><br><span class="line">	# 默认是升序排序,按照年龄进行升序排序</span><br><span class="line">	# 返回一个新的df</span><br><span class="line">	# 如果需要降序，就传入一个参数，进行降序排序</span><br><span class="line">	df.orderBy(<span class="string">&#x27;age&#x27;</span>,ascending <span class="operator">=</span> <span class="literal">False</span>)</span><br><span class="line"><span class="number">2.</span> 多字段排序</span><br><span class="line">	# 如果需要多个字段进行排序，可以使用列表</span><br><span class="line">	# 先按照age进行排序，如果年龄相同，就按照id进行从小到大进行排序</span><br><span class="line">	df.orderBy([<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;id&#x27;</span>])</span><br><span class="line"><span class="number">3.</span> （多字段是按照一个排序规则进行操作）</span><br><span class="line">注意点就是，不能指定一个字段进行升序，一个降序。也就是说，和<span class="keyword">sql</span>里面是一样的。</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">指定返回数量 limit()</span><br><span class="line"><span class="number">1.</span> # 返回指定数量的数据</span><br><span class="line">   # 返回一个新的df</span><br><span class="line">	df.limit(<span class="number">5</span>)</span><br><span class="line">	</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="3-2-使用sql语句进行操作（sql语句—sparkSession提供）"><a href="#3-2-使用sql语句进行操作（sql语句—sparkSession提供）" class="headerlink" title="3.2 使用sql语句进行操作（sql语句—sparkSession提供）"></a>3.2 使用sql语句进行操作（sql语句—sparkSession提供）</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-8d036e7f21c29ee7acc86b9354c7b5cf_720w.webp"
+                     
+                ></p>
+<h4 id="3-3-关联的操作"><a href="#3-3-关联的操作" class="headerlink" title="3.3 关联的操作"></a>3.3 关联的操作</h4><div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">join</span>的关联操作</span><br><span class="line"><span class="number">1.</span> 内关联 </span><br><span class="line"><span class="number">2.</span> 左关联 ： 左边的数据全部展示，如果有相同的id，右边表的数据也会展示</span><br><span class="line"><span class="number">3.</span> 右关联</span><br></pre></td></tr></table></figure></div>
+
+
 
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://pic2.zhimg.com/80/v2-c67b050921ab84a8a5188cb2559fe9ad_720w.jpg"
+                     data-src="https://pic2.zhimg.com/80/v2-550a1afb4cb03613679d0e1069c26979_720w.webp"
                      
                 ></p>
+<h4 id="3-4-df数据的缓存和checkpoint"><a href="#3-4-df数据的缓存和checkpoint" class="headerlink" title="3.4 df数据的缓存和checkpoint"></a>3.4 df数据的缓存和checkpoint</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 缓存使用方法：</span></span><br><span class="line">	<span class="comment"># 进行缓存</span></span><br><span class="line">	df.persist()</span><br><span class="line">	<span class="comment"># 后序在进行计算时，如果计算错误就直接从缓存中读取</span></span><br><span class="line">	<span class="comment"># 缓存的级别：默认有限缓存到内存中，内存不足缓存到磁盘上</span></span><br><span class="line">    new_df = df.where(<span class="string">&#x27;id &gt; 1&#x27;</span>)</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># checkpoint的作用：</span></span><br><span class="line"><span class="comment"># checkpoint的意思就是建立检查点,类似于快照,例如在spark计算里面 计算流程DAG特别长,服务器需要将整个DAG计算完成得出结果,但是如果在这很长的计算流程中突然中间算出的数据丢失了,spark又会根据RDD的依赖关系从头到尾计算一遍,这样子就很费性能,当然我们可以将中间的计算结果通过cache或者persist放到内存或者磁盘中,但是这样也不能保证数据完全不会丢失,存储的这个内存出问题了或者磁盘坏了,也会导致spark从头再根据RDD计算一遍,所以就有了checkpoint,其中checkpoint的作用就是将DAG中比较重要的中间数据做一个检查点将结果存储到一个高可用的地方(通常这个地方就是HDFS里面)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用方法 首先设置checkpoint存储的位置</span></span><br><span class="line">sc.setCheckpointDir(<span class="string">&#x27;hdfs:///spark_checkpoint&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后进行checkpoint操作:如果计算错误，就可以从hdfs中进行读取</span></span><br><span class="line">df.checkpoint()</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>当存在缓存和checkpoint时候，优先读取缓存中的数据，因为缓存的读写速度较快</li>
+</ul>
+<h4 id="3-5-df中的内置函数"><a href="#3-5-df中的内置函数" class="headerlink" title="3.5 df中的内置函数"></a>3.5 df中的内置函数</h4><ol>
+<li><p>spark中的内置函数和hive中的内置函数基本一致</p>
+</li>
+<li><p>使用之前需要导入相应的模块</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession,functions <span class="keyword">as</span> F</span><br><span class="line"><span class="comment"># functions是sparksql中的内置函数模块，里面封装了许多内置方法</span></span><br></pre></td></tr></table></figure></div></li>
+</ol>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.字符串的操作  --  拼接  -- 得到一个新的df</span></span><br><span class="line">new_df = df.select(F.concat(<span class="string">&#x27;id&#x27;</span>,<span class="string">&#x27;name&#x27;</span>)) <span class="comment"># sql:select concat(id , name) from df</span></span><br><span class="line">new_df.show()   <span class="comment"># 展示结果，这个方法拼接结果不会有分割字符</span></span><br><span class="line"><span class="comment"># 2.字符串的拼接，并且指定分割字符的方法</span></span><br><span class="line">new_df = df.select(F.concat_ws(<span class="string">&#x27;,&#x27;</span> , <span class="string">&#x27;id&#x27;</span> , <span class="string">&#x27;name&#x27;</span>))</span><br><span class="line">new_df.show()</span><br><span class="line"><span class="comment"># 3. 字符串的截取</span></span><br><span class="line">df.select(F.substring(<span class="string">&#x27;name&#x27;</span> , <span class="number">1</span> , <span class="number">4</span>)) <span class="comment"># 表示从第一个字符开始，截取4个长度的字符</span></span><br><span class="line"><span class="comment"># 4. 字符串的切割</span></span><br><span class="line">df.select(F.split(<span class="string">&#x27;date&#x27;</span> , <span class="string">&#x27;-&#x27;</span>)) <span class="comment"># 将年份根据-进行切割，得到一个列表</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 时间操作，获取当前日期</span></span><br><span class="line">df.select(F.current_date())</span><br><span class="line"><span class="comment"># 2. 获取当前日期时间</span></span><br><span class="line">df.select(F.current_timestamp())</span><br><span class="line"><span class="comment"># 3. 获取当前的unix时间（时间戳）</span></span><br><span class="line">df.select(F.unix_timestamp())</span><br><span class="line"><span class="comment"># 4.将unix时间转化为指定格式的时间</span></span><br><span class="line">df.select(F.from_unixtime(<span class="string">&#x27;unix_t&#x27;</span> , <span class="built_in">format</span>=<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>))</span><br><span class="line"><span class="comment"># 5. 时间加减操作</span></span><br><span class="line">df.select(F.date_add(<span class="string">&#x27;date&#x27;</span> , <span class="number">1</span>)) <span class="comment"># 将字段date加一天</span></span><br><span class="line">df.select(F.date_add(<span class="string">&#x27;date&#x27;</span> , -<span class="number">1</span>)) <span class="comment"># 将字段date减一天</span></span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 内置函数（常用于多个聚合操作） ---  需要配合agg进行使用（agg里面可以使用多个内置函数）</span></span><br><span class="line">df.groupby(<span class="string">&#x27;gender&#x27;</span>).agg(F.<span class="built_in">sum</span>(<span class="string">&#x27;age&#x27;</span>) , F.avg(<span class="string">&#x27;age&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定某个字段保留两位小数</span></span><br><span class="line">df.groupby(<span class="string">&#x27;gender&#x27;</span>).agg(F.<span class="built_in">sum</span>() , F.<span class="built_in">round</span>(F.avg(<span class="string">&#x27;age&#x27;</span>) , <span class="number">2</span>))</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 内置函数取别名的方法 ---  一般不使用中文的别名哦</span></span><br><span class="line"><span class="comment"># 取别名的操作，并且跟在内置函数后面</span></span><br><span class="line">df.groupby(<span class="string">&#x27;gender&#x27;</span>).agg(F.<span class="built_in">sum</span>().alias(<span class="string">&#x27;总和&#x27;</span>) , F.<span class="built_in">round</span>(F.avg(<span class="string">&#x27;age&#x27;</span>) , <span class="number">2</span>).alias(<span class="string">&#x27;平均值&#x27;</span>))</span><br></pre></td></tr></table></figure></div>
+
+
+
+<h4 id="3-6-SparkSession的说明"><a href="#3-6-SparkSession的说明" class="headerlink" title="3.6 SparkSession的说明"></a>3.6 SparkSession的说明</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="comment"># 生成sparksession对象</span></span><br><span class="line"><span class="comment"># 默认是采用本地模式进行计算</span></span><br><span class="line">ss = SparkSession.builder.getOrCreate()</span><br><span class="line"><span class="comment"># 也可以指定其他资源调度方式进行计算        -----&gt;master()</span></span><br><span class="line"><span class="comment"># master(&#x27;yarn&#x27;) 采用yarn</span></span><br><span class="line"><span class="comment"># master(&#x27;spark://node1:7077&#x27;) 采用standalone</span></span><br><span class="line">ss1 = SparkSession.builder.master(<span class="string">&#x27;yarn&#x27;</span>).getOrCreate()</span><br><span class="line"><span class="comment"># 也可以指定计算程序的任务名称   -----&gt;appName()</span></span><br><span class="line">ss1 = SparkSession.builder.master(<span class="string">&#x27;yarn&#x27;</span>).appName(<span class="string">&#x27;yarn_sparkSql&#x27;</span>).getOrCreate()</span><br><span class="line"><span class="comment"># 指定配置信息 		-------&gt;config()</span></span><br><span class="line">ss1 = SparkSession.builder.master(<span class="string">&#x27;yarn&#x27;</span>).config().getOrCreate()</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="4-小案例—电影数据统计分析"><a href="#4-小案例—电影数据统计分析" class="headerlink" title="4.小案例—电影数据统计分析"></a>4.小案例—电影数据统计分析</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原数据格式，分析，以及导入原数据到hdfs中</span></span><br><span class="line"><span class="comment"># 字段： 用户id\t电影id\t评分\t时间</span></span><br><span class="line">代码流程如下：</span><br><span class="line"><span class="comment"># 导入模块</span></span><br><span class="line"><span class="keyword">from</span> pyspark.sql <span class="keyword">import</span> SparkSession</span><br><span class="line"><span class="keyword">from</span> pyspark.sql.types <span class="keyword">import</span> *</span><br><span class="line"><span class="comment"># 生成SparkSession对象</span></span><br><span class="line">ss = SparkSession.builder.getOrCreate()</span><br><span class="line"><span class="comment"># 使用sparkcontext读取文件数据</span></span><br><span class="line">sc = ss.sparkContext</span><br><span class="line"><span class="comment"># 读取文件生成rdd数据</span></span><br><span class="line">rdd = sc.textFile(<span class="string">&#x27;hdfs:///movie&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这一步可以先进行查看一部分的数据</span></span><br><span class="line"><span class="built_in">print</span>(rdd.take(<span class="number">20</span>)) <span class="comment"># 查看20条数据</span></span><br><span class="line"> </span><br><span class="line"><span class="comment"># 将rdd数据转化为df数据,先将rdd转化为二位嵌套</span></span><br><span class="line">table_rdd = rdd.<span class="built_in">map</span>(</span><br><span class="line">	<span class="keyword">lambda</span> x : [<span class="built_in">int</span>(x.split(<span class="string">&#x27;\t&#x27;</span>)[<span class="number">0</span>]) , <span class="built_in">int</span>(x.split(<span class="string">&#x27;\t&#x27;</span>)[<span class="number">1</span>]) , double(x.split(<span class="string">&#x27;\t&#x27;</span>)[<span class="number">2</span>]) ,s.split(<span class="string">&#x27;\t&#x27;</span>)[<span class="number">3</span>] ] <span class="comment"># 注意时间可以使用字符串</span></span><br><span class="line">)</span><br><span class="line"><span class="comment"># 定义schedule信息，指定字段名和字段类型</span></span><br><span class="line">schema_type = StructType()</span><br><span class="line">	.add(<span class="string">&#x27;userId&#x27;</span>,IntegerType())</span><br><span class="line">	.add(<span class="string">&#x27;movieId&#x27;</span>,IntegerType())</span><br><span class="line">    .add(<span class="string">&#x27;score&#x27;</span>,DoubleType())</span><br><span class="line">    .add(<span class="string">&#x27;unix_time&#x27;</span>,StringType())</span><br><span class="line"><span class="comment"># 转化为df数据</span></span><br><span class="line">df = table_rdd.toDF(schema_type)</span><br><span class="line"><span class="comment"># 查看df数据，默认20条</span></span><br><span class="line">df.show()</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.查询每个用户的平均分</span></span><br><span class="line">user_avg = df.groupBy(<span class="string">&#x27;userId&#x27;</span>).agg(F.avg(<span class="string">&#x27;score&#x27;</span>).alias(<span class="string">&#x27;avg_data&#x27;</span>))</span><br><span class="line">user_avg.show() <span class="comment"># 用户打分平均分展示</span></span><br><span class="line"><span class="comment"># 2. 查询每个电影的平均分</span></span><br><span class="line">movie_avg = df.groupBy(<span class="string">&#x27;movieId&#x27;</span>).agg(F.avg(<span class="string">&#x27;score&#x27;</span>).alias(<span class="string">&#x27;avg_data&#x27;</span>))</span><br><span class="line">	<span class="comment"># 计算结果保留两位小数</span></span><br><span class="line">movie_avg= df.groupBy(<span class="string">&#x27;movieId&#x27;</span>).agg(F.<span class="built_in">round</span>(F.avg(<span class="string">&#x27;score&#x27;</span>),<span class="number">2</span>).alias(<span class="string">&#x27;avg_data&#x27;</span>))</span><br><span class="line">movie_avg.show() <span class="comment"># 电影平均分展示</span></span><br><span class="line"><span class="comment"># 3. 查询高分电影中（评分大于3的）打分次数最多的用户，并求出此人打的平均分</span></span><br><span class="line"> <span class="number">3.1</span> : 得到不同用户打高分电影的数量 </span><br><span class="line">        df.where(<span class="string">&#x27;score &gt;3&#x27;</span>).groupBy(<span class="string">&#x27;userId&#x27;</span>)</span><br><span class="line">        .agg(F.count(<span class="string">&#x27;movieId&#x27;</span>).alias(<span class="string">&#x27;count_data&#x27;</span>))</span><br><span class="line"> <span class="number">3.2</span> ：然后根据数量进行降序排序，得到第一个就是打分次数最多的用户</span><br><span class="line">        df.where(<span class="string">&#x27;score &gt;3&#x27;</span>).groupBy(<span class="string">&#x27;userId&#x27;</span>)</span><br><span class="line">        .agg(F.count(<span class="string">&#x27;movieId&#x27;</span>).alias(<span class="string">&#x27;count_data&#x27;</span>))</span><br><span class="line">        .orderBy(<span class="string">&#x27;count_data&#x27;</span>,ascending = <span class="literal">False</span>)</span><br><span class="line"> <span class="number">3.3</span> ：first()方法，取出第一行数据</span><br><span class="line">	first()取出的是一个row对象，不在是一个df对象，不能使用show()进行展示哦</span><br><span class="line">		user_rdd = df.where(<span class="string">&#x27;score &gt;3&#x27;</span>).groupBy(<span class="string">&#x27;userId&#x27;</span>)</span><br><span class="line">        .agg(F.count(<span class="string">&#x27;movieId&#x27;</span>).alias(<span class="string">&#x27;count_data&#x27;</span>))</span><br><span class="line">        .orderBy(<span class="string">&#x27;count_data&#x27;</span>,ascending = <span class="literal">False</span>).first()</span><br><span class="line">     <span class="built_in">print</span>(user_rdd)  <span class="comment"># 直接进行打印得到一个rdd对象，我们需要的是userId</span></span><br><span class="line">     userId = user_rdd[<span class="string">&#x27;userId&#x27;</span>] <span class="comment"># 得到目标用户</span></span><br><span class="line">     <span class="built_in">print</span>(user_rdd[<span class="string">&#x27;userId&#x27;</span>])</span><br><span class="line"> <span class="number">3.4</span> ： 根据用户<span class="built_in">id</span>查找这个用户所有打分电影的平均分:</span><br><span class="line"><span class="comment"># 方法1</span></span><br><span class="line">user_movie_avg = df.groupBy(<span class="string">&#x27;userId&#x27;</span>).agg(F.avg(<span class="string">&#x27;score&#x27;</span>).alias(<span class="string">&#x27;avg_data&#x27;</span>))</span><br><span class="line"><span class="comment"># 方法2</span></span><br><span class="line">user_movie_avg = movie_avg.where(movie_avg[<span class="string">&#x27;userId&#x27;</span>] == userId)</span><br><span class="line"><span class="comment"># 结果展示</span></span><br><span class="line">user_movie_avg.show()</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 4. 查询每个用户的平均打分，最低打分，最高打分</span></span><br><span class="line"><span class="comment"># agg()里面可以使用多个内置函数</span></span><br><span class="line">df.groupBy(<span class="string">&#x27;userId&#x27;</span>).agg(F.avg(<span class="string">&#x27;score&#x27;</span>) , F.<span class="built_in">max</span>(<span class="string">&#x27;score&#x27;</span>) , F.<span class="built_in">min</span>(<span class="string">&#x27;score&#x27;</span>))</span><br></pre></td></tr></table></figure></div>
+
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 5. 查询被评分超过100次的电影的平均分，进行排名，取出Top10</span></span><br><span class="line">df.groupBy(<span class="string">&#x27;movieId&#x27;</span>)</span><br><span class="line">.agg(F.count(<span class="string">&#x27;movieId&#x27;</span>).alias(<span class="string">&#x27;count_data&#x27;</span>) , F.avg(<span class="string">&#x27;score&#x27;</span>).alias(<span class="string">&#x27;avg_data&#x27;</span>))</span><br><span class="line">.where(<span class="string">&#x27;count_data &gt; 100&#x27;</span>)</span><br><span class="line">.orderBy(<span class="string">&#x27;avg_data&#x27;</span>,ascending = <span class="literal">False</span>).limit(<span class="number">10</span>)</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="5-分区数目（了解）"><a href="#5-分区数目（了解）" class="headerlink" title="5. 分区数目（了解）"></a>5. 分区数目（了解）</h3><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 调整分区数目</span></span><br><span class="line">ss = SparkSession.builder.master(<span class="string">&#x27;yarn&#x27;</span>)</span><br><span class="line">.config(<span class="string">&#x27;spark.sql.shuffle.partitions&#x27;</span>,<span class="string">&#x27;6&#x27;</span>)</span><br><span class="line">.getOrCreate()</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="6-sparkSession读取不同类型文件"><a href="#6-sparkSession读取不同类型文件" class="headerlink" title="6. sparkSession读取不同类型文件"></a>6. sparkSession读取不同类型文件</h3><h4 id="6-1-数据读入"><a href="#6-1-数据读入" class="headerlink" title="6.1 数据读入"></a>6.1 数据读入</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-700c483397a510330ca7de2707f25655_720w.webp"
+                     
+                ></p>
+<p>注意在读取mysql的数据时候，需要将驱动依赖放到spark&#x2F;jars&#x2F;下</p>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://pic4.zhimg.com/80/v2-626d786cd1bc9423942de0f829a8ab17_720w.jpg"
+                     data-src="https://pic3.zhimg.com/80/v2-3e8dacd73984d322bed1d8413352aaca_720w.webp"
                      
                 ></p>
+<h4 id="6-2-数据读出"><a href="#6-2-数据读出" class="headerlink" title="6.2 数据读出"></a>6.2 数据读出</h4><ul>
+<li>将df数据写入到不同的文件下</li>
+</ul>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://pic4.zhimg.com/80/v2-5aac35005e06df7a489195614e4b4a23_720w.jpg"
+                     data-src="https://pic2.zhimg.com/80/v2-c8c57fd77bc297648d1b43286fe44879_720w.webp"
                      
                 ></p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic1.zhimg.com/80/v2-d15d1d5889e528fa16de49eac88cab10_720w.webp"
-                     
-                ></p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic1.zhimg.com/80/v2-6b96910eb06b006568a6043458c22aac_720w.webp"
-                     
-                ></p>
-<h2 id="1-爆炸函数"><a href="#1-爆炸函数" class="headerlink" title="1.爆炸函数"></a>1.爆炸函数</h2><hr>
+<h3 id="7-自定义函数"><a href="#7-自定义函数" class="headerlink" title="7. 自定义函数"></a>7. 自定义函数</h3><h4 id="7-1-函数分类"><a href="#7-1-函数分类" class="headerlink" title="7.1 函数分类"></a>7.1 函数分类</h4><ul>
+<li>udf		一进一出	可以自定义</li>
+<li>udaf      多进一出    可以自定义  需要借助pandas</li>
+<li>udtf       一进多出    不能自定义</li>
+</ul>
 <ol>
-<li><p>使用爆炸函数可以将数组转化为<strong>一列</strong>数据</p>
-<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">array</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line"><span class="keyword">select</span> explode(<span class="keyword">array</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> sequence(<span class="number">1</span>,<span class="number">100</span>);  <span class="comment">-- 生成1到100，数组数据</span></span><br><span class="line"># 配合爆炸函数快速生成一列数据</span><br><span class="line"><span class="keyword">select</span> explode(sequence(<span class="number">1</span>,<span class="number">100</span>)) <span class="keyword">as</span> id  <span class="comment">-- 可以生成一列从1，到100的数组</span></span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>快速生成表的数据</p>
-<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> stack(</span><br><span class="line">	<span class="number">2</span>,   <span class="comment">-- 这个参数指定表中有几条数据</span></span><br><span class="line">	<span class="number">1</span>,<span class="string">&#x27;张三&#x27;</span>,<span class="number">23</span>,</span><br><span class="line">	<span class="number">2</span>,<span class="string">&#x27;李四&#x27;</span>,<span class="number">22</span>    <span class="comment">-- 这两行指定表的数据内容</span></span><br><span class="line">);</span><br><span class="line"># 也可以指定表中每一列的字段名称</span><br><span class="line"><span class="keyword">select</span> stack(</span><br><span class="line">	<span class="number">2</span>,   <span class="comment">-- 这个参数指定表中有几条数据</span></span><br><span class="line">	<span class="number">1</span>,<span class="string">&#x27;张三&#x27;</span>,<span class="number">23</span>,</span><br><span class="line">	<span class="number">2</span>,<span class="string">&#x27;李四&#x27;</span>,<span class="number">22</span>    <span class="comment">-- 这两行指定表的数据内容</span></span><br><span class="line">) <span class="keyword">as</span> (id , name , age);</span><br></pre></td></tr></table></figure></div>
-</li>
-<li><p>操作生成表的数据的方式</p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic2.zhimg.com/80/v2-96f65907b5db27165ac8a0c35ded999d_720w.webp"
-                     
-                ></p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic4.zhimg.com/80/v2-978c9ada3d323e31b62dc0f86cbdd2c3_720w.webp"
-                     
-                ></p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic2.zhimg.com/80/v2-b0c6c4532bbdbd9733312b1611ed9875_720w.webp"
-                     
-                ></p>
-<p><img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic4.zhimg.com/80/v2-f957d4006d4d9ea8491601b5248e4d97_720w.webp"
-                     
-                ></p>
-</li>
-</ol>
-<h2 id="2-SparkSQL的执行引擎"><a href="#2-SparkSQL的执行引擎" class="headerlink" title="2.SparkSQL的执行引擎"></a>2.SparkSQL的执行引擎</h2><ul>
-<li>解析器 ： 将sql语句转化为语法树</li>
-<li>分析器 ： 语法树中被查询的字段数据类型-读取元数据声明被查询的字段类型</li>
-<li>优化器 ： 将语法树进行优化<ul>
-<li>谓词下推 ： 比如先进行where的过滤条件，将过滤结果在进行join操作</li>
-<li>列值裁减 ： 只查询需要的字段</li>
+<li>自定义udf函数步骤<ul>
+<li>数据是一行一行处理（传递一行处理一行）</li>
+<li>自定义udf函数也可以使用sql语句的方式进行使用哦</li>
 </ul>
 </li>
-<li>执行器 ： 将最终语法树转化为rdd，交给spark进行最终执行</li>
-</ul>
-<h2 id="3-电商案例"><a href="#3-电商案例" class="headerlink" title="3. 电商案例"></a>3. 电商案例</h2><ol>
-<li>订单表字段说明</li>
 </ol>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://pic2.zhimg.com/80/v2-230eab3071260efdc00c1fe81eb4c71d_720w.webp"
+                     data-src="https://pic3.zhimg.com/80/v2-57e95d180036f75c974003f974c9beae_720w.webp"
                      
                 ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic3.zhimg.com/80/v2-325b8dae62fcf9f0dd9a18e9813812be_720w.webp"
+                     
+                ></p>
+<ul>
+<li>自定义函数也可以使用装饰器的方式进行注册</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic3.zhimg.com/80/v2-0dba6e23b1d01568ae72d85f5a1b758a_720w.webp"
+                     
+                ></p>
+<ul>
+<li>但这种方式不能使用SQL语句的方式进行使用</li>
+</ul>
 <ol start="2">
-<li>对原数据进行数据清洗的时候假如存在int类型和string类型的空，过滤方法为：</li>
-</ol>
-<img  
-                     lazyload
-                     src="/images/loading.svg"
-                     data-src="https://pic3.zhimg.com/80/v2-82a74de1d91f0800e369bcf00f4dc736_720w.webp"
-                      style="zoom:80%;" 
-                >
-
-<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 注意点就是对于字符串过滤的时候，不能使用<span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">null</span> 因为他不是<span class="keyword">null</span>，是空字符</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> age <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">and</span> name <span class="operator">!=</span> <span class="string">&#x27;&#x27;</span>;</span><br></pre></td></tr></table></figure></div>
-
+<li><p>自定义udaf函数步骤</p>
+<ul>
+<li>自定义udaf函数的格式</li>
+</ul>
 <p><img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://pic3.zhimg.com/80/v2-c6075985d1d94348edd19ad555c21362_720w.webp"
+                     data-src="https://pic3.zhimg.com/80/v2-fec57c303f7f458e06b1d5cbc852d52e_720w.webp"
                      
                 ></p>
-<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># 然后将过滤之后的数据导入到下一层里面</span><br></pre></td></tr></table></figure></div>
-
+<ul>
+<li>注册方法同上</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic3.zhimg.com/80/v2-924a9ed6806e53131145c930ce0b023e_720w.webp"
+                     
+                ></p>
+</li>
+</ol>
+<h3 id="8-pandas的学习"><a href="#8-pandas的学习" class="headerlink" title="8.pandas的学习"></a>8.pandas的学习</h3><ol>
+<li><p>定义方式（两种）：</p>
+<ul>
+<li><p>值得注意的是pandas中的df和spark中的df不相同哦，pandas中的是单机计算资源，速度较慢</p>
+</li>
+<li><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic2.zhimg.com/80/v2-414651540dc98062801a1fa16f4a7a4d_720w.webp"
+                     
+                ></p>
+</li>
+</ul>
+</li>
+<li><p>将pandas中的df转化为spark中的df进行计算</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://pic4.zhimg.com/80/v2-c4ad6c77cf47edd6c79d6f4fd2b1478f_720w.webp"
+                     
+                ></p>
+</li>
+</ol>
 <img  
                      lazyload
                      src="/images/loading.svg"
-                     data-src="https://pic1.zhimg.com/80/v2-ee58c48091a9b74721b019bb437fa1ec_720w.webp"
+                     data-src="https://pic2.zhimg.com/80/v2-79a388b17fb470113442687d1ce7b099_720w.webp"
                       style="zoom:80%;" 
                 >
-
-<ol start="3">
-<li>app层的计算指标</li>
-</ol>
-<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># <span class="number">1.</span>销量最高的<span class="number">10</span>个国家</span><br><span class="line"><span class="keyword">select</span> Country , <span class="built_in">sum</span>(Quantity) <span class="keyword">as</span> sum_data <span class="keyword">from</span> 表名 <span class="keyword">group</span> <span class="keyword">by</span> Country <span class="keyword">order</span> <span class="keyword">by</span> sum_data <span class="keyword">desc</span> limit(<span class="number">10</span>)</span><br><span class="line"># <span class="number">2.</span> 各个国家的总销售额分布情况</span><br><span class="line"><span class="keyword">select</span> Country , <span class="built_in">sum</span>(Quantity <span class="operator">*</span> Price)  <span class="keyword">from</span> 表名 <span class="keyword">group</span> <span class="keyword">by</span> Country</span><br><span class="line">        <span class="comment">-- 保留小数点两位使用round() 函数</span></span><br><span class="line"><span class="keyword">select</span> Country , round(<span class="built_in">sum</span>(Quantity <span class="operator">*</span> Price) , <span class="number">2</span>)  <span class="keyword">from</span> 表名 <span class="keyword">group</span> <span class="keyword">by</span> Country</span><br><span class="line"># <span class="number">3.</span> 销量最高的<span class="number">10</span>个商品</span><br><span class="line"><span class="keyword">select</span> InvoiceNo , <span class="built_in">sum</span>(Quantity) <span class="keyword">as</span> sum_data <span class="keyword">from</span> 表名 <span class="keyword">group</span> <span class="keyword">by</span> InvoiceNo </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> sum_data limit(<span class="number">10</span>)</span><br><span class="line"># <span class="number">4.</span> 商品描述的热门关键词Top300</span><br><span class="line"><span class="comment">-- 思路：首先将商品描述根据空格进行切割，然后得到sql里面的数组，借助爆炸函数，将数组中的数据转化为一列数组，并且重命名为word，然后在进行查询统计即可</span></span><br><span class="line"><span class="keyword">with</span> tb <span class="keyword">as</span>(</span><br><span class="line">	<span class="keyword">select</span> explode(split(Description , <span class="string">&#x27; &#x27;</span>)) <span class="keyword">as</span> word <span class="keyword">from</span> 表名 </span><br><span class="line">)</span><br><span class="line"><span class="keyword">select</span> word , <span class="built_in">count</span>(word) <span class="keyword">as</span> count_data <span class="keyword">from</span> tb <span class="keyword">where</span> word <span class="operator">!=</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">group</span> <span class="keyword">by</span> word </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> count_data <span class="keyword">desc</span> limit <span class="number">300</span></span><br><span class="line">	</span><br></pre></td></tr></table></figure></div>
-
-<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># <span class="number">5.</span> 退货订单数最多的<span class="number">10</span>个国家 <span class="comment">-- 求的是数量啊--使用内置函数--count()</span></span><br><span class="line"><span class="keyword">select</span> Country , <span class="built_in">count</span>(InvoiceNo)  <span class="keyword">from</span> 表名 <span class="keyword">where</span> <span class="built_in">substring</span>(InvoiceNo,<span class="number">1</span>,<span class="number">1</span>)<span class="operator">=</span><span class="operator">=</span><span class="string">&#x27;C&#x27;</span> <span class="keyword">group</span> <span class="keyword">by</span> Country <span class="keyword">order</span> <span class="keyword">by</span> <span class="built_in">count</span>(InvoiceNo) <span class="keyword">desc</span> limit <span class="number">10</span></span><br><span class="line"></span><br><span class="line">(答案)<span class="keyword">select</span> Country , <span class="built_in">count</span>(InvoiceNo) <span class="keyword">as</span> count_data  <span class="keyword">from</span> 表名 <span class="keyword">where</span> InvoiceNo <span class="keyword">like</span>  &quot;C%&quot; <span class="keyword">group</span> <span class="keyword">by</span> Country <span class="keyword">order</span> <span class="keyword">by</span> count_data <span class="keyword">desc</span> limit <span class="number">10</span></span><br><span class="line"># <span class="number">6.</span> 商品的平均单价和销量的关系</span><br><span class="line"><span class="keyword">select</span> StockCode round(<span class="built_in">avg</span>(price) , <span class="number">2</span>) <span class="keyword">as</span> avg_data , <span class="built_in">sum</span>(Quantity) <span class="keyword">as</span> sum_data <span class="keyword">from</span> 表名 </span><br></pre></td></tr></table></figure></div>
-
-<p>4. </p>
 
         </div>
 
@@ -912,18 +991,18 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> 数据库-SQL</li>
+        <li><strong>Title:</strong> Spark SQL</li>
         <li><strong>Author:</strong> Mr.zh</li>
         <li><strong>Created at
-                :</strong> 2024-04-10 19:50:12</li>
+                :</strong> 2024-04-15 17:06:08</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-04-15 16:52:41
+                    :</strong> 2024-04-15 17:07:55
             </li>
         
         <li>
-            <strong>Link:</strong> https://redefine.ohevan.com/2024/04/10/数据库-SQL/
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/04/15/Spark-SQL/
         </li>
         <li>
             <strong>
@@ -949,7 +1028,7 @@
                     </li>
                 
                     <li class="tag-item mx-0.5">
-                        <a href="/tags/%E4%BA%BA%E7%94%9F%E6%84%9F%E6%82%9F/">#人生感悟</a>&nbsp;
+                        <a href="/tags/SQL/">#SQL</a>&nbsp;
                     </li>
                 
             </ul>
@@ -960,29 +1039,14 @@
         
             <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
                 
-                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2024/04/15/Spark-SQL/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Spark SQL</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
                 
                     <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="next"
                         rel="next"
-                        href="/2024/04/01/Java%E5%88%B7%E9%A2%98%E6%8A%80%E6%9C%AF/"
+                        href="/2024/04/10/%E6%95%B0%E6%8D%AE%E5%BA%93-SQL/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Java刷题技巧</span>
+                                <span class="post-nav-title-item">数据库-SQL</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -1003,8 +1067,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">数据库-SQL</div>
-        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%9F%E8%83%BD"><span class="nav-text">测试图片上传服务器功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%88%86%E7%82%B8%E5%87%BD%E6%95%B0"><span class="nav-text">1.爆炸函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-SparkSQL%E7%9A%84%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E"><span class="nav-text">2.SparkSQL的执行引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%94%B5%E5%95%86%E6%A1%88%E4%BE%8B"><span class="nav-text">3. 电商案例</span></a>
+        <div class="page-title">Spark SQL</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark-SQL"><span class="nav-text">Spark SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-dataframe%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%AF%A6%E8%A7%A3"><span class="nav-text">1. dataframe类型的详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-dataframe%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="nav-text">2. dataframe的创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-dataframe%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">3. dataframe的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%B0%8F%E6%A1%88%E4%BE%8B%E2%80%94%E7%94%B5%E5%BD%B1%E6%95%B0%E6%8D%AE%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90"><span class="nav-text">4.小案例—电影数据统计分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%88%86%E5%8C%BA%E6%95%B0%E7%9B%AE%EF%BC%88%E4%BA%86%E8%A7%A3%EF%BC%89"><span class="nav-text">5. 分区数目（了解）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-sparkSession%E8%AF%BB%E5%8F%96%E4%B8%8D%E5%90%8C%E7%B1%BB%E5%9E%8B%E6%96%87%E4%BB%B6"><span class="nav-text">6. sparkSession读取不同类型文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="nav-text">7. 自定义函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-pandas%E7%9A%84%E5%AD%A6%E4%B9%A0"><span class="nav-text">8.pandas的学习</span></a></li></ol></li></ol>
 
     </div>
 </div>
