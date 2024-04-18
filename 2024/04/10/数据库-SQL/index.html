@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://pic3.zhimg.com/80/v2-c6075985d1d94348edd19ad555c21362_720w.webp">
 <meta property="og:image" content="https://pic1.zhimg.com/80/v2-ee58c48091a9b74721b019bb437fa1ec_720w.webp">
 <meta property="article:published_time" content="2024-04-10T11:50:12.000Z">
-<meta property="article:modified_time" content="2024-04-15T08:52:41.056Z">
+<meta property="article:modified_time" content="2024-04-15T13:08:55.116Z">
 <meta property="article:author" content="Mr.zh">
 <meta property="article:tag" content="大数据技术">
 <meta property="article:tag" content="人生感悟">
@@ -655,16 +655,16 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">10</div>
-        <div class="label text-third-text-color text-sm">Tags</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="label text-third-text-color text-sm">标签</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
-        <div class="label text-third-text-color text-sm">Categories</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="label text-third-text-color text-sm">分类</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
-        <div class="label text-third-text-color text-sm">Posts</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">8</div>
+        <div class="label text-third-text-color text-sm">文章</div>
     </a>
 </div>
     </div>
@@ -703,7 +703,7 @@
                     <div class="author flex items-center">
                         <span class="name text-default-text-color text-lg font-semibold">Mr.zh</span>
                         
-                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv1</span>
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
                         
                     </div>
                     <div class="meta-info">
@@ -712,14 +712,14 @@
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
         <span class="desktop">2024-04-10 19:50:12</span>
         <span class="mobile">2024-04-10 19:50:12</span>
-        <span class="hover-info">Created</span>
+        <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-04-15 16:52:41</span>
-            <span class="mobile">2024-04-15 16:52:41</span>
-            <span class="hover-info">Updated</span>
+            <span class="desktop">2024-04-15 21:08:55</span>
+            <span class="mobile">2024-04-15 21:08:55</span>
+            <span class="hover-info">更新</span>
         </span>
     
 
@@ -760,12 +760,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>783 Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>882 字</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>3 Mins</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>3 分钟</span>
         </span>
     
     
@@ -904,7 +904,29 @@
 
 <div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># <span class="number">5.</span> 退货订单数最多的<span class="number">10</span>个国家 <span class="comment">-- 求的是数量啊--使用内置函数--count()</span></span><br><span class="line"><span class="keyword">select</span> Country , <span class="built_in">count</span>(InvoiceNo)  <span class="keyword">from</span> 表名 <span class="keyword">where</span> <span class="built_in">substring</span>(InvoiceNo,<span class="number">1</span>,<span class="number">1</span>)<span class="operator">=</span><span class="operator">=</span><span class="string">&#x27;C&#x27;</span> <span class="keyword">group</span> <span class="keyword">by</span> Country <span class="keyword">order</span> <span class="keyword">by</span> <span class="built_in">count</span>(InvoiceNo) <span class="keyword">desc</span> limit <span class="number">10</span></span><br><span class="line"></span><br><span class="line">(答案)<span class="keyword">select</span> Country , <span class="built_in">count</span>(InvoiceNo) <span class="keyword">as</span> count_data  <span class="keyword">from</span> 表名 <span class="keyword">where</span> InvoiceNo <span class="keyword">like</span>  &quot;C%&quot; <span class="keyword">group</span> <span class="keyword">by</span> Country <span class="keyword">order</span> <span class="keyword">by</span> count_data <span class="keyword">desc</span> limit <span class="number">10</span></span><br><span class="line"># <span class="number">6.</span> 商品的平均单价和销量的关系</span><br><span class="line"><span class="keyword">select</span> StockCode round(<span class="built_in">avg</span>(price) , <span class="number">2</span>) <span class="keyword">as</span> avg_data , <span class="built_in">sum</span>(Quantity) <span class="keyword">as</span> sum_data <span class="keyword">from</span> 表名 </span><br></pre></td></tr></table></figure></div>
 
-<p>4. </p>
+<h2 id="4-消息队列（MQ）"><a href="#4-消息队列（MQ）" class="headerlink" title="4. 消息队列（MQ）"></a>4. 消息队列（MQ）</h2><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">突然有一天你会发现，你的思念不会因为长时间的不联系而消失，只会随着时间的流逝像野草般疯狂生长。</span><br></pre></td></tr></table></figure></div>
+
+
+
+<ol>
+<li>作用</li>
+</ol>
+<ul>
+<li>进行实时计算需要</li>
+<li>应用耦合  – 解耦  – 使用消息队列解耦</li>
+<li>异步处理</li>
+<li>限流削峰</li>
+</ul>
+<ol start="2">
+<li>消息队列的两种模式</li>
+</ol>
+<ul>
+<li>点对点</li>
+</ul>
+<p>​	</p>
+<ul>
+<li>发布与订阅</li>
+</ul>
 
         </div>
 
@@ -912,27 +934,27 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> 数据库-SQL</li>
-        <li><strong>Author:</strong> Mr.zh</li>
-        <li><strong>Created at
+        <li><strong>标题:</strong> 数据库-SQL</li>
+        <li><strong>作者:</strong> Mr.zh</li>
+        <li><strong>创建于
                 :</strong> 2024-04-10 19:50:12</li>
         
             <li>
-                <strong>Updated at
-                    :</strong> 2024-04-15 16:52:41
+                <strong>更新于
+                    :</strong> 2024-04-15 21:08:55
             </li>
         
         <li>
-            <strong>Link:</strong> https://redefine.ohevan.com/2024/04/10/数据库-SQL/
+            <strong>链接:</strong> https://redefine.ohevan.com/2024/04/10/数据库-SQL/
         </li>
         <li>
             <strong>
-                License:
+                版权声明:
             </strong>
             
 
             
-                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+                本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a> 进行许可。
             
         </li>
     </ul>
@@ -970,7 +992,7 @@
                             </span>
                             <span class="title flex justify-center items-center">
                                 <span class="post-nav-title-item">Spark SQL</span>
-                                <span class="post-nav-item">Prev posts</span>
+                                <span class="post-nav-item">上一篇</span>
                             </span>
                         </a>
                     </div>
@@ -983,7 +1005,7 @@
                         >
                             <span class="title flex justify-center items-center">
                                 <span class="post-nav-title-item">Java刷题技巧</span>
-                                <span class="post-nav-item">Next posts</span>
+                                <span class="post-nav-item">下一篇</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
                                 <i class="fa-solid fa-chevron-right"></i>
@@ -1002,9 +1024,9 @@
         <div class="toc-content-container">
             <div class="post-toc-wrap">
     <div class="post-toc">
-        <div class="toc-title">On this page</div>
+        <div class="toc-title">此页目录</div>
         <div class="page-title">数据库-SQL</div>
-        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%9F%E8%83%BD"><span class="nav-text">测试图片上传服务器功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%88%86%E7%82%B8%E5%87%BD%E6%95%B0"><span class="nav-text">1.爆炸函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-SparkSQL%E7%9A%84%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E"><span class="nav-text">2.SparkSQL的执行引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%94%B5%E5%95%86%E6%A1%88%E4%BE%8B"><span class="nav-text">3. 电商案例</span></a>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8A%9F%E8%83%BD"><span class="nav-text">测试图片上传服务器功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%88%86%E7%82%B8%E5%87%BD%E6%95%B0"><span class="nav-text">1.爆炸函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-SparkSQL%E7%9A%84%E6%89%A7%E8%A1%8C%E5%BC%95%E6%93%8E"><span class="nav-text">2.SparkSQL的执行引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%94%B5%E5%95%86%E6%A1%88%E4%BE%8B"><span class="nav-text">3. 电商案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%EF%BC%88MQ%EF%BC%89"><span class="nav-text">4. 消息队列（MQ）</span></a>
 
     </div>
 </div>
@@ -1037,11 +1059,11 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        6 posts in total
+                        共 8 篇文章
                     </span>
                     
                         <span>
-                            9.6k words in total
+                            共 13.1k 字
                         </span>
                     
                 </p>
@@ -1052,26 +1074,26 @@
             <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
                 
                     <span id="busuanzi_container_site_uv" class="lg:!block">
-                        <span class="text-sm">VISITOR COUNT</span>
+                        <span class="text-sm">访问人数</span>
                         <span id="busuanzi_value_site_uv"></span>
                     </span>
                 
                 
                     <span id="busuanzi_container_site_pv" class="lg:!block">
-                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span class="text-sm">总访问量</span>
                         <span id="busuanzi_value_site_pv"></span>
                     </span>
                 
             </div>
         
         <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
-            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
-            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+            <span class="lg:block text-sm">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a> 驱动</span>
+            <span class="text-sm lg:block">主题&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
         </div>
         
         
             <div>
-                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
             </div>
         
         
@@ -1174,7 +1196,7 @@
                 <input autocomplete="off"
                        autocorrect="off"
                        autocapitalize="off"
-                       placeholder="Search..."
+                       placeholder="搜索..."
                        spellcheck="false"
                        type="search"
                        class="search-input"
