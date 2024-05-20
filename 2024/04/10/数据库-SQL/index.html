@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://pic3.zhimg.com/80/v2-81aa193a09f0bd9290e4e55d59c4f7ee_720w.webp">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-aacf12ff64236bbf31bc503f8abe63d9_720w.webp">
 <meta property="article:published_time" content="2024-04-10T11:50:12.000Z">
-<meta property="article:modified_time" content="2024-05-02T06:59:42.180Z">
+<meta property="article:modified_time" content="2024-05-17T14:34:17.634Z">
 <meta property="article:author" content="Mr.zh">
 <meta property="article:tag" content="大数据技术">
 <meta property="article:tag" content="人生感悟">
@@ -757,8 +757,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-05-02 14:59:42</span>
-            <span class="mobile">2024-05-02 14:59:42</span>
+            <span class="desktop">2024-05-17 22:34:17</span>
+            <span class="mobile">2024-05-17 22:34:17</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -800,12 +800,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.6k Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>1.8k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>6 Mins</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>7 Mins</span>
         </span>
     
     
@@ -1376,7 +1376,29 @@
                      data-src="https://pic2.zhimg.com/80/v2-aacf12ff64236bbf31bc503f8abe63d9_720w.webp"
                      
                 ></p>
-<h3 id="4-sql优化"><a href="#4-sql优化" class="headerlink" title="4. sql优化"></a>4. sql优化</h3>
+<h3 id="4-sql优化"><a href="#4-sql优化" class="headerlink" title="4. sql优化"></a>4. sql优化</h3><h4 id="1-插入优化"><a href="#1-插入优化" class="headerlink" title="1. 插入优化"></a>1. 插入优化</h4><ul>
+<li>批量插入</li>
+<li>手动提交事务</li>
+<li>按照主键顺序插入</li>
+<li>对于大批量插入数据不能使用insert，使用load进行加载插入</li>
+</ul>
+<h4 id="2-主键优化"><a href="#2-主键优化" class="headerlink" title="2. 主键优化"></a>2. 主键优化</h4><ul>
+<li>主机顺序插入的效率高，在于不发生页分裂。也就是主键乱序插入的时候，可以发生页分裂</li>
+</ul>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>页分裂-页合并：当某一页中的数据小于一个值（默认50%）就有可能发生页合并</li>
+</ul>
+<hr>
+<p>主键设计原则：</p>
+<pre><code>1. 尽可能将主键字段设计较短（二级索引存储的是主键，占内存）
+1. 尽量选择主键顺序插入
+1. 避免使用uuid，身份证号码等作为主键
+1. 业务操作，尽量避免对主键的修改
+</code></pre>
+<h4 id="3-order-by优化"><a href="#3-order-by优化" class="headerlink" title="3. order by优化"></a>3. <code>order by</code>优化</h4><p>- </p>
+<h4 id="4-group-by优化"><a href="#4-group-by优化" class="headerlink" title="4. group by优化"></a>4. <code>group by</code>优化</h4><h4 id="5-limit优化"><a href="#5-limit优化" class="headerlink" title="5. limit优化"></a>5. <code>limit</code>优化</h4><h4 id="6-count优化"><a href="#6-count优化" class="headerlink" title="6. count优化"></a>6. <code>count</code>优化</h4><h4 id="7-update优化"><a href="#7-update优化" class="headerlink" title="7. update优化"></a>7. <code>update</code>优化</h4>
         </div>
 
         
@@ -1390,7 +1412,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-05-02 14:59:42
+                    :</strong> 2024-05-17 22:34:17
             </li>
         
         <li>
@@ -1512,7 +1534,7 @@
                     </span>
                     
                         <span>
-                            19.5k words in total
+                            20k words in total
                         </span>
                     
                 </p>
