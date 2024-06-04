@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20191011090955281.png">
 <meta property="og:image" content="https://pic2.zhimg.com/80/v2-f922496ecd3ef9eec758cb0767f5725d_720w.webp">
 <meta property="article:published_time" content="2024-04-01T13:50:32.000Z">
-<meta property="article:modified_time" content="2024-05-02T15:42:19.140Z">
+<meta property="article:modified_time" content="2024-05-26T15:55:53.943Z">
 <meta property="article:author" content="Mr.zh">
 <meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="Java">
@@ -632,7 +632,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">18</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">20</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -640,7 +640,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">12</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -694,8 +694,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-05-02 23:42:19</span>
-            <span class="mobile">2024-05-02 23:42:19</span>
+            <span class="desktop">2024-05-26 23:55:53</span>
+            <span class="mobile">2024-05-26 23:55:53</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -741,12 +741,12 @@
     
     
         <span class="article-wordcount article-meta-item">
-            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>7.9k Words</span>
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>8.2k Words</span>
         </span>
     
     
         <span class="article-min2read article-meta-item">
-            <i class="fa-regular fa-clock"></i>&nbsp;<span>38 Mins</span>
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>39 Mins</span>
         </span>
     
     
@@ -946,7 +946,14 @@
 </code></pre>
 </li>
 </ul>
-<h4 id="3-数论"><a href="#3-数论" class="headerlink" title="3. 数论"></a>3. 数论</h4>
+<h4 id="3-数论"><a href="#3-数论" class="headerlink" title="3. 数论"></a>3. 数论</h4><h3 id="20-差分数组"><a href="#20-差分数组" class="headerlink" title="20 差分数组"></a>20 差分数组</h3><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对连续子数组的操作，可以转变为对差分数组中的两个数的操作</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="1-定义和常用性质"><a href="#1-定义和常用性质" class="headerlink" title="1. 定义和常用性质"></a>1. 定义和常用性质</h4><div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义：对于数组a,他的差分数组d为：</span></span><br><span class="line">	d[<span class="number">0</span>] = a[<span class="number">0</span>] , d = <span class="number">0</span></span><br><span class="line">	d[i] = a[i] - a[i - <span class="number">1</span>] , d &gt;= <span class="number">1</span></span><br><span class="line"><span class="comment"># 性质：</span></span><br><span class="line">    <span class="number">1.</span>从左向右累加d中的元素，可以得到原数组a</span><br><span class="line">    <span class="number">2.</span>将子数组a的子数组a[i] , a[i+<span class="number">1</span>] ...  a[j] 都加上x 等价于：</span><br><span class="line">    			   将d[i] 增加x , 将 d[j+<span class="number">1</span>] 减少 x</span><br><span class="line"><span class="comment"># 说明：</span></span><br><span class="line">	利用性质<span class="number">2</span>，可以实现在O(<span class="number">1</span>)的时间复杂度下完成对a的子数组的操作，然后利用性质<span class="number">1</span>还原数组</span><br><span class="line"><span class="comment"># 注意点：</span></span><br><span class="line">	</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="2-例题"><a href="#2-例题" class="headerlink" title="2. 例题"></a>2. 例题</h4><p><a class="link"   target="_blank" rel="noopener" href="https://leetcode.cn/problems/car-pooling/" >1094. 拼车 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">carPooling</span><span class="params">(<span class="type">int</span>[][] trips, <span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">     <span class="comment">// 0 &lt;= fromi &lt; toi &lt;= 1000</span></span><br><span class="line">        <span class="comment">// 定义a[i] 表示到底位置 i 的时候 车上的人数，需要判断所有的a[i] 是否满足 &lt;= capacity</span></span><br><span class="line">        <span class="type">int</span>[] d = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">1001</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span>[] trip : trips) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> trip[<span class="number">0</span>] , start = trip[<span class="number">1</span>] , end = trip[<span class="number">2</span>];</span><br><span class="line">            <span class="comment">// start 到  end - 1  是增加上: 刚好满足差分</span></span><br><span class="line">            <span class="comment">// end 是减少人</span></span><br><span class="line">            d[start] += num;</span><br><span class="line">            d[end] -= num;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">s</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i : d) &#123;</span><br><span class="line">            s += i ;</span><br><span class="line">            <span class="keyword">if</span> (s &gt; capacity)&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
         </div>
 
         
@@ -960,7 +967,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-05-02 23:42:19
+                    :</strong> 2024-05-26 23:55:53
             </li>
         
         <li>
@@ -1049,7 +1056,7 @@
     <div class="post-toc">
         <div class="toc-title">On this page</div>
         <div class="page-title">Java刷题技巧</div>
-        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Arrays-sort%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99"><span class="nav-text">1.Arrays.sort自定义排序规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%A4%A7%E9%A1%B6%E5%A0%86%E5%B0%8F%E9%A1%B6%E5%A0%86%E7%9A%84%E6%95%B0%E7%BB%84%E5%AD%98%E5%82%A8%E7%89%B9%E7%82%B9"><span class="nav-text">2.大顶堆小顶堆的数组存储特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Java%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%EF%BC%8C%E6%9A%B4%E5%8A%9B%E5%88%86%E5%89%B2%E7%9F%A9%E9%98%B5"><span class="nav-text">3. Java读取文件，暴力分割矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Java%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF"><span class="nav-text">4. Java算法模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%9B%9E%E6%BA%AF%E4%B9%8B%E5%88%87%E5%89%B2%E9%97%AE%E9%A2%98"><span class="nav-text">5. 回溯之切割问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Java%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%AF%BB%E5%86%99%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-text">6. Java中快速读写的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E6%8C%87%E5%AE%9A%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E8%BD%AC%E5%8C%96%E4%B8%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text">7. 指定字符数组长度转化为字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-KMP%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF"><span class="nav-text">8. KMP算法模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-Java%E4%B8%AD%E5%A4%A7%E6%95%B0%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-text">9. Java中大数的基本使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E7%BB%88%E8%A6%81%E9%9D%A2%E5%AF%B9-Dijkstra%E7%AE%97%E6%B3%95"><span class="nav-text">10 终要面对-Dijkstra算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E5%A4%9A%E6%AC%A1%E8%A7%81%E9%9D%A2-%E5%B9%B6%E6%9F%A5%E9%9B%86"><span class="nav-text">11 多次见面-并查集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-%E5%86%8D%E8%A7%81%E6%B7%B1%E6%90%9C"><span class="nav-text">12 再见深搜</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-%E9%BE%9F%E5%85%94%E8%B5%9B%E8%B7%91%E7%AE%97%E6%B3%95%E2%80%93%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">13 龟兔赛跑算法–快慢指针的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-Java%E6%95%B0%E5%AD%A6%E7%B1%BB%E7%9A%84%E4%B8%89%E4%B8%AA%E6%96%B9%E6%B3%95"><span class="nav-text">14 Java数学类的三个方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-%E5%86%8D%E5%AD%A6%E5%AE%8C%E7%BE%8E%E3%80%81%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-text">15 再学完美、完全二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-HashMap%E9%87%8D%E5%86%99%E6%8E%92%E5%BA%8F"><span class="nav-text">16 HashMap重写排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-%E4%BD%8D%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">17.  位移运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-%E6%97%A0%E6%95%8C%E5%89%8D%E7%BC%80%E6%A0%91"><span class="nav-text">18. 无敌前缀树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-%E6%95%B0%E8%AE%BA"><span class="nav-text">19 .数论</span></a></li></ol>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Arrays-sort%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8E%92%E5%BA%8F%E8%A7%84%E5%88%99"><span class="nav-text">1.Arrays.sort自定义排序规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%A4%A7%E9%A1%B6%E5%A0%86%E5%B0%8F%E9%A1%B6%E5%A0%86%E7%9A%84%E6%95%B0%E7%BB%84%E5%AD%98%E5%82%A8%E7%89%B9%E7%82%B9"><span class="nav-text">2.大顶堆小顶堆的数组存储特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Java%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6%EF%BC%8C%E6%9A%B4%E5%8A%9B%E5%88%86%E5%89%B2%E7%9F%A9%E9%98%B5"><span class="nav-text">3. Java读取文件，暴力分割矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Java%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF"><span class="nav-text">4. Java算法模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%9B%9E%E6%BA%AF%E4%B9%8B%E5%88%87%E5%89%B2%E9%97%AE%E9%A2%98"><span class="nav-text">5. 回溯之切割问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Java%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%AF%BB%E5%86%99%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-text">6. Java中快速读写的代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E6%8C%87%E5%AE%9A%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6%E8%BD%AC%E5%8C%96%E4%B8%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-text">7. 指定字符数组长度转化为字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-KMP%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF"><span class="nav-text">8. KMP算法模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-Java%E4%B8%AD%E5%A4%A7%E6%95%B0%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-text">9. Java中大数的基本使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E7%BB%88%E8%A6%81%E9%9D%A2%E5%AF%B9-Dijkstra%E7%AE%97%E6%B3%95"><span class="nav-text">10 终要面对-Dijkstra算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E5%A4%9A%E6%AC%A1%E8%A7%81%E9%9D%A2-%E5%B9%B6%E6%9F%A5%E9%9B%86"><span class="nav-text">11 多次见面-并查集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-%E5%86%8D%E8%A7%81%E6%B7%B1%E6%90%9C"><span class="nav-text">12 再见深搜</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-%E9%BE%9F%E5%85%94%E8%B5%9B%E8%B7%91%E7%AE%97%E6%B3%95%E2%80%93%E5%BF%AB%E6%85%A2%E6%8C%87%E9%92%88%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">13 龟兔赛跑算法–快慢指针的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-Java%E6%95%B0%E5%AD%A6%E7%B1%BB%E7%9A%84%E4%B8%89%E4%B8%AA%E6%96%B9%E6%B3%95"><span class="nav-text">14 Java数学类的三个方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-%E5%86%8D%E5%AD%A6%E5%AE%8C%E7%BE%8E%E3%80%81%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-text">15 再学完美、完全二叉树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-HashMap%E9%87%8D%E5%86%99%E6%8E%92%E5%BA%8F"><span class="nav-text">16 HashMap重写排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-%E4%BD%8D%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-text">17.  位移运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-%E6%97%A0%E6%95%8C%E5%89%8D%E7%BC%80%E6%A0%91"><span class="nav-text">18. 无敌前缀树</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-%E6%95%B0%E8%AE%BA"><span class="nav-text">19 .数论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-%E5%B7%AE%E5%88%86%E6%95%B0%E7%BB%84"><span class="nav-text">20 差分数组</span></a></li></ol>
 
     </div>
 </div>
@@ -1082,11 +1089,11 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        12 posts in total
+                        14 posts in total
                     </span>
                     
                         <span>
-                            20k words in total
+                            38.2k words in total
                         </span>
                     
                 </p>

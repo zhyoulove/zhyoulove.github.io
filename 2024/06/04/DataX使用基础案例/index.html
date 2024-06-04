@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en,zh-Hans">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Mr.zh">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+        
+        
+        
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2024/06/04/datax使用基础案例/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="1. 从stream 流读取数据并打印到控制台 进入DataX的安装目录，执行以下命令，查看流读取的配置模板  1234567891011121314151617181920212223242526272829303132333435363738[whybigdata@node01 datax]$ .&#x2F;bin&#x2F;datax.py -r streamreader -w streamwriter[why">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DataX使用基础案例">
+<meta property="og:url" content="http://example.com/2024/06/04/DataX%E4%BD%BF%E7%94%A8%E5%9F%BA%E7%A1%80%E6%A1%88%E4%BE%8B/index.html">
+<meta property="og:site_name" content="小贺的博客">
+<meta property="og:description" content="1. 从stream 流读取数据并打印到控制台 进入DataX的安装目录，执行以下命令，查看流读取的配置模板  1234567891011121314151617181920212223242526272829303132333435363738[whybigdata@node01 datax]$ .&#x2F;bin&#x2F;datax.py -r streamreader -w streamwriter[why">
+<meta property="og:locale">
+<meta property="og:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1c29b6243f174483a2ea64e9ed163de5~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e746d80f553449d3af4759970a70281d~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/80155aee51fa48bf99d141b39885e9a7~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/03e1809d9bb0422890c35c4c5a479163~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="article:published_time" content="2024-06-04T14:52:07.000Z">
+<meta property="article:modified_time" content="2024-06-04T14:54:09.350Z">
+<meta property="article:author" content="Mr.zh">
+<meta property="article:tag" content="DataX">
+<meta property="article:tag" content="大数据技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1c29b6243f174483a2ea64e9ed163de5~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            DataX使用基础案例 -
+        
+        Mr.z博客
+    </title>
+
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fonts/Chillax/chillax.css">
+
+    <!--- Inject Part-->
+    
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/anime.min.js"></script>
+    <h1 class="ml13">
+        Mr.z博客
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/assets/build/styles.css">
+    
+
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fonts/fonts.css">
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fonts/Satoshi/satoshi.css">
+    <!--- Font Part-->
+    
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap# Font URL to CSS file" rel="stylesheet">
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Farsan&display=swap" rel="stylesheet">
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en,zh-Hans","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["Lv1","Lv2","Lv3"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":["/docs/","/private/"]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":true,"family":"Noto Sans SC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap# Font URL to CSS file"},"english":{"enable":true,"family":"Farsan","url":"https://fonts.googleapis.com/css2?family=Farsan&display=swap"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"小贺的博客","subtitle":{"text":["Loading..."],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":true,"family":"Noto Sans SC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap"},"social_links":{"enable":false,"style":"default","links":{"github":"https://github.com/zhyoulove","instagram":"https://instagram.com# your Instagram URL","zhihu":"https://www.zhihu.com/people/hu-ge-74-63-86","twitter":"https://twitter.com","email":"1173119892@qq.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"Something Just Like This","artist":"Coldplay","url":"https://evan.beee.top/music/Something%20Just%20Like%20This%20-%20The%20Chainsmokers%E3%80%81Coldplay.mp3","cover":"https://evan.beee.top/music/covers/Something_Just_Like_This.png"},{"name":"Imagine# audio name","artist":"John Lennon# audio artist","url":"https://evan.beee.top/music/Imagine%20-%20John%20Lennon.mp3# audio url","cover":"https://evan.beee.top/music/covers/Lennon_Imagine_Sleeve_1975.jpg","lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"首页":{"path":"/","icon":"fa-regular fa-house"},"关于":{"icon":"fa-regular fa-user","submenus":{"我":"/about/","GitHub":"https://github.com/zhyoulove"}},"分类":{"icon":"fa-solid fa-folder","path":"/categories/"},"相册":{"icon":"fa-solid fa-image","path":"/masonry/"},"Lovely":{"icon":"fa-solid fa-heart","submenus":{"力扣":"https://leetcode.cn/u/song-vv/","知乎":"https://www.zhihu.com/people/hu-ge-74-63-86","华为云":"https://developer.huaweicloud.com/usercenter/mycommunity/dynamics","CSDN":"https://blog.csdn.net/zh_19995?spm=1010.2135.3001.5343"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"文章列表":{"path":"/archives","icon":"fa-regular fa-archive"},"文章分类":{"path":"/categories","icon":"fa-regular fa-folder"},"文章标签":{"path":"/tags","icon":"fa-regular fa-tags"},"关于Me":{"path":"/about/","icon":"fa-regular fa-folder"}}},"article_date_format":"YYYY-MM-DD HH:mm:ss","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":true};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fontawesome/fontawesome.min.css">
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fontawesome/brands.min.css">
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fontawesome/solid.min.css">
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fontawesome/regular.min.css">
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Mr.z博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about/">
+                                                    我
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/zhyoulove">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-solid fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/masonry/"
+                                        >
+                                    <i class="fa-solid fa-image fa-fw"></i>
+                                    相册
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-solid fa-heart fa-fw"></i>
+                                    LOVELY
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://leetcode.cn/u/song-vv/">
+                                                    力扣
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/hu-ge-74-63-86">
+                                                    知乎
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://developer.huaweicloud.com/usercenter/mycommunity/dynamics">
+                                                    华为云
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.csdn.net/zh_19995?spm=1010.2135.3001.5343">
+                                                    CSDN
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-关于"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-关于">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about/">我</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/zhyoulove">GITHUB</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-solid fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/masonry/"
+                        >
+                            <span>
+                                相册
+                            </span>
+                            
+                                <i class="fa-solid fa-image fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-Lovely"
+                        >
+                            <span>
+                                LOVELY
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-Lovely">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://leetcode.cn/u/song-vv/">力扣</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.zhihu.com/people/hu-ge-74-63-86">知乎</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://developer.huaweicloud.com/usercenter/mycommunity/dynamics">华为云</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.csdn.net/zh_19995?spm=1010.2135.3001.5343">CSDN</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/archives"
+                        >
+                            <span>文章列表</span>
+                            <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>文章分类</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>文章标签</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/about/"
+                        >
+                            <span>关于Me</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">20</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">14</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">DataX使用基础案例</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Mr.zh</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-06-04 22:52:07</span>
+        <span class="mobile">2024-06-04 22:52:07</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-06-04 22:54:09</span>
+            <span class="mobile">2024-06-04 22:54:09</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/DataX/">DataX</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/">大数据技术</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>2.2k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>11 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h2 id="1-从stream-流读取数据并打印到控制台"><a href="#1-从stream-流读取数据并打印到控制台" class="headerlink" title="1. 从stream 流读取数据并打印到控制台"></a>1. 从stream 流读取数据并打印到控制台</h2><ul>
+<li>进入DataX的安装目录，执行以下命令，查看流读取的配置模板</li>
+</ul>
+<div class="highlight-container" data-rel="Ruby"><figure class="iseeu highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[whybigdata<span class="variable">@node01</span> datax]<span class="variable">$ </span>./bin/datax.py -r streamreader -w streamwriter</span><br><span class="line">[whybigdata<span class="variable">@node01</span> bin]<span class="variable">$ </span>python datax.py -r streamreader -w streamwriter <span class="title class_">Data</span>X (<span class="variable constant_">DATAX</span>-<span class="variable constant_">OPENSOURCE</span>-<span class="number">3.0</span>), <span class="title class_">From</span> <span class="title class_">Alibaba</span> !</span><br><span class="line"><span class="title class_">Copyright</span> (C) <span class="number">2010</span>-<span class="number">2017</span>, <span class="title class_">Alibaba</span> <span class="title class_">Group</span>. <span class="title class_">All</span> <span class="title class_">Rights</span> <span class="title class_">Reserved</span>.</span><br><span class="line"></span><br><span class="line"><span class="title class_">Please</span> refer to the streamreader <span class="symbol">document:</span> <span class="symbol">https:</span>/<span class="regexp">/github.com/alibaba</span><span class="regexp">/DataX/blob</span><span class="regexp">/master/streamreader</span><span class="regexp">/doc/streamreader</span>.md</span><br><span class="line"></span><br><span class="line"><span class="title class_">Please</span> refer to the streamwriter <span class="symbol">document:</span> <span class="symbol">https:</span>/<span class="regexp">/github.com/alibaba</span><span class="regexp">/DataX/blob</span><span class="regexp">/master/streamwriter</span><span class="regexp">/doc/streamwriter</span>.md</span><br><span class="line"></span><br><span class="line"><span class="title class_">Please</span> save the following configuration as a json file <span class="keyword">and</span> use</span><br><span class="line">python &#123;<span class="variable constant_">DATAX_HOME</span>&#125;/bin/datax.py &#123;<span class="variable constant_">JSON_FILE_NAME</span>&#125;.json to run the job.</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line"> <span class="string">&quot;job&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;content&quot;</span>: [</span><br><span class="line">  &#123;</span><br><span class="line">   <span class="string">&quot;reader&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;streamreader&quot;</span>, </span><br><span class="line">    <span class="string">&quot;parameter&quot;</span>: &#123;</span><br><span class="line">     <span class="string">&quot;column&quot;</span>: [], </span><br><span class="line">     <span class="string">&quot;sliceRecordCount&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="string">&quot;writer&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;streamwriter&quot;</span>, </span><br><span class="line">    <span class="string">&quot;parameter&quot;</span>: &#123;</span><br><span class="line">     <span class="string">&quot;encoding&quot;</span>: <span class="string">&quot;&quot;</span>, </span><br><span class="line">     <span class="string">&quot;print&quot;</span>: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;setting&quot;</span>: &#123;</span><br><span class="line">   <span class="string">&quot;speed&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;channel&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>根据模板编写配置文件：进入DataX安装目录下的job目录</li>
+</ul>
+<div class="highlight-container" data-rel="Ruby"><figure class="iseeu highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ruby</span><br><span class="line">[whybigdata<span class="variable">@node01</span> job]<span class="variable">$ </span>vim stream2stream.json</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>添加以下内容</p>
+</blockquote>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"> <span class="attr">&quot;job&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;content&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">  <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;reader&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;streamreader&quot;</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;parameter&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;column&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">       <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;long&quot;</span><span class="punctuation">,</span></span><br><span class="line">       <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;18&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">       <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;string&quot;</span><span class="punctuation">,</span></span><br><span class="line">       <span class="attr">&quot;value&quot;</span><span class="punctuation">:</span> <span class="string">&quot;zhangsan&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">     <span class="punctuation">]</span><span class="punctuation">,</span> </span><br><span class="line">     <span class="attr">&quot;sliceRecordCount&quot;</span><span class="punctuation">:</span> <span class="number">10</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">   <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;writer&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;streamwriter&quot;</span><span class="punctuation">,</span> </span><br><span class="line">    <span class="attr">&quot;parameter&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">     <span class="attr">&quot;encoding&quot;</span><span class="punctuation">:</span> <span class="string">&quot;UTF-8&quot;</span><span class="punctuation">,</span> </span><br><span class="line">     <span class="attr">&quot;print&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;setting&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">   <span class="attr">&quot;speed&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;channel&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">   <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"> <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>column表示读取的数据字段，需要编写出每个字段的数据类型和相对应的值，数值类型的字段值也需要通过引号<code>“”</code>引起来，直接使用数字会报错。</p>
+</blockquote>
+<ul>
+<li>运行Job</li>
+</ul>
+<div class="highlight-container" data-rel="Ruby"><figure class="iseeu highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ruby</span><br><span class="line">[whybigdata<span class="variable">@node01</span> job]<span class="variable">$ </span>/opt/<span class="keyword">module</span>/datax/bin/datax.py /opt/<span class="keyword">module</span>/datax/job/stream2stream.json</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>运行结果</li>
+</ul>
+<blockquote>
+<p>根据<code>sliceRecordCount</code>参数值，流输出到控制台有10条数据</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1c29b6243f174483a2ea64e9ed163de5~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="1.jpg"
+                ></p>
+<hr>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e746d80f553449d3af4759970a70281d~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="2.jpg"
+                ></p>
+<h2 id="2-读取-MySQL-中的数据存放到-HDFS"><a href="#2-读取-MySQL-中的数据存放到-HDFS" class="headerlink" title="2. 读取 MySQL 中的数据存放到 HDFS"></a>2. 读取 MySQL 中的数据存放到 HDFS</h2><h3 id="2-1-查看官方模板"><a href="#2-1-查看官方模板" class="headerlink" title="2.1 查看官方模板"></a>2.1 查看官方模板</h3><blockquote>
+<p>执行以下命令，查看MySQL读取以及hdfs写出的配置模板</p>
+</blockquote>
+<div class="highlight-container" data-rel="Ruby"><figure class="iseeu highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ruby</span><br><span class="line">[whybigdata<span class="variable">@node01</span> datax]<span class="variable">$ </span>./bin/datax.py -r mysqlreader -w hdfswriter</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>模板如下：</p>
+</blockquote>
+<div class="highlight-container" data-rel="Css"><figure class="iseeu highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;job&quot;: &#123;</span><br><span class="line">        &quot;<span class="attribute">content</span>&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">                &quot;reader&quot;: &#123;</span><br><span class="line">     &quot;name&quot;: <span class="string">&quot;mysqlreader&quot;</span>, </span><br><span class="line">     <span class="string">&quot;parameter&quot;</span>: &#123;</span><br><span class="line">      &quot;column&quot;: [], </span><br><span class="line">      <span class="string">&quot;connection&quot;</span>: [</span><br><span class="line">       &#123;</span><br><span class="line">       &quot;jdbcUrl&quot;: [],</span><br><span class="line">       <span class="string">&quot;table&quot;</span>: []</span><br><span class="line">       &#125;</span><br><span class="line">      ],</span><br><span class="line">      &quot;password&quot;: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="string">&quot;username&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="string">&quot;where&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">     &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;writer&quot;: &#123;</span><br><span class="line">     &quot;name&quot;: <span class="string">&quot;hdfswriter&quot;</span>,</span><br><span class="line">     <span class="string">&quot;parameter&quot;</span>: &#123;</span><br><span class="line">      &quot;column&quot;: [],</span><br><span class="line">      <span class="string">&quot;compress&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="string">&quot;defaultFS&quot;</span>: <span class="string">&quot;&quot;</span>, </span><br><span class="line">      <span class="string">&quot;fieldDelimiter&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="string">&quot;fileName&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="string">&quot;fileType&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="string">&quot;path&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">      <span class="string">&quot;writeMode&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">     &#125;</span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">        ],</span><br><span class="line">        &quot;setting&quot;: &#123;</span><br><span class="line">            &quot;speed&quot;: &#123;</span><br><span class="line">    &quot;channel&quot;: <span class="string">&quot;&quot;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="2-1-1-mysqlreader-参数解析："><a href="#2-1-1-mysqlreader-参数解析：" class="headerlink" title="2.1.1 mysqlreader 参数解析："></a>2.1.1 mysqlreader 参数解析：</h4><div class="highlight-container" data-rel="Ruby"><figure class="iseeu highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;reader&quot;</span><span class="symbol">:</span>&#123;</span><br><span class="line"> <span class="string">&quot;name&quot;</span><span class="symbol">:<span class="string">&quot;mysqlreader&quot;</span></span>,</span><br><span class="line"> <span class="string">&quot;parameter&quot;</span><span class="symbol">:</span>&#123;</span><br><span class="line">  <span class="string">&quot;column&quot;</span><span class="symbol">:[]</span>,</span><br><span class="line">  <span class="string">&quot;connection&quot;</span><span class="symbol">:</span>[</span><br><span class="line">    &#123;</span><br><span class="line">   <span class="string">&quot;jdbcUrl&quot;</span><span class="symbol">:[]</span>,</span><br><span class="line">   <span class="string">&quot;table&quot;</span><span class="symbol">:[]</span>,</span><br><span class="line">   【“<span class="symbol">querySql:</span>[]】</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;password:&quot;</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">  &quot;</span>usemname<span class="string">&quot;:&quot;</span><span class="string">&quot;,</span></span><br><span class="line"><span class="string">  【&quot;</span>where<span class="string">&quot;:&quot;</span><span class="string">&quot;】</span></span><br><span class="line"><span class="string">  【&quot;</span>splitPk<span class="string">&quot;:&quot;</span><span class="string">&quot;】</span></span><br><span class="line"><span class="string"> &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>参数解释如下：</p>
+</blockquote>
+<ul>
+<li><code>name</code>:reader名</li>
+<li><code>column</code>:需要同步的列名集合，使用JSON数组描述自带信息，*代表所有列</li>
+<li><code>jdbcUrl</code>:对数据库的DBC连接信息，使用JSON数组描述，支持多个连接地址</li>
+<li><code>table</code>:需要同步的表，支持多个</li>
+<li><code>querySql</code>:自定义SQL,配置它后，mysglreader直接忽略table、column、where</li>
+<li><code>password</code>:数据库用户名对应的密码</li>
+<li><code>usemame</code>:数据库用户名</li>
+<li><code>where</code>:筛选条件</li>
+<li><code>splitPK</code>:数据分片字段，一般是主键，仅支持整型</li>
+</ul>
+<blockquote>
+<p>注意：【】中的参数为可选参数</p>
+</blockquote>
+<h4 id="2-1-2-hdfswriter-参数解析："><a href="#2-1-2-hdfswriter-参数解析：" class="headerlink" title="2.1.2 hdfswriter 参数解析："></a>2.1.2 hdfswriter 参数解析：</h4><div class="highlight-container" data-rel="Ruby"><figure class="iseeu highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;writer&quot;</span><span class="symbol">:</span>&#123;</span><br><span class="line"> <span class="string">&quot;name&quot;</span><span class="symbol">:<span class="string">&quot;hdfswriter&quot;</span></span>,</span><br><span class="line"> <span class="string">&quot;parameter&quot;</span><span class="symbol">:</span>&#123;</span><br><span class="line">  <span class="string">&quot;column&quot;</span><span class="symbol">:[]</span>,</span><br><span class="line">  <span class="string">&quot;compress&quot;</span><span class="symbol">:<span class="string">&quot;&quot;</span></span></span><br><span class="line">  <span class="string">&quot;defaultFS&quot;</span><span class="symbol">:<span class="string">&quot;&quot;</span></span>,</span><br><span class="line">  <span class="string">&quot;fieldDelimiter&quot;</span><span class="symbol">:<span class="string">&quot;&quot;</span></span>,</span><br><span class="line">  <span class="string">&quot;fileName&quot;</span><span class="symbol">:<span class="string">&quot;&quot;</span></span>,</span><br><span class="line">  <span class="string">&quot;fileType&quot;</span><span class="symbol">:<span class="string">&quot;&quot;</span></span>,</span><br><span class="line">  <span class="string">&quot;path&quot;</span><span class="symbol">:<span class="string">&quot;&quot;</span></span>,</span><br><span class="line">  <span class="string">&quot;writeMode&quot;</span><span class="symbol">:<span class="string">&quot;&quot;</span></span></span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>参数解释如下：</p>
+</blockquote>
+<ul>
+<li><code>name</code>：writer名</li>
+<li><code>column</code>：写入数据的字段，其中name指定字段名，type指定类型</li>
+<li><code>compress</code>：hdfs文件压缩类型，默认不填写意味着没有压缩。</li>
+<li><code>defaultFS</code>：hdfs文件系统namenode节点地址，格式：hds&#x2F;p:端口</li>
+<li><code>fieldDelimiter</code>：字段分隔符</li>
+<li><code>fileName</code>：写入文件名</li>
+<li><code>fileType</code>：文件的类型，目前只支持用户配置为 <code>tet</code>或 <code>orc</code></li>
+<li><code>path</code>：存储到Hadoophdfs文件系统的路径信息</li>
+<li><code>writeMode</code>：hdfswriter写入前数据清理处理模式：<ul>
+<li><code>append</code>：写入前不做任何处理，DataX hdfswriter直接使用filename写入，并保证文件名不冲突。</li>
+<li><code>nonConflict</code>：如果目录下有fileName前的文件，直接报错。</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-准备数据"><a href="#2-2-准备数据" class="headerlink" title="2.2 准备数据"></a>2.2 准备数据</h3><ul>
+<li>创建 student 表</li>
+</ul>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">create</span> database datax;</span><br><span class="line">mysql<span class="operator">&gt;</span> use datax;     </span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">create</span> <span class="keyword">table</span> student(id <span class="type">int</span>,name <span class="type">varchar</span>(<span class="number">20</span>));  </span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>插入数据</li>
+</ul>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sql</span></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">insert</span> <span class="keyword">into</span> student <span class="keyword">values</span>(<span class="number">1001</span>,<span class="string">&#x27;zhangsan&#x27;</span>),(<span class="number">1002</span>,<span class="string">&#x27;lisi&#x27;</span>),(<span class="number">1003</span>,<span class="string">&#x27;wangwu&#x27;</span>);</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="2-3-编写配置文件"><a href="#2-3-编写配置文件" class="headerlink" title="2.3 编写配置文件"></a>2.3 编写配置文件</h3><div class="highlight-container" data-rel="Ruby"><figure class="iseeu highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">[whybigdata<span class="variable">@node01</span> datax]<span class="variable">$ </span>vim /opt/<span class="keyword">module</span>/datax/job/mysql2hdfs.json</span><br><span class="line">&#123;</span><br><span class="line"> <span class="string">&quot;job&quot;</span>: &#123;</span><br><span class="line">  <span class="string">&quot;content&quot;</span>: [</span><br><span class="line">  &#123;</span><br><span class="line">   <span class="string">&quot;reader&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;mysqlreader&quot;</span>, </span><br><span class="line">    <span class="string">&quot;parameter&quot;</span>: &#123;</span><br><span class="line">     <span class="string">&quot;column&quot;</span>: [</span><br><span class="line">      <span class="string">&quot;id&quot;</span>, </span><br><span class="line">      <span class="string">&quot;name&quot;</span></span><br><span class="line">     ],</span><br><span class="line">     <span class="string">&quot;connection&quot;</span>: [</span><br><span class="line">     &#123;</span><br><span class="line">      <span class="string">&quot;jdbcUrl&quot;</span>: [</span><br><span class="line">       <span class="string">&quot;jdbc:mysql://node01:3306/datax&quot;</span></span><br><span class="line">      ],</span><br><span class="line">      <span class="string">&quot;table&quot;</span>: [</span><br><span class="line">       <span class="string">&quot;student&quot;</span></span><br><span class="line">      ]</span><br><span class="line">     &#125;</span><br><span class="line">     ],</span><br><span class="line">     <span class="string">&quot;username&quot;</span>: <span class="string">&quot;root&quot;</span>, </span><br><span class="line">     <span class="string">&quot;password&quot;</span>: <span class="string">&quot;123456&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   <span class="string">&quot;writer&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;hdfswriter&quot;</span>, </span><br><span class="line">    <span class="string">&quot;parameter&quot;</span>: &#123;</span><br><span class="line">     <span class="string">&quot;column&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">       <span class="string">&quot;name&quot;</span>: <span class="string">&quot;id&quot;</span>,</span><br><span class="line">       <span class="string">&quot;type&quot;</span>: <span class="string">&quot;int&quot;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">       <span class="string">&quot;name&quot;</span>: <span class="string">&quot;name&quot;</span>,</span><br><span class="line">       <span class="string">&quot;type&quot;</span>: <span class="string">&quot;string&quot;</span></span><br><span class="line">      &#125;</span><br><span class="line">     ],</span><br><span class="line">     <span class="string">&quot;defaultFS&quot;</span>: <span class="string">&quot;hdfs://node01:9000&quot;</span>, </span><br><span class="line">     <span class="string">&quot;fieldDelimiter&quot;</span>: <span class="string">&quot;\t&quot;</span>,</span><br><span class="line">     <span class="string">&quot;fileName&quot;</span>: <span class="string">&quot;student.txt&quot;</span>, </span><br><span class="line">     <span class="string">&quot;fileType&quot;</span>: <span class="string">&quot;text&quot;</span>,</span><br><span class="line">     <span class="string">&quot;path&quot;</span>: <span class="string">&quot;/datax-out&quot;</span>, </span><br><span class="line">     <span class="string">&quot;writeMode&quot;</span>: <span class="string">&quot;append&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="string">&quot;setting&quot;</span>: &#123;</span><br><span class="line">   <span class="string">&quot;speed&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;channel&quot;</span>: <span class="string">&quot;1&quot;</span></span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="2-4-执行任务"><a href="#2-4-执行任务" class="headerlink" title="2.4 执行任务"></a>2.4 执行任务</h3><ul>
+<li>执行结果：失败总数为0，成功读出记录3条</li>
+</ul>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bash复制代码[whybigdata@node01 datax]$ bin/datax.py job/mysql2hdfs.json</span><br><span class="line">2023-01-10 15:54:16.581 [job-0] INFO JobContainer -</span><br><span class="line">任务启动时刻 : 2023-01-10 15:54:04</span><br><span class="line">任务结束时刻 : 2023-01-10 15:54:16</span><br><span class="line">任务总计耗时 : 12s</span><br><span class="line">任务平均流量 : 3B/s</span><br><span class="line">记录写入速度 : 0rec/s</span><br><span class="line">读出记录总数 : 3</span><br><span class="line">读写失败总数 : 0</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>过程分析</li>
+</ul>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/80155aee51fa48bf99d141b39885e9a7~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="3.jpg"
+                ></p>
+<blockquote>
+<p>DataX保证数据一致性的原理：⭐⭐⭐⭐⭐</p>
+</blockquote>
+<p>DataX读取MySQL表的数据写入到hdfs过程中，若是并发执行的操作，只有全部成功写入搭配hdfs就算最终成功（此过程中一开始会生成一个临时文件，全部成功之后才会修改临时文件名字、路径）；如果有个别失败，那job就直接宣告失败，相对应的并发操作中其他成功的操作也会将对应的临时路径删除掉。</p>
+<h3 id="2-5-查看-HDFS"><a href="#2-5-查看-HDFS" class="headerlink" title="2.5 查看 HDFS"></a>2.5 查看 HDFS</h3><blockquote>
+<p>注意：HdfsWriter 实际执行时会在该文件名后添加随机的后缀作为每个线程写入实际文件名。</p>
+</blockquote>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/03e1809d9bb0422890c35c4c5a479163~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="4.jpg"
+                ></p>
+<h3 id="2-6-关于-HA-的支持"><a href="#2-6-关于-HA-的支持" class="headerlink" title="2.6 关于 HA 的支持"></a>2.6 关于 HA 的支持</h3><blockquote>
+<p>将以下参数写入到<code>writer【parameter】</code>中即可</p>
+</blockquote>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;hadoopConfig&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span> </span><br><span class="line">   <span class="attr">&quot;dfs.nameservices&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ns&quot;</span><span class="punctuation">,</span> </span><br><span class="line">   <span class="attr">&quot;dfs.ha.namenodes.ns&quot;</span><span class="punctuation">:</span> <span class="string">&quot;nn1,nn2&quot;</span><span class="punctuation">,</span></span><br><span class="line">   <span class="attr">&quot;dfs.namenode.rpc-address.ns.nn1&quot;</span><span class="punctuation">:</span> <span class="string">&quot;主机名:端口&quot;</span><span class="punctuation">,</span> </span><br><span class="line">   <span class="attr">&quot;dfs.namenode.rpc-address.ns.nn2&quot;</span><span class="punctuation">:</span> <span class="string">&quot;主机名:端口&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dfs.client.failover.proxy.provider.ns&quot;</span><span class="punctuation">:</span><span class="string">&quot;org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure></div>
+
+<h3 id="2-7-导入到Hive"><a href="#2-7-导入到Hive" class="headerlink" title="2.7 导入到Hive"></a>2.7 导入到Hive</h3><blockquote>
+<p>本质上也是通过HDFS来实现的</p>
+</blockquote>
+<p>过程：导入到Hive —&gt; hdfswriter配置文件 —&gt; load data 进入Hive对应的表 | 直接写入到Hive表对应的路径</p>
+<h2 id="3-读取-HDFS-数据写入-MySQL"><a href="#3-读取-HDFS-数据写入-MySQL" class="headerlink" title="3. 读取 HDFS 数据写入 MySQL"></a>3. 读取 HDFS 数据写入 MySQL</h2><h3 id="3-1-将上个案例上传的文件改名"><a href="#3-1-将上个案例上传的文件改名" class="headerlink" title="3. 1 将上个案例上传的文件改名"></a>3. 1 将上个案例上传的文件改名</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bash</span><br><span class="line">[whybigdata@node01 datax]$ hadoop fs -<span class="built_in">mv</span> /student.txt* /student.txt</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="3-2-查看官方模板"><a href="#3-2-查看官方模板" class="headerlink" title="3.2 查看官方模板"></a>3.2 查看官方模板</h3><div class="highlight-container" data-rel="Css"><figure class="iseeu highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-attr">[whybigdata@node01 datax]</span>$ python bin/datax<span class="selector-class">.py</span> -r hdfsreader -w mysqlwriter</span><br><span class="line">&#123;</span><br><span class="line"> &quot;job&quot;: &#123;</span><br><span class="line">  &quot;<span class="attribute">content</span>&quot;: [</span><br><span class="line">  &#123;</span><br><span class="line">   &quot;reader&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: <span class="string">&quot;hdfsreader&quot;</span>, </span><br><span class="line">    <span class="string">&quot;parameter&quot;</span>: &#123;</span><br><span class="line">     &quot;column&quot;: [],</span><br><span class="line">     <span class="string">&quot;defaultFS&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">     <span class="string">&quot;encoding&quot;</span>: <span class="string">&quot;UTF-8&quot;</span>,</span><br><span class="line">     <span class="string">&quot;fieldDelimiter&quot;</span>: <span class="string">&quot;,&quot;</span>,</span><br><span class="line">     <span class="string">&quot;fileType&quot;</span>: <span class="string">&quot;orc&quot;</span>,</span><br><span class="line">     <span class="string">&quot;path&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;writer&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: <span class="string">&quot;mysqlwriter&quot;</span>, </span><br><span class="line">    <span class="string">&quot;parameter&quot;</span>: &#123;</span><br><span class="line">     &quot;column&quot;: [], </span><br><span class="line">     <span class="string">&quot;connection&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">       &quot;jdbcUrl&quot;: <span class="string">&quot;&quot;</span>,</span><br><span class="line">       <span class="string">&quot;table&quot;</span>: []</span><br><span class="line">      &#125;</span><br><span class="line">     ],</span><br><span class="line">     &quot;passwoard&quot;: <span class="string">&quot;&quot;</span>,</span><br><span class="line">     <span class="string">&quot;preSql&quot;</span>: [],</span><br><span class="line">     <span class="string">&quot;session&quot;</span>: [],</span><br><span class="line">     <span class="string">&quot;username&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">     <span class="string">&quot;writeMode&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;setting&quot;: &#123;</span><br><span class="line">   &quot;speed&quot;: &#123;</span><br><span class="line">    &quot;channel&quot;: <span class="string">&quot;&quot;</span></span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="3-3-创建配置文件"><a href="#3-3-创建配置文件" class="headerlink" title="3.3 创建配置文件"></a>3.3 创建配置文件</h3><div class="highlight-container" data-rel="Css"><figure class="iseeu highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-attr">[whybigdata@node01 datax]</span>$ vim job/hdfs2mysql<span class="selector-class">.json</span></span><br><span class="line">&#123;</span><br><span class="line"> &quot;job&quot;: &#123;</span><br><span class="line">  &quot;<span class="attribute">content</span>&quot;: [</span><br><span class="line">  &#123;</span><br><span class="line">   &quot;reader&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: <span class="string">&quot;hdfsreader&quot;</span>, </span><br><span class="line">    <span class="string">&quot;parameter&quot;</span>: &#123;</span><br><span class="line">     &quot;column&quot;: [<span class="string">&quot;*&quot;</span>],</span><br><span class="line">     <span class="string">&quot;defaultFS&quot;</span>: <span class="string">&quot;hdfs://node01:9000&quot;</span>, </span><br><span class="line">     <span class="string">&quot;encoding&quot;</span>: <span class="string">&quot;UTF-8&quot;</span>, </span><br><span class="line">     <span class="string">&quot;fieldDelimiter&quot;</span>: <span class="string">&quot;\t&quot;</span>,</span><br><span class="line">     <span class="string">&quot;fileType&quot;</span>: <span class="string">&quot;text&quot;</span>, </span><br><span class="line">     <span class="string">&quot;path&quot;</span>: <span class="string">&quot;/student.txt&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;writer&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: <span class="string">&quot;mysqlwriter&quot;</span>, </span><br><span class="line">    <span class="string">&quot;parameter&quot;</span>: &#123;</span><br><span class="line">     &quot;column&quot;: [</span><br><span class="line">      <span class="string">&quot;id&quot;</span>, </span><br><span class="line">      <span class="string">&quot;name&quot;</span></span><br><span class="line">     ], </span><br><span class="line">     <span class="string">&quot;connection&quot;</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">       &quot;jdbcUrl&quot;: <span class="string">&quot;jdbc:mysql://node01:3306/datax&quot;</span>, </span><br><span class="line">       <span class="string">&quot;table&quot;</span>: [<span class="string">&quot;student2&quot;</span>]</span><br><span class="line">      &#125;</span><br><span class="line">     ],</span><br><span class="line">     &quot;password&quot;: <span class="string">&quot;123456&quot;</span>, </span><br><span class="line">     <span class="string">&quot;username&quot;</span>: <span class="string">&quot;root&quot;</span>, </span><br><span class="line">     <span class="string">&quot;writeMode&quot;</span>: <span class="string">&quot;insert&quot;</span></span><br><span class="line">    &#125;</span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;setting&quot;: &#123;</span><br><span class="line">   &quot;speed&quot;: &#123;</span><br><span class="line">    &quot;channel&quot;: <span class="string">&quot;1&quot;</span></span><br><span class="line">   &#125;</span><br><span class="line">  &#125;</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="3-4-在-MySQL-的-datax-数据库中创建-student2"><a href="#3-4-在-MySQL-的-datax-数据库中创建-student2" class="headerlink" title="3.4 在 MySQL 的 datax 数据库中创建 student2"></a>3.4 在 MySQL 的 datax 数据库中创建 student2</h3><ul>
+<li>建表</li>
+</ul>
+<div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sql</span>复制代码mysql<span class="operator">&gt;</span> use datax; </span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">create</span> <span class="keyword">table</span> student2(id <span class="type">int</span>,name <span class="type">varchar</span>(<span class="number">20</span>));         </span><br></pre></td></tr></table></figure></div>
+
+<h3 id="3-5-执行任务"><a href="#3-5-执行任务" class="headerlink" title="3.5 执行任务"></a>3.5 执行任务</h3><div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">bash复制代码[whybigdata@node01 datax]$ bin/datax.py job/hdfs2mysql.json </span><br><span class="line">2023-01-10 16:21:53.616 [job-0] INFO  JobContainer -      </span><br><span class="line">任务启动时刻          : 2023-01-10 16:21:41      </span><br><span class="line">任务结束时刻          : 2023-01-10 16:21:53            </span><br><span class="line">任务总计耗时          :  11s </span><br><span class="line">任务平均流量     :  3B/s   </span><br><span class="line">记录写入速度     :  0rec/s   </span><br><span class="line">读出记录总数        :   3  </span><br><span class="line">读写失败总数          :    0                </span><br></pre></td></tr></table></figure></div>
+
+<h3 id="3-6-查看-student2-表"><a href="#3-6-查看-student2-表" class="headerlink" title="3.6 查看 student2 表"></a>3.6 查看 student2 表</h3><div class="highlight-container" data-rel="Sql"><figure class="iseeu highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">sql</span>复制代码mysql<span class="operator">&gt;</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student2;</span><br><span class="line"><span class="operator">+</span> <span class="operator">+</span> <span class="operator">+</span></span><br><span class="line"><span class="operator">|</span> id <span class="operator">|</span> name <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span> <span class="operator">+</span> <span class="operator">+</span></span><br><span class="line"><span class="operator">|</span> <span class="number">1001</span> <span class="operator">|</span> zhangsan <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">1002</span> <span class="operator">|</span> lisi <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span> <span class="number">1003</span> <span class="operator">|</span> wangwu <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span> <span class="operator">+</span> <span class="operator">+</span></span><br><span class="line"><span class="number">3</span> <span class="keyword">rows</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure></div>
+
+<blockquote>
+<p>结束！</p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> DataX使用基础案例</li>
+        <li><strong>Author:</strong> Mr.zh</li>
+        <li><strong>Created at
+                :</strong> 2024-06-04 22:52:07</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-06-04 22:54:09
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/06/04/DataX使用基础案例/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/DataX/">#DataX</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE%E6%8A%80%E6%9C%AF/">#大数据技术</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/06/04/%E4%B8%80%E6%96%87%E8%AE%B2%E6%87%82Kafka/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">一文讲懂Kafka</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">DataX使用基础案例</div>
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%BB%8Estream-%E6%B5%81%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E5%B9%B6%E6%89%93%E5%8D%B0%E5%88%B0%E6%8E%A7%E5%88%B6%E5%8F%B0"><span class="nav-text">1. 从stream 流读取数据并打印到控制台</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%AF%BB%E5%8F%96-MySQL-%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E6%94%BE%E5%88%B0-HDFS"><span class="nav-text">2. 读取 MySQL 中的数据存放到 HDFS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%9F%A5%E7%9C%8B%E5%AE%98%E6%96%B9%E6%A8%A1%E6%9D%BF"><span class="nav-text">2.1 查看官方模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE"><span class="nav-text">2.2 准备数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E7%BC%96%E5%86%99%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">2.3 编写配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1"><span class="nav-text">2.4 执行任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-%E6%9F%A5%E7%9C%8B-HDFS"><span class="nav-text">2.5 查看 HDFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-%E5%85%B3%E4%BA%8E-HA-%E7%9A%84%E6%94%AF%E6%8C%81"><span class="nav-text">2.6 关于 HA 的支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-7-%E5%AF%BC%E5%85%A5%E5%88%B0Hive"><span class="nav-text">2.7 导入到Hive</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%AF%BB%E5%8F%96-HDFS-%E6%95%B0%E6%8D%AE%E5%86%99%E5%85%A5-MySQL"><span class="nav-text">3. 读取 HDFS 数据写入 MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E5%B0%86%E4%B8%8A%E4%B8%AA%E6%A1%88%E4%BE%8B%E4%B8%8A%E4%BC%A0%E7%9A%84%E6%96%87%E4%BB%B6%E6%94%B9%E5%90%8D"><span class="nav-text">3. 1 将上个案例上传的文件改名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E6%9F%A5%E7%9C%8B%E5%AE%98%E6%96%B9%E6%A8%A1%E6%9D%BF"><span class="nav-text">3.2 查看官方模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E5%88%9B%E5%BB%BA%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">3.3 创建配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E5%9C%A8-MySQL-%E7%9A%84-datax-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E5%88%9B%E5%BB%BA-student2"><span class="nav-text">3.4 在 MySQL 的 datax 数据库中创建 student2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E6%89%A7%E8%A1%8C%E4%BB%BB%E5%8A%A1"><span class="nav-text">3.5 执行任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-6-%E6%9F%A5%E7%9C%8B-student2-%E8%A1%A8"><span class="nav-text">3.6 查看 student2 表</span></a></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Mr.zh</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        14 posts in total
+                    </span>
+                    
+                        <span>
+                            38.2k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/Swup.min.js"></script><script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/SwupSlideTheme.min.js"></script><script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/SwupScriptsPlugin.min.js"></script><script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/SwupProgressPlugin.min.js"></script><script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/SwupScrollPlugin.min.js"></script><script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/SwupPreloadPlugin.min.js"></script>
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+<script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/imageViewer.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/utils.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/main.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/layouts/navbarShrink.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/scrollTopBottom.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/lightDarkSwitch.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/layouts/categoryList.js"></script>
+
+
+    <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/localSearch.js"></script>
+
+
+
+    <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/codeBlock.js"></script>
+
+
+
+    <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/layouts/lazyload.js"></script>
+
+
+
+    <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/runtime.js"></script>
+    <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/odometer.min.js"></script>
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/assets/odometer-theme-minimal.css">
+
+
+
+  <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/Typed.min.js"></script>
+  <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/plugins/typed.js"></script>
+
+
+
+
+
+    <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/minimasonry.min.js"></script>
+    <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/plugins/masonry.js"></script>
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/tocToggle.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/layouts/toc.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/plugins/tabs.js"></script>
+    
+</div>
+
+
+    <div id="aplayer"></div>
+<script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/APlayer.min.js"></script>
+<script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/plugins/aplayer.js"></script>
+
+</body>
+</html>
