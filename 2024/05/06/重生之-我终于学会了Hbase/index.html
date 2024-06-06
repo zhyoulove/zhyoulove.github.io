@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en,zh-Hans">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="Mr.zh">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+        
+        
+        
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://example.com/2024/05/06/重生之-我终于学会了hbase/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="入门Hbase，看这一篇就够了概览特性Hbase是一种NoSQL数据库，这意味着它不像传统的RDBMS数据库那样支持SQL作为查询语言。Hbase是一种分布式存储的数据库，技术上来讲，它更像是分布式存储而不是分布式数据库，它缺少很多RDBMS系统的特性，比如列类型，辅助索引，触发器，和高级查询语言等待。那Hbase有什么特性呢？如下：  强读写一致，但是不是“最终一致性”的数据存储，这使得它非常适">
+<meta property="og:type" content="article">
+<meta property="og:title" content="重生之-我终于学会了Hbase">
+<meta property="og:url" content="http://example.com/2024/05/06/%E9%87%8D%E7%94%9F%E4%B9%8B-%E6%88%91%E7%BB%88%E4%BA%8E%E5%AD%A6%E4%BC%9A%E4%BA%86Hbase/index.html">
+<meta property="og:site_name" content="小贺的博客">
+<meta property="og:description" content="入门Hbase，看这一篇就够了概览特性Hbase是一种NoSQL数据库，这意味着它不像传统的RDBMS数据库那样支持SQL作为查询语言。Hbase是一种分布式存储的数据库，技术上来讲，它更像是分布式存储而不是分布式数据库，它缺少很多RDBMS系统的特性，比如列类型，辅助索引，触发器，和高级查询语言等待。那Hbase有什么特性呢？如下：  强读写一致，但是不是“最终一致性”的数据存储，这使得它非常适">
+<meta property="og:locale">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018b9dd013e4~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018b9de8f9d3~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018b9e40d3ed~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018b9ef276ff~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ba01e667a~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ba06048ac~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018bd4dc319a~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018bdb5bdd93~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018bf0d5f7ee~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018bf5abf323~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018bffa790cb~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c0b3e7516~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c14057e09~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c19b3c68f~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c257d6cda~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c2940da66~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c3035163d~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c39b2b2ee~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c43a23ac3~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c503fc8bc~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c4d2cf191~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c5b2df959~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c6a57d0a5~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c6be5baca~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c6e7fcd00~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c7c284dfe~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c84f8c844~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c8502485a~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ca0a3cc71~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ca09dbb19~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ca5ae2d21~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ca777e151~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+<meta property="article:published_time" content="2024-05-06T09:00:14.000Z">
+<meta property="article:modified_time" content="2024-06-06T09:08:54.309Z">
+<meta property="article:author" content="Mr.zh">
+<meta property="article:tag" content="NoSQL">
+<meta property="article:tag" content="HBase">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018b9dd013e4~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/images/redefine-favicon.svg" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/redefine-favicon.svg">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/images/redefine-favicon.svg">
+    <!--- Page Info-->
+    
+    <title>
+        
+            重生之-我终于学会了Hbase -
+        
+        Mr.z博客
+    </title>
+
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fonts/Chillax/chillax.css">
+
+    <!--- Inject Part-->
+    
+
+    
+        <style>
+    :root {
+        --preloader-background-color: #fff;
+        --preloader-text-color: #000;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --preloader-background-color: #202124;
+            --preloader-text-color: #fff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root {
+            --preloader-background-color: #fff;
+            --preloader-text-color: #000;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .ml13 {
+            font-size: 2.6rem !important; /* Adjust this value as needed */
+        }
+    }
+
+    .preloader {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* Tailwind 'gap-4' is 1rem */
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        padding: 12px;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh; /* 'h-screen' is 100% of the viewport height */
+        background-color: var(--preloader-background-color);
+        z-index: 1100; /* 'z-[1100]' sets the z-index */
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    .ml13 {
+        font-size: 3.2rem;
+        /* text-transform: uppercase; */
+        color: var(--preloader-text-color);
+        letter-spacing: -1px;
+        font-weight: 500;
+        font-family: 'Chillax-Variable', sans-serif;
+        text-align: center;
+    }
+
+    .ml13 .word {
+        display: inline-flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+    }
+
+    .ml13 .letter {
+        display: inline-block;
+        line-height: 1em;
+    }
+</style>
+
+<div class="preloader">
+    <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/anime.min.js"></script>
+    <h1 class="ml13">
+        Mr.z博客
+    </h1>
+    <script>
+        var textWrapper = document.querySelector('.ml13');
+        // Split text into words
+        var words = textWrapper.textContent.trim().split(' ');
+
+        // Clear the existing content
+        textWrapper.innerHTML = '';
+
+        // Wrap each word and its letters in spans
+        words.forEach(function(word) {
+            var wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            wordSpan.innerHTML = word.replace(/\S/g, "<span class='letter'>$&</span>");
+            textWrapper.appendChild(wordSpan);
+            textWrapper.appendChild(document.createTextNode(' ')); // Add space between words
+        });
+
+
+        anime.timeline({loop: true})
+            .add({
+                targets: '.ml13 .letter',
+                translateY: [100,0],
+                translateZ: 0,
+                opacity: [0,1],
+                easing: "easeOutExpo",
+                duration: 1400,
+                delay: (el, i) => 300 + 30 * i
+            }).add({
+            targets: '.ml13 .letter',
+            translateY: [0,-100],
+            opacity: [1,0],
+            easing: "easeInExpo",
+            duration: 1200,
+            delay: (el, i) => 100 + 30 * i
+        });
+
+        let themeStatus = JSON.parse(localStorage.getItem('REDEFINE-THEME-STATUS'))?.isDark;
+
+        // If the theme status is not found in local storage, check the preferred color scheme
+        if (themeStatus === undefined || themeStatus === null) {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                themeStatus = 'dark';
+            } else {
+                themeStatus = 'light';
+            }
+        }
+
+        // Now you can use the themeStatus variable in your code
+        if (themeStatus) {
+            document.documentElement.style.setProperty('--preloader-background-color', '#202124');
+            document.documentElement.style.setProperty('--preloader-text-color', '#fff');
+        } else {
+            document.documentElement.style.setProperty('--preloader-background-color', '#fff');
+            document.documentElement.style.setProperty('--preloader-text-color', '#000');
+        }
+
+        window.addEventListener('load', function () {
+            hidePreloaderAfterTimeout(1000); // Hide after 1000 milliseconds once the window has loaded
+        });
+
+        // Backup failsafe: Hide preloader after a maximum of 5000 milliseconds, regardless of the window load event
+        hidePreloaderAfterTimeout(5000);
+
+        function hidePreloaderAfterTimeout(delay) {
+            setTimeout(function () {
+                var preloader = document.querySelector('.preloader');
+                preloader.style.opacity = '0';
+                setTimeout(function () {
+                    preloader.style.display = 'none';
+                }, 200);
+            }, delay);
+        }
+    </script>
+</div>
+    
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+        <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/assets/build/styles.css">
+    
+
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fonts/fonts.css">
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fonts/Satoshi/satoshi.css">
+    <!--- Font Part-->
+    
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap# Font URL to CSS file" rel="stylesheet">
+    
+    
+        <link href="https://fonts.googleapis.com/css2?family=Farsan&display=swap" rel="stylesheet">
+    
+
+
+    <script id="hexo-configurations">
+    window.config = {"hostname":"example.com","root":"/","language":"en,zh-Hans","path":"search.xml"};
+    window.theme = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true,"title_alignment":"left","headings_top_spacing":{"h1":"5rem","h2":"4rem","h3":"2.8rem","h4":"2.5rem","h5":"2.2rem","h6":"2rem"}},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":["Lv1","Lv2","Lv3"]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":{"enable":true,"default":"cc_by_nc_sa"},"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":["/docs/","/private/"]}},"colors":{"primary":"#A31F34","secondary":null,"default_mode":"light"},"global":{"fonts":{"chinese":{"enable":true,"family":"Noto Sans SC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap# Font URL to CSS file"},"english":{"enable":true,"family":"Farsan","url":"https://fonts.googleapis.com/css2?family=Farsan&display=swap"}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":true},"scroll_progress":{"bar":true,"percentage":true},"website_counter":{"url":"https://cn.vercount.one/js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"preloader":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/images/wallhaven-wqery6-light.webp","dark":"/images/wallhaven-wqery6-dark.webp"},"title":"小贺的博客","subtitle":{"text":["Loading..."],"hitokoto":{"enable":true,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#fff","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":true,"family":"Noto Sans SC","url":"https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap"},"social_links":{"enable":false,"style":"default","links":{"github":"https://github.com/zhyoulove","instagram":"https://instagram.com# your Instagram URL","zhihu":"https://www.zhihu.com/people/hu-ge-74-63-86","twitter":"https://twitter.com","email":"1173119892@qq.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":true,"type":"fixed","audios":[{"name":"Something Just Like This","artist":"Coldplay","url":"https://evan.beee.top/music/Something%20Just%20Like%20This%20-%20The%20Chainsmokers%E3%80%81Coldplay.mp3","cover":"https://evan.beee.top/music/covers/Something_Just_Like_This.png"},{"name":"Imagine# audio name","artist":"John Lennon# audio artist","url":"https://evan.beee.top/music/Imagine%20-%20John%20Lennon.mp3# audio url","cover":"https://evan.beee.top/music/covers/Lennon_Imagine_Sleeve_1975.jpg","lrc":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.6.1","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"width":{"home":"1200px","pages":"1000px"},"links":{"首页":{"path":"/","icon":"fa-regular fa-house"},"关于":{"icon":"fa-regular fa-user","submenus":{"我":"/about/","GitHub":"https://github.com/zhyoulove"}},"分类":{"icon":"fa-solid fa-folder","path":"/categories/"},"相册":{"icon":"fa-solid fa-image","path":"/masonry/"},"Lovely":{"icon":"fa-solid fa-heart","submenus":{"力扣":"https://leetcode.cn/u/song-vv/","知乎":"https://www.zhihu.com/people/hu-ge-74-63-86","华为云":"https://developer.huaweicloud.com/usercenter/mycommunity/dynamics","CSDN":"https://blog.csdn.net/zh_19995?spm=1010.2135.3001.5343"}}},"search":{"enable":true,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"show_on_mobile":true,"links":{"文章列表":{"path":"/archives","icon":"fa-regular fa-archive"},"文章分类":{"path":"/categories","icon":"fa-regular fa-folder"},"文章标签":{"path":"/tags","icon":"fa-regular fa-tags"},"关于Me":{"path":"/about/","icon":"fa-regular fa-folder"}}},"article_date_format":"YYYY-MM-DD HH:mm:ss","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2022/8/17 11:45:14"};
+    window.lang_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+    window.data = {"masonry":true};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fontawesome/fontawesome.min.css">
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fontawesome/brands.min.css">
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fontawesome/solid.min.css">
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/fontawesome/regular.min.css">
+    
+    
+    
+    
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+        <span class="scroll-progress-bar"></span>
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+<!--        <span class="swup-progress-icon">-->
+<!--            <i class="fa-solid fa-circle-notch fa-spin"></i>-->
+<!--        </span>-->
+    
+</div>
+
+
+<main class="page-container" id="swup">
+
+    
+
+    <div class="main-content-container">
+
+
+        <div class="main-content-header">
+            <header class="navbar-container px-6 md:px-12">
+
+    <div class="navbar-content ">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                Mr.z博客
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/"
+                                        >
+                                    <i class="fa-regular fa-house fa-fw"></i>
+                                    首页
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-regular fa-user fa-fw"></i>
+                                    关于
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a href="/about/">
+                                                    我
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://github.com/zhyoulove">
+                                                    GITHUB
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/categories/"
+                                        >
+                                    <i class="fa-solid fa-folder fa-fw"></i>
+                                    分类
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class=""
+                                   href="/masonry/"
+                                        >
+                                    <i class="fa-solid fa-image fa-fw"></i>
+                                    相册
+                                    
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                        
+                            
+
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="has-dropdown"
+                                   href="#"
+                                        onClick=&#34;return false;&#34;>
+                                    <i class="fa-solid fa-heart fa-fw"></i>
+                                    LOVELY
+                                    <i class="fa-solid fa-chevron-down fa-fw"></i>
+                                </a>
+
+                                <!-- Submenu -->
+                                
+                                    <ul class="sub-menu">
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://leetcode.cn/u/song-vv/">
+                                                    力扣
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/hu-ge-74-63-86">
+                                                    知乎
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://developer.huaweicloud.com/usercenter/mycommunity/dynamics">
+                                                    华为云
+                                                </a>
+                                            </li>
+                                        
+                                            <li>
+                                                <a target="_blank" rel="noopener" href="https://blog.csdn.net/zh_19995?spm=1010.2135.3001.5343">
+                                                    CSDN
+                                                </a>
+                                            </li>
+                                        
+                                    </ul>
+                                
+                            </li>
+                    
+                    
+                        <li class="navbar-item search search-popup-trigger">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile sheet -->
+    <div class="navbar-drawer h-screen w-full absolute top-0 left-0 bg-background-color flex flex-col justify-between">
+        <ul class="drawer-navbar-list flex flex-col px-4 justify-center items-start">
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/"
+                        >
+                            <span>
+                                首页
+                            </span>
+                            
+                                <i class="fa-regular fa-house fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-关于"
+                        >
+                            <span>
+                                关于
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-关于">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           href="/about/">我</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://github.com/zhyoulove">GITHUB</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/categories/"
+                        >
+                            <span>
+                                分类
+                            </span>
+                            
+                                <i class="fa-solid fa-folder fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                           href="/masonry/"
+                        >
+                            <span>
+                                相册
+                            </span>
+                            
+                                <i class="fa-solid fa-image fa-sm fa-fw"></i>
+                            
+                        </a>
+                        
+
+                        
+                    </li>
+            
+                
+                    
+
+                    <li class="drawer-navbar-item-sub text-base my-1.5 flex flex-col w-full">
+                        
+                        <div class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary cursor-pointer text-2xl font-semibold group border-b border-border-color hover:border-primary w-full "
+                             navbar-data-toggle="submenu-Lovely"
+                        >
+                            <span>
+                                LOVELY
+                            </span>
+                            
+                                <i class="fa-solid fa-chevron-right fa-sm fa-fw transition-all"></i>
+                            
+                        </div>
+                        
+
+                        
+                            <div class="flex-col items-start px-2 py-2 hidden" data-target="submenu-Lovely">
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://leetcode.cn/u/song-vv/">力扣</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://www.zhihu.com/people/hu-ge-74-63-86">知乎</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://developer.huaweicloud.com/usercenter/mycommunity/dynamics">华为云</a>
+                                    </div>
+                                
+                                    <div class="drawer-navbar-item text-base flex flex-col justify-center items-start hover:underline active:underline hover:underline-offset-1 rounded-3xl">
+                                        <a class=" text-third-text-color text-xl"
+                                           target="_blank" rel="noopener" href="https://blog.csdn.net/zh_19995?spm=1010.2135.3001.5343">CSDN</a>
+                                    </div>
+                                
+                            </div>
+                        
+                    </li>
+            
+
+            
+            
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/archives"
+                        >
+                            <span>文章列表</span>
+                            <i class="fa-regular fa-archive fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/categories"
+                        >
+                            <span>文章分类</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/tags"
+                        >
+                            <span>文章标签</span>
+                            <i class="fa-regular fa-tags fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+                    
+                    <li class="drawer-navbar-item text-base my-1.5 flex flex-col w-full">
+                        <a class="py-1.5 px-2 flex flex-row items-center justify-between gap-1 hover:!text-primary active:!text-primary text-2xl font-semibold group border-b border-border-color hover:border-primary w-full active"
+                           href="/about/"
+                        >
+                            <span>关于Me</span>
+                            <i class="fa-regular fa-folder fa-sm fa-fw"></i>
+                        </a>
+                    </li>
+                
+            
+        </ul>
+
+        <div class="statistics flex justify-around my-2.5">
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">25</div>
+        <div class="label text-third-text-color text-sm">Tags</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">9</div>
+        <div class="label text-third-text-color text-sm">Categories</div>
+    </a>
+    <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">16</div>
+        <div class="label text-third-text-color text-sm">Posts</div>
+    </a>
+</div>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container flex relative justify-between box-border w-full h-full">
+    <div class="article-content-container">
+
+        <div class="article-title relative w-full">
+            
+                <div class="w-full flex items-center pt-6 justify-start">
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">重生之-我终于学会了Hbase</h1>
+                </div>
+            
+            </div>
+
+        
+            <div class="article-header flex flex-row gap-2 items-center px-2 sm:px-6 md:px-8">
+                <div class="avatar w-[46px] h-[46px] flex-shrink-0 rounded-medium border border-border-color p-[1px]">
+                    <img src="/images/redefine-avatar.svg">
+                </div>
+                <div class="info flex flex-col justify-between">
+                    <div class="author flex items-center">
+                        <span class="name text-default-text-color text-lg font-semibold">Mr.zh</span>
+                        
+                            <span class="author-label ml-1.5 text-xs px-2 py-0.5 rounded-small text-third-text-color border border-shadow-color-1">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2024-05-06 17:14</span>
+        <span class="mobile">2024-05-06 17:14</span>
+        <span class="hover-info">Created</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2024-06-06 17:08:54</span>
+            <span class="mobile">2024-06-06 17:08:54</span>
+            <span class="hover-info">Updated</span>
+        </span>
+    
+
+    
+        <span class="article-categories article-meta-item">
+            <i class="fa-regular fa-folders"></i>&nbsp;
+            <ul>
+                
+                
+                    
+                        
+                        <li>
+                            <a href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a>&nbsp;
+                        </li>
+                    
+                    
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/NoSQL/">NoSQL</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/HBase/">HBase</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fa-regular fa-typewriter"></i>&nbsp;<span>8.1k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fa-regular fa-clock"></i>&nbsp;<span>33 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+
+        <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
+            <h1 id="入门Hbase，看这一篇就够了"><a href="#入门Hbase，看这一篇就够了" class="headerlink" title="入门Hbase，看这一篇就够了"></a>入门Hbase，看这一篇就够了</h1><h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3><h4 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h4><p>Hbase是一种NoSQL数据库，这意味着它不像传统的RDBMS数据库那样支持SQL作为查询语言。Hbase是一种分布式存储的数据库，技术上来讲，它更像是分布式存储而不是分布式数据库，它缺少很多RDBMS系统的特性，比如列类型，辅助索引，触发器，和高级查询语言等待。那Hbase有什么特性呢？如下：</p>
+<ul>
+<li>强读写一致，但是不是“最终一致性”的数据存储，这使得它非常适合高速的计算聚合</li>
+<li>自动分片，通过Region分散在集群中，当行数增长的时候，Region也会自动的切分和再分配</li>
+<li>自动的故障转移</li>
+<li>Hadoop&#x2F;HDFS集成，和HDFS开箱即用，不用太麻烦的衔接</li>
+<li>丰富的“简洁，高效”API，Thrift&#x2F;REST API，Java API</li>
+<li>块缓存，布隆过滤器，可以高效的列查询优化</li>
+<li>操作管理，Hbase提供了内置的web界面来操作，还可以监控JMX指标</li>
+</ul>
+<h4 id="什么时候用Hbase？"><a href="#什么时候用Hbase？" class="headerlink" title="什么时候用Hbase？"></a>什么时候用Hbase？</h4><p>Hbase不适合解决所有的问题：</p>
+<ul>
+<li>首先数据库量要足够多，如果有十亿及百亿行数据，那么Hbase是一个很好的选项，如果只有几百万行甚至不到的数据量，RDBMS是一个很好的选择。因为数据量小的话，真正能工作的机器量少，剩余的机器都处于空闲的状态</li>
+<li>其次，如果你不需要辅助索引，静态类型的列，事务等特性，一个已经用RDBMS的系统想要切换到Hbase，则需要重新设计系统。</li>
+<li>最后，保证硬件资源足够，每个HDFS集群在少于5个节点的时候，都不能表现的很好。因为HDFS默认的复制数量是3，再加上一个NameNode。</li>
+</ul>
+<p>Hbase在单机环境也能运行，但是请在开发环境的时候使用。</p>
+<h3 id="内部应用"><a href="#内部应用" class="headerlink" title="内部应用"></a>内部应用</h3><ul>
+<li>存储业务数据:车辆GPS信息，司机点位信息，用户操作信息，设备访问信息。。。</li>
+<li>存储日志数据:架构监控数据（登录日志，中间件访问日志，推送日志，短信邮件发送记录。。。），业务操作日志信息</li>
+<li>存储业务附件：UDFS系统存储图像，视频，文档等附件信息</li>
+</ul>
+<p>不过在公司使用的时候，一般不使用原生的Hbase API，使用原生的API会导致访问不可监控，影响系统稳定性，以致于版本升级的不可控。</p>
+<h3 id="Hbase架构"><a href="#Hbase架构" class="headerlink" title="Hbase架构"></a>Hbase架构</h3><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018b9dd013e4~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="img"
+                ></p>
+<ul>
+<li>Zookeeper，作为分布式的协调。RegionServer也会把自己的信息写到ZooKeeper中。</li>
+<li>HDFS是Hbase运行的底层文件系统</li>
+<li>RegionServer，理解为数据节点，存储数据的。</li>
+<li>Master RegionServer要实时的向Master报告信息。Master知道全局的RegionServer运行情况，可以控制RegionServer的故障转移和Region的切分。</li>
+</ul>
+<h4 id="架构细化"><a href="#架构细化" class="headerlink" title="架构细化"></a>架构细化</h4><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018b9de8f9d3~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image.png"
+                ></p>
+<ul>
+<li>HMaster是Master Server的实现，负责监控集群中的RegionServer实例，同时是所有metadata改变的接口，在集群中，通常运行在NameNode上面，<a class="link"   href="https://link.juejin.cn/?target=http://blog.zahoor.in/2012/08/hbase-hmaster-architecture/" >这里有一篇更细的HMaster介绍 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a><ul>
+<li>HMasterInterface暴露的接口，Table(createTable, modifyTable, removeTable, enable, disable),ColumnFamily (addColumn, modifyColumn, removeColumn),Region (move, assign, unassign)</li>
+<li>Master运行的后台线程：LoadBalancer线程，控制region来平衡集群的负载。CatalogJanitor线程，周期性的检查hbase:meta表。</li>
+</ul>
+</li>
+<li>HRegionServer是RegionServer的实现，服务和管理Regions，集群中RegionServer运行在DataNode<ul>
+<li>HRegionRegionInterface暴露接口：Data (get, put, delete, next, etc.)，Region (splitRegion, compactRegion, etc.)</li>
+<li>RegionServer后台线程：CompactSplitThread，MajorCompactionChecker，MemStoreFlusher，LogRoller</li>
+</ul>
+</li>
+<li>Regions，代表table，Region有多个Store(列簇)，Store有一个Memstore和多个StoreFiles(HFiles)，StoreFiles的底层是Block。</li>
+</ul>
+<h4 id="存储设计"><a href="#存储设计" class="headerlink" title="存储设计"></a>存储设计</h4><p>在Hbase中，表被分割成多个更小的块然后分散的存储在不同的服务器上，这些小块叫做Regions，存放Regions的地方叫做RegionServer。Master进程负责处理不同的RegionServer之间的Region的分发。在Hbase实现中HRegionServer和HRegion类代表RegionServer和Region。HRegionServer除了包含一些HRegions之外，还处理两种类型的文件用于数据存储</p>
+<ul>
+<li>HLog， 预写日志文件，也叫做WAL(write-ahead log)</li>
+<li>HFile 真实的数据存储文件</li>
+</ul>
+<h5 id="HLog"><a href="#HLog" class="headerlink" title="HLog"></a>HLog</h5><ul>
+<li><p>MasterProcWAL：HMaster记录管理操作，比如解决冲突的服务器，表创建和其它DDLs等操作到它的WAL文件中，这个WALs存储在MasterProcWALs目录下，它不像RegionServer的WALs，HMaster的WAL也支持弹性操作，就是如果Master服务器挂了，其它的Master接管的时候继续操作这个文件。</p>
+</li>
+<li><p>WAL记录所有的Hbase数据改变，如果一个RegionServer在MemStore进行FLush的时候挂掉了，WAL可以保证数据的改变被应用到。如果写WAL失败了，那么修改数据的完整操作就是失败的。</p>
+<ul>
+<li>通常情况，每个RegionServer只有一个WAL实例。在2.0之前，WAL的实现叫做HLog</li>
+<li>WAL位于*&#x2F;hbase&#x2F;WALs&#x2F;*目录下</li>
+<li>MultiWAL: 如果每个RegionServer只有一个WAL，由于HDFS必须是连续的，导致必须写WAL连续的，然后出现性能问题。MultiWAL可以让RegionServer同时写多个WAL并行的，通过HDFS底层的多管道，最终提升总的吞吐量，但是不会提升单个Region的吞吐量。</li>
+</ul>
+</li>
+<li><p>WAL的配置：</p>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 启用multiwal</span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.wal.provider<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>multiwal<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure></div></li>
+</ul>
+<p><a class="link"   href="https://link.juejin.cn/?target=https://en.wikipedia.org/wiki/Write-ahead_logging" >Wiki百科关于WAL <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h5 id="HFile"><a href="#HFile" class="headerlink" title="HFile"></a>HFile</h5><p>HFile是Hbase在HDFS中存储数据的格式，它包含多层的索引，这样在Hbase检索数据的时候就不用完全的加载整个文件。索引的大小(keys的大小，数据量的大小)影响block的大小，在大数据集的情况下，block的大小设置为每个RegionServer 1GB也是常见的。</p>
+<blockquote>
+<p>探讨数据库的数据存储方式，其实就是探讨数据如何在磁盘上进行有效的组织。因为我们通常以如何高效读取和消费数据为目的，而不是数据存储本身。</p>
+</blockquote>
+<h6 id="Hfile生成方式"><a href="#Hfile生成方式" class="headerlink" title="Hfile生成方式"></a>Hfile生成方式</h6><p>起初，HFile中并没有任何Block，数据还存在于MemStore中。</p>
+<p>Flush发生时，创建HFile Writer，第一个空的Data Block出现，初始化后的Data Block中为Header部分预留了空间，Header部分用来存放一个Data Block的元数据信息。</p>
+<p>而后，位于MemStore中的KeyValues被一个个append到位于内存中的第一个Data Block中：</p>
+<p><strong>注</strong>：如果配置了Data Block Encoding，则会在Append KeyValue的时候进行同步编码，编码后的数据不再是单纯的KeyValue模式。Data Block Encoding是HBase为了降低KeyValue结构性膨胀而提供的内部编码机制。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018b9e40d3ed~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image.png"
+                ></p>
+<h6 id="读写简流程"><a href="#读写简流程" class="headerlink" title="读写简流程"></a>读写简流程</h6><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018b9ef276ff~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image.png"
+                ></p>
+<h3 id="Hbase单机模式安装"><a href="#Hbase单机模式安装" class="headerlink" title="Hbase单机模式安装"></a>Hbase单机模式安装</h3><p>这一次来部署一个单机版的Hbase，单独的Hbase daemon(Master，RegionServers和ZooKeeper)运行在同一个JVM进程中，然后持久化存储到文件系统中。这是最简单的部署，但是却能帮助我们更好的理解Hbase。安装完成之后，我们在演示一下hbase命令行的用法。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ba01e667a~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<h4 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h4><ul>
+<li>CentOS 7</li>
+<li>Hbase 1.2.8</li>
+</ul>
+<h4 id="安装单机"><a href="#安装单机" class="headerlink" title="安装单机"></a>安装单机</h4><ol>
+<li>确保安装了jdk，在Linux上使用自带的包管理器直接安装就好，使用二进制也是一个不错的选择，我用的是CentOS</li>
+</ol>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java-1.8.0-openjdk* -y</span><br></pre></td></tr></table></figure></div>
+
+<ol>
+<li>下载Hbase的二进制包，下载地址位于<a class="link"   href="https://link.juejin.cn/?target=http://mirror.bit.edu.cn/apache/hbase/hbase-1.2.8/%EF%BC%8C%E7%84%B6%E5%90%8E%E8%A7%A3%E5%8E%8B%E5%88%B0%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%9B%AE%E5%BD%95%E3%80%82" >mirror.bit.edu.cn&#x2F;apache&#x2F;hbas… <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></li>
+</ol>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -xf hbase-1.2.8-bin.tar.gz</span><br><span class="line"><span class="built_in">cd</span> hbase-1.2.8</span><br></pre></td></tr></table></figure></div>
+
+<ol>
+<li>配置hbase的环境变量，修改JAVA_HOME。注意看下自己的JAVA_HOME在什么位置</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ba06048ac~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim conf/hbase-env.<span class="property">sh</span></span><br><span class="line"><span class="comment">// 注意这个是在CentOS上的java位置</span></span><br><span class="line"><span class="keyword">export</span> <span class="variable constant_">JAVA_HOME</span>=<span class="regexp">/etc/</span>alternatives/java_sdk_1<span class="number">.8</span><span class="number">.0</span>/</span><br></pre></td></tr></table></figure></div>
+
+<ol>
+<li>配置onf&#x2F;hbase-site.xml，这个是Hbase的主配置文件，你可以指定hbase和ZooKeeper数据写入的目录，当然也可以指定hbase的根目录在哪个位置。</li>
+</ol>
+<p>我将hbase的目录放在hadoop用户家目录的hbase目录下。我们不用事先创建好hbase的data目录，hbase会自动帮我们创建好的，如果已经存在了data目录，hbase会将存在的目录进行迁移。</p>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">useradd -s /sbin/nologin -m hadoop</span><br><span class="line"></span><br><span class="line">vim conf/hbase-site.xml</span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.rootdir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>file:///home/hadoop/hbase<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.zookeeper.property.dataDir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/hadoop/zookeeper<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>hbase.unsafe.stream.capability.enforce<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>false<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span></span><br><span class="line">      Controls whether HBase will check for stream capabilities (hflush/hsync).</span><br><span class="line"></span><br><span class="line">      Disable this if you intend to run on LocalFileSystem, denoted by a rootdir</span><br><span class="line">      with the &#x27;file://&#x27; scheme, but be mindful of the NOTE below.</span><br><span class="line"></span><br><span class="line">      WARNING: Setting this to false blinds you to potential data loss and</span><br><span class="line">      inconsistent system state in the event of process and/or node failures. If</span><br><span class="line">      HBase is complaining of an inability to use hsync or hflush it&#x27;s most</span><br><span class="line">      likely not a false positive.</span><br><span class="line">    <span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<ol>
+<li>Hbase二进制包下有start-hbase脚本，可以方便的启动hbase，如果我们的配置是正确的，那么会正常启动。</li>
+</ol>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/start-hbase.sh</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018bd4dc319a~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<p>如果启动之后，可以打开<a class="link"   href="https://link.juejin.cn/?target=http://localhost:16010%E6%9F%A5%E7%9C%8BHbase%E7%9A%84Web" >http://localhost:16010查看Hbase的Web <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a> UI</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018bdb5bdd93~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<h4 id="使用Hbase"><a href="#使用Hbase" class="headerlink" title="使用Hbase"></a>使用Hbase</h4><p>我们可以先用Hbase提供的命令行工具，位于hbase的&#x2F;bin&#x2F;目录下</p>
+<ol>
+<li>连接Hbase</li>
+</ol>
+<div class="highlight-container" data-rel="Bash"><figure class="iseeu highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./hbase shell</span><br></pre></td></tr></table></figure></div>
+
+<ol>
+<li>查看帮助信息, 敲</li>
+</ol>
+<div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash"><span class="built_in">help</span></span></span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018bf0d5f7ee~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<ol>
+<li>创建一个表，必须要指定表名称和列簇名</li>
+</ol>
+<div class="highlight-container" data-rel="Ruby"><figure class="iseeu highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ruby复制代码hbase(main)<span class="symbol">:</span><span class="number">003</span><span class="symbol">:</span><span class="number">0</span>&gt; create <span class="string">&#x27;test&#x27;</span>, <span class="string">&#x27;cf&#x27;</span></span><br><span class="line"><span class="number">0</span> row(s) <span class="keyword">in</span> <span class="number">1.6320</span> seconds</span><br><span class="line"></span><br><span class="line">=&gt; <span class="title class_">Hbase</span><span class="symbol">:</span><span class="symbol">:Table</span> - test</span><br></pre></td></tr></table></figure></div>
+
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018bf5abf323~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<ol>
+<li>列出关于你的表的信息,list ‘sometable’</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018bffa790cb~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<ol>
+<li>查看表更为详细的信息，使用describe命令</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c0b3e7516~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<ol>
+<li>把数据放到表中</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c14057e09~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<ol>
+<li>查看表中的所有数据</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c19b3c68f~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<ol>
+<li>获取单行的数据</li>
+</ol>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c257d6cda~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<ol>
+<li>其余的命令可以自行尝试</li>
+<li>退出shell，使用<code>quit</code></li>
+</ol>
+<p>这里演示了下单机版的hbase如何安装，了解hbase shell的基本用法，关于Hbase更深入的东西，可以了解下官方文档。</p>
+<h3 id="Hbase数据模型"><a href="#Hbase数据模型" class="headerlink" title="Hbase数据模型"></a>Hbase数据模型</h3><p>在Hbase中，有一些术语需要提前了解。如下：</p>
+<ul>
+<li>Table：Hbase的table由多个行组成</li>
+<li>Row：一个行在Hbase中由一个或多个有值的列组成。Row按照字母进行排序，因此行健的设计非常重要。这种设计方式可以让有关系的行非常的近，通常行健的设计是网站的域名反转，比如(org.apache.www, org.apache.mail, org.apache.jira)，这样的话所有的Apache的域名就很接近。</li>
+<li>Column：列由列簇加上列的标识组成，一般是“列簇：列标识”，创建表的时候不用指定列标识</li>
+<li>Column Family：列簇在物理上包含了许多的列与列的值，每个列簇都有一些存储的属性可配置。例如是否使用缓存，压缩类型，存储版本数等。在表中，每一行都有相同的列簇，尽管有些列簇什么东西也没有存。</li>
+<li>Column Qualifier：列簇的限定词，理解为列的唯一标识。但是列标识是可以改变的，因此每一行可能有不同的列标识</li>
+<li>Cell：Cell是由row，column family,column qualifier包含时间戳与值组成的，一般表达某个值的版本</li>
+<li>Timestamp：时间戳一般写在value的旁边，代表某个值的版本号，默认的时间戳是你写入数据的那一刻，但是你也可以在写入数据的时候指定不同的时间戳</li>
+</ul>
+<p>HBase 是一个稀疏的、分布式、持久、多维、排序的映射，它以行键（row key），列键（column key）和时间戳（timestamp）为索引。</p>
+<p>Hbase在存储数据的时候，有两个SortedMap，首先按照rowkey进行字典排序，然后再对Column进行字典排序。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c2940da66~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="img"
+                ></p>
+<h4 id="测试数据"><a href="#测试数据" class="headerlink" title="测试数据"></a>测试数据</h4><div class="highlight-container" data-rel="Shell"><figure class="iseeu highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">create &#x27;user&#x27;,&#x27;info&#x27;,&#x27;ship&#x27;;</span><br><span class="line"></span><br><span class="line">put &#x27;user&#x27;, &#x27;524382618264914241&#x27;, &#x27;info:name&#x27;, &#x27;zhangsan&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;524382618264914241&#x27;, &#x27;info:age&#x27;,30</span><br><span class="line">put &#x27;user&#x27;, &#x27;524382618264914241&#x27;, &#x27;info:height&#x27;,168</span><br><span class="line">put &#x27;user&#x27;, &#x27;524382618264914241&#x27;, &#x27;info:weight&#x27;,168</span><br><span class="line">put &#x27;user&#x27;, &#x27;524382618264914241&#x27;, &#x27;info:phone&#x27;,&#x27;13212321424&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;524382618264914241&#x27;, &#x27;ship:addr&#x27;,&#x27;beijing&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;524382618264914241&#x27;, &#x27;ship:email&#x27;,&#x27;sina@sina.com&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;524382618264914241&#x27;, &#x27;ship:salary&#x27;,3000</span><br><span class="line"></span><br><span class="line">put &#x27;user&#x27;, &#x27;224382618261914241&#x27;, &#x27;info:name&#x27;, &#x27;lisi&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;224382618261914241&#x27;, &#x27;info:age&#x27;,24</span><br><span class="line">put &#x27;user&#x27;, &#x27;224382618261914241&#x27;, &#x27;info:height&#x27;,158</span><br><span class="line">put &#x27;user&#x27;, &#x27;224382618261914241&#x27;, &#x27;info:weight&#x27;,128</span><br><span class="line">put &#x27;user&#x27;, &#x27;224382618261914241&#x27;, &#x27;info:phone&#x27;,&#x27;13213921424&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;224382618261914241&#x27;, &#x27;ship:addr&#x27;,&#x27;chengdu&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;224382618261914241&#x27;, &#x27;ship:email&#x27;,&#x27;qq@sina.com&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;224382618261914241&#x27;, &#x27;ship:salary&#x27;,5000</span><br><span class="line"></span><br><span class="line">put &#x27;user&#x27;, &#x27;673782618261019142&#x27;, &#x27;info:name&#x27;, &#x27;zhaoliu&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;673782618261019142&#x27;, &#x27;info:age&#x27;,19</span><br><span class="line">put &#x27;user&#x27;, &#x27;673782618261019142&#x27;, &#x27;info:height&#x27;,178</span><br><span class="line">put &#x27;user&#x27;, &#x27;673782618261019142&#x27;, &#x27;info:weight&#x27;,188</span><br><span class="line">put &#x27;user&#x27;, &#x27;673782618261019142&#x27;, &#x27;info:phone&#x27;,&#x27;17713921424&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;673782618261019142&#x27;, &#x27;ship:addr&#x27;,&#x27;shenzhen&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;673782618261019142&#x27;, &#x27;ship:email&#x27;,&#x27;126@sina.com&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;673782618261019142&#x27;, &#x27;ship:salary&#x27;,8000</span><br><span class="line"></span><br><span class="line">put &#x27;user&#x27;, &#x27;813782218261011172&#x27;, &#x27;info:name&#x27;, &#x27;wangmazi&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;813782218261011172&#x27;, &#x27;info:age&#x27;,19</span><br><span class="line">put &#x27;user&#x27;, &#x27;813782218261011172&#x27;, &#x27;info:height&#x27;,158</span><br><span class="line">put &#x27;user&#x27;, &#x27;813782218261011172&#x27;, &#x27;info:weight&#x27;,118</span><br><span class="line">put &#x27;user&#x27;, &#x27;813782218261011172&#x27;, &#x27;info:phone&#x27;,&#x27;12713921424&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;813782218261011172&#x27;, &#x27;ship:addr&#x27;,&#x27;xian&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;813782218261011172&#x27;, &#x27;ship:email&#x27;,&#x27;139@sina.com&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;813782218261011172&#x27;, &#x27;ship:salary&#x27;,10000</span><br><span class="line"></span><br><span class="line">put &#x27;user&#x27;, &#x27;510824118261011172&#x27;, &#x27;info:name&#x27;, &#x27;yangyang&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;510824118261011172&#x27;, &#x27;info:age&#x27;,18</span><br><span class="line">put &#x27;user&#x27;, &#x27;510824118261011172&#x27;, &#x27;info:height&#x27;,188</span><br><span class="line">put &#x27;user&#x27;, &#x27;510824118261011172&#x27;, &#x27;info:weight&#x27;,138</span><br><span class="line">put &#x27;user&#x27;, &#x27;510824118261011172&#x27;, &#x27;info:phone&#x27;,&#x27;18013921626&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;510824118261011172&#x27;, &#x27;ship:addr&#x27;,&#x27;shanghai&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;510824118261011172&#x27;, &#x27;ship:email&#x27;,&#x27;199@sina.com&#x27;</span><br><span class="line">put &#x27;user&#x27;, &#x27;510824118261011172&#x27;, &#x27;ship:salary&#x27;,50000</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Hbase表-Schema-设计要点"><a href="#Hbase表-Schema-设计要点" class="headerlink" title="Hbase表(Schema)设计要点"></a>Hbase表(Schema)设计要点</h3><p>只要是数据库都存在，模式设计的问题，关系型中有模式设计的范式，Hbase作为列式存储数据库，其模式设计也非常重要。</p>
+<p>设计时需要关注的属性，如何设计这些属性等</p>
+<h4 id="Hbase与关系型数据库对比"><a href="#Hbase与关系型数据库对比" class="headerlink" title="Hbase与关系型数据库对比"></a>Hbase与关系型数据库对比</h4><table>
+<thead>
+<tr>
+<th>属性</th>
+<th>Hbase</th>
+<th>RDBMS</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据类型</td>
+<td>只有字符串</td>
+<td>丰富的数据类型</td>
+</tr>
+<tr>
+<td>数据操作</td>
+<td>增删改查，不支持join</td>
+<td>各种各样的函数与表连接</td>
+</tr>
+<tr>
+<td>存储模式</td>
+<td>基于列式存储</td>
+<td>基于表结构和行式存储</td>
+</tr>
+<tr>
+<td>数据保护</td>
+<td>更新后仍然保留旧版本</td>
+<td>替换</td>
+</tr>
+<tr>
+<td>可伸缩性</td>
+<td>轻易增加节点</td>
+<td>需要中间层，牺牲性能</td>
+</tr>
+</tbody></table>
+<h4 id="Hbase设计时要考虑的因素"><a href="#Hbase设计时要考虑的因素" class="headerlink" title="Hbase设计时要考虑的因素"></a>Hbase设计时要考虑的因素</h4><p>Hbase关键概念：表，rowkey，列簇，时间戳</p>
+<ul>
+<li>这个表应该有多少列簇</li>
+<li>列簇使用什么数据</li>
+<li>每个列簇有有多少列</li>
+<li>列名是什么，尽管列名不必在建表时定义，但读写数据是要知道的</li>
+<li>单元应该存放什么数据</li>
+<li>每个单元存储多少时间版本</li>
+<li>行健(rowKey)结构是什么，应该包含什么信息</li>
+</ul>
+<h4 id="设计要点"><a href="#设计要点" class="headerlink" title="设计要点"></a>设计要点</h4><h5 id="行健设计"><a href="#行健设计" class="headerlink" title="行健设计"></a>行健设计</h5><p>关键部分，直接关系到后续服务的访问性能。如果行健设计不合理，后续查询服务效率会成倍的递减。</p>
+<ul>
+<li>避免单调的递增行健，因为Hbase的行健是有序排列的，这样可能导致一段时间内大部分写入集中在某一个Region上进行操作，负载都在一台节点上。可以设计成： [metric_type][event_timestamp]，不同的metric_type可以将压力分散到不同的region上</li>
+<li>行健短到可读即可，因为查询短键不必长键性能好多少，所以设计时要权衡长度。</li>
+<li>行健不能改变，<strong>唯一可以改变的方式是先删除后插入</strong></li>
+</ul>
+<h5 id="列簇设计"><a href="#列簇设计" class="headerlink" title="列簇设计"></a>列簇设计</h5><p>列簇是一些列的集合，一个列簇的成员有相同的前缀，以冒号(:)作为分隔符。</p>
+<ul>
+<li>现在Hbase不能很好处理2~3个以上的列簇，所以尽可能让列簇少一些，如果表有多个列簇，列簇A有100万行数据，列簇B有10亿行，那么列簇A会分散到很多的Region导致扫描列簇A的时候效率底下。</li>
+<li>列簇名的长度要尽量小，一个为了节省空间，另外加快效率，比如d表示data，v表示value</li>
+</ul>
+<h5 id="列簇属性配置"><a href="#列簇属性配置" class="headerlink" title="列簇属性配置"></a>列簇属性配置</h5><ul>
+<li>HFile数据块，默认是64KB，数据库的大小影响数据块索引的大小。数据块大的话一次加载进内存的数据越多，扫描查询效果越好。但是数据块小的话，随机查询性能更好</li>
+</ul>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; create <span class="string">&#x27;mytable&#x27;</span>,&#123;<span class="function"><span class="params">NAME</span> =&gt;</span> <span class="string">&#x27;cf1&#x27;</span>, <span class="function"><span class="params">BLOCKSIZE</span> =&gt;</span> <span class="string">&#x27;65536&#x27;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>数据块缓存，数据块缓存默认是打开的，如果一些比较少访问的数据可以选择关闭缓存</li>
+</ul>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; create <span class="string">&#x27;mytable&#x27;</span>,&#123;<span class="function"><span class="params">NAME</span> =&gt;</span> <span class="string">&#x27;cf1&#x27;</span>, <span class="function"><span class="params">BLOCKCACHE</span> =&gt;</span> <span class="string">&#x27;FALSE&#x27;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+
+<ul>
+<li>数据压缩，压缩会提高磁盘利用率，但是会增加CPU的负载，看情况进行控制</li>
+</ul>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; create <span class="string">&#x27;mytable&#x27;</span>,&#123;<span class="function"><span class="params">NAME</span> =&gt;</span> <span class="string">&#x27;cf1&#x27;</span>, <span class="function"><span class="params">COMPRESSION</span> =&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>Hbase表设计是和需求相关的，但是遵守表设计的一些硬性指标对性能的提升还是很有帮助的，这里整理了一些设计时用到的要点。</p>
+<h3 id="Java-API操作"><a href="#Java-API操作" class="headerlink" title="Java API操作"></a>Java API操作</h3><p>Hbase有多种不同的客户端，如REST客户端，Thift客户端，ORM框架Kundera等等。 Hbase也提供了Java的API来操作表与列簇等信息，它的shell就是对Java的API做了一层封装。</p>
+<p>Hbase的Java API提供了很多高级的特性：</p>
+<ul>
+<li>元数据管理，列簇的数据压缩，region分隔</li>
+<li>创建，删除，更新，读取 rowkey</li>
+</ul>
+<p>我们还是直接看代码这样理解的更容易</p>
+<h4 id="环境-1"><a href="#环境-1" class="headerlink" title="环境"></a>环境</h4><ul>
+<li>Hbase 0.98</li>
+<li>Java 1.8</li>
+<li>Zookeeper 3.4.6</li>
+<li>Mac OS</li>
+</ul>
+<h4 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h4><p>Hbase的客户端版本不一致实验结果很容易出现问题，尽量采用同样的版本。因为服务端实验的是Hbase0.98，客户端也用0.98，另外由于Hadoop 2.x的版本现对于1.x做了很大的提升，建议采用Hbase-hadoop 2.x的客户端。</p>
+<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.hbase<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>hbase-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.98.24-hadoop2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+
+<h5 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h5><ol>
+<li>直接新建HTable(“tableName”)，但是这种每次创建表的时候因为都要查询.meta表，来判断表是不是存在，导致创建表的过程会有点慢，所以不建议每个请求都创建一个Htable</li>
+<li>使用HTablePool，它和HTable的创建方式很像，但是如果采用连接池的话，它就不会给每个请求都单独创建一个Htable了。</li>
+</ol>
+<p>在创建Htable或者HtablePool的时候都可以指定更详细的配置信息。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c3035163d~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c39b2b2ee~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">java复制代码<span class="type">HTablePool</span> <span class="variable">hTablePool</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HTablePool</span>();</span><br><span class="line">hTablePool.getTable(<span class="string">&quot;user&quot;</span>);</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h5><p>rowkey是代表Hbase中表的唯一一个行，同时像列簇 ，时间戳等用来定位表中的部分数据，Java的API对Hbas的CURD提供了如下的类：</p>
+<ul>
+<li>Put</li>
+<li>Get</li>
+<li>Delete</li>
+<li>Scan</li>
+<li>Increment</li>
+</ul>
+<p>我们详细的讨论几个类，剩余的可以举一反三。</p>
+<h5 id="写数据"><a href="#写数据" class="headerlink" title="写数据"></a>写数据</h5><p>当写请求收到的时候，默认数据同步的写到Hlog中和MemStore，同时在两个地方写是为了保证数据的持久性，Memstore最终会持久化到磁盘中的Hfile中。每次MemStore进行Flush的时候，就会创建一个新的Hfile。</p>
+<p>Put类用于向Hbase的表中存储数据，存储数据时，Put的实例必须要指定Rowkey <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c43a23ac3~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<p>创建完Put实例后，再向其中添加数据 <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c503fc8bc~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">       <span class="comment">// 获取默认的配置</span></span><br><span class="line">       <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> HBaseConfiguration.create();</span><br><span class="line">       <span class="comment">// 获取Table实例 </span></span><br><span class="line">       <span class="type">HTable</span> <span class="variable">table</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HTable</span>(conf, <span class="string">&quot;tab1&quot;</span>);</span><br><span class="line">       <span class="comment">// 创建Put实例，并且指定rowKey </span></span><br><span class="line">       <span class="type">Put</span> <span class="variable">put</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Put</span>(Bytes.toBytes(<span class="string">&quot;row-1&quot;</span>));</span><br><span class="line">       <span class="comment">// 添加一个 column，值为 &quot;Hello&quot;，在 &quot;cf1:greet&quot; 列中</span></span><br><span class="line">       put.add(Bytes.toBytes(<span class="string">&quot;cf1&quot;</span>), Bytes.toBytes(<span class="string">&quot;greet&quot;</span>), Bytes.toBytes(<span class="string">&quot;Hello&quot;</span>));</span><br><span class="line">       <span class="comment">// 添加一个 column，值为 &quot;John&quot;，在 &quot;cf1:person&quot; 列中</span></span><br><span class="line">       put.add(Bytes.toBytes(<span class="string">&quot;cf1&quot;</span>), Bytes.toBytes(<span class="string">&quot;person&quot;</span>), Bytes.toBytes(<span class="string">&quot;John&quot;</span>));</span><br><span class="line">       table.put(put); </span><br><span class="line">       table.close();</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>数据也可以批量的进行插入：</p>
+<p>&#x2F;&#x2F; table对象可以传入List参数 table.put(final List puts)</p>
+<p>执行结果： <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c4d2cf191~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<h5 id="读数据"><a href="#读数据" class="headerlink" title="读数据"></a>读数据</h5><p>Hbase使用LRU缓存读取数据。Htable对象使用下面的方法读取数据</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c5b2df959~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<p>而Get实例的构造方法和Put很像，构造方法要指定一个rowkey。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c6a57d0a5~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<p>如果要查找特定的cell，就是特定列的数据，可以采用额外的方法进行更加精细的调控。</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c6be5baca~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<p>看一下如下的案例代码：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">get</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">// 获取默认的配置</span></span><br><span class="line">        <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> HBaseConfiguration.create();</span><br><span class="line">        <span class="comment">// 获取Table实例</span></span><br><span class="line">        <span class="type">HTable</span> <span class="variable">table</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HTable</span>(conf, <span class="string">&quot;tab1&quot;</span>);</span><br><span class="line">        <span class="comment">// 创建Put实例，并且指定rowKey</span></span><br><span class="line">        <span class="type">Get</span> <span class="variable">get</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Get</span>(Bytes.toBytes(<span class="string">&quot;row-1&quot;</span>));</span><br><span class="line">        <span class="comment">//</span></span><br><span class="line">        get.addColumn(Bytes.toBytes(<span class="string">&quot;cf1&quot;</span>), Bytes.toBytes(<span class="string">&quot;greet&quot;</span>));</span><br><span class="line">        <span class="comment">// 添加一个 column，值为 &quot;John&quot;，在 &quot;cf1:person&quot; 列中</span></span><br><span class="line">        <span class="type">Result</span> <span class="variable">result</span> <span class="operator">=</span> table.get(get);</span><br><span class="line">        <span class="type">byte</span>[] value = result.getValue(Bytes.toBytes(<span class="string">&quot;cf1&quot;</span>), Bytes.toBytes(<span class="string">&quot;greet&quot;</span>));</span><br><span class="line">        System.out.println(<span class="string">&quot;获取到的值&quot;</span> + <span class="keyword">new</span> <span class="title class_">String</span>(value));</span><br><span class="line">        table.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>执行结果 <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c6e7fcd00~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<h5 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h5><p>更新数据与写数据基本一致，只是在Put实例赋值的时候，在相同的列上设置不同的值，操作的时候就会更新为新的值。</p>
+<p>代码如下：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">update</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> HBaseConfiguration.create();</span><br><span class="line">        <span class="comment">// 获取Table实例</span></span><br><span class="line">        <span class="type">HTable</span> <span class="variable">table</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HTable</span>(conf, <span class="string">&quot;tab1&quot;</span>);</span><br><span class="line">        <span class="comment">// 创建Put实例，并且指定rowKey</span></span><br><span class="line">        <span class="type">Put</span> <span class="variable">put</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Put</span>(Bytes.toBytes(<span class="string">&quot;row-1&quot;</span>));</span><br><span class="line">        <span class="comment">// 添加一个 column，值为 &quot;Hello&quot;，在 &quot;cf1:greet&quot; 列中</span></span><br><span class="line">        put.add(Bytes.toBytes(<span class="string">&quot;cf1&quot;</span>), Bytes.toBytes(<span class="string">&quot;greet&quot;</span>), Bytes.toBytes(<span class="string">&quot;Good Morning&quot;</span>));</span><br><span class="line">        <span class="comment">// 添加一个 column，值为 &quot;John&quot;，在 &quot;cf1:person&quot; 列中</span></span><br><span class="line"><span class="comment">//        put.add(Bytes.toBytes(&quot;cf1&quot;), Bytes.toBytes(&quot;person&quot;), Bytes.toBytes(&quot;John&quot;));</span></span><br><span class="line">        table.put(put);</span><br><span class="line">        table.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>执行结果： <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c7c284dfe~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<h5 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h5><p>Delete命令只是标记当前的数据为删除状态，而不是立刻的删除，也就是先进行逻辑删除。实际上的删除是在Hfile进行压缩的时候，这些被标记的记录就会被删除掉。</p>
+<p>Delete对象与Put和Get也很像</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c84f8c844~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<p>构造Delete实例 <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018c8502485a~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<p>如果想要进行更加详细的指定，可以再指定具体的列等信息 <img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ca0a3cc71~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<p>看下面的案例代码：</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">delete</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> HBaseConfiguration.create();</span><br><span class="line">        <span class="comment">// 获取Table实例</span></span><br><span class="line">        <span class="type">HTable</span> <span class="variable">table</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HTable</span>(conf, <span class="string">&quot;tab1&quot;</span>);</span><br><span class="line">        <span class="comment">// 创建Delete实例，并且指定rowKey</span></span><br><span class="line">        <span class="type">Delete</span> <span class="variable">delete</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Delete</span>(Bytes.toBytes(<span class="string">&quot;row-1&quot;</span>));</span><br><span class="line">        <span class="comment">// 删除 column &quot;cf1:greet&quot; </span></span><br><span class="line">        delete.deleteColumn(Bytes.toBytes(<span class="string">&quot;cf1&quot;</span>), Bytes.toBytes(<span class="string">&quot;greet&quot;</span>));</span><br><span class="line">        </span><br><span class="line">        table.delete(delete);</span><br><span class="line">        table.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>执行结果:连续执行两次删除</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ca09dbb19~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<h3 id="操作优化"><a href="#操作优化" class="headerlink" title="操作优化"></a>操作优化</h3><p>一个系统上线之后，开发和调优将一直贯穿系统的生命周期中，HBase也不列外。这里主要说一些Hbase的调优</p>
+<h4 id="Hbase查询优化"><a href="#Hbase查询优化" class="headerlink" title="Hbase查询优化"></a>Hbase查询优化</h4><p>作为NoSQL数据库，增删改查是其最基本的功能，其中查询是最常用的一项。</p>
+<h5 id="设置Scan缓存"><a href="#设置Scan缓存" class="headerlink" title="设置Scan缓存"></a>设置Scan缓存</h5><p>HBase中Scan查询可以设置缓存，方法是setCaching()，这样可以有效的减少服务端与客户端的交互，更有效的提升扫描查询的性能。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Set the number of rows for caching that will be passed to scanners.</span></span><br><span class="line"><span class="comment"> * If not set, the default setting from &#123;<span class="doctag">@link</span> HTable#getScannerCaching()&#125; will apply.</span></span><br><span class="line"><span class="comment"> * Higher caching values will enable faster scanners but will use more memory.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> caching the number of rows for caching</span></span><br><span class="line"><span class="comment"> * 设置scanners缓存的行数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCaching</span><span class="params">(<span class="type">int</span> caching)</span> &#123;</span><br><span class="line">  <span class="built_in">this</span>.caching = caching;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="显示的指定列"><a href="#显示的指定列" class="headerlink" title="显示的指定列"></a>显示的指定列</h5><p>当使用Scan或者GET获取大量的行时，最好指定所需要的列，因为服务端通过网络传输到客户端，数据量太大可能是瓶颈。如果能有效过滤部分数据，能很大程度的减少网络I&#x2F;O的花费。</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Get all columns from the specified family.</span></span><br><span class="line"><span class="comment">   * &lt;p&gt;</span></span><br><span class="line"><span class="comment">   * Overrides previous calls to addColumn for this family.</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> family family name</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> this</span></span><br><span class="line"><span class="comment">   * 获取指定列簇的所有列</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">public</span> Scan <span class="title function_">addFamily</span><span class="params">(<span class="type">byte</span> [] family)</span> &#123;</span><br><span class="line">    familyMap.remove(family);</span><br><span class="line">    familyMap.put(family, <span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * Get the column from the specified family with the specified qualifier.</span></span><br><span class="line"><span class="comment">   * &lt;p&gt;</span></span><br><span class="line"><span class="comment">   * Overrides previous calls to addFamily for this family.</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> family family name</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> qualifier column qualifier</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> this</span></span><br><span class="line"><span class="comment">   * 获取指定列簇的特定列</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">public</span> Scan <span class="title function_">addColumn</span><span class="params">(<span class="type">byte</span> [] family, <span class="type">byte</span> [] qualifier)</span> &#123;</span><br><span class="line">    NavigableSet&lt;<span class="type">byte</span> []&gt; set = familyMap.get(family);</span><br><span class="line">    <span class="keyword">if</span>(set == <span class="literal">null</span>) &#123;</span><br><span class="line">      set = <span class="keyword">new</span> <span class="title class_">TreeSet</span>&lt;<span class="type">byte</span> []&gt;(Bytes.BYTES_COMPARATOR);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (qualifier == <span class="literal">null</span>) &#123;</span><br><span class="line">      qualifier = HConstants.EMPTY_BYTE_ARRAY;</span><br><span class="line">    &#125;</span><br><span class="line">    set.add(qualifier);</span><br><span class="line">    familyMap.put(family, set);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>一般用: scan.addColumn(…)</p>
+<h5 id="关闭ResultScanner"><a href="#关闭ResultScanner" class="headerlink" title="关闭ResultScanner"></a>关闭ResultScanner</h5><p>如果在使用table.getScanner之后，忘记关闭该类，它会一直和服务端保持连接，资源无法释放，从而导致服务端的某些资源不可用。</p>
+<p>所以在用完之后，需要执行关闭操作，这点与JDBS操作MySQL类似</p>
+<p>scanner.close()</p>
+<h5 id="禁用块缓存"><a href="#禁用块缓存" class="headerlink" title="禁用块缓存"></a>禁用块缓存</h5><p>如果批量进行全表扫描，默认是有缓存的，如果此时有缓存，会降低扫描的效率。</p>
+<p>scan.setCacheBlocks(true|false);</p>
+<p>对于经常读到的数据，建议使用默认值，开启块缓存</p>
+<h5 id="缓存查询结果"><a href="#缓存查询结果" class="headerlink" title="缓存查询结果"></a>缓存查询结果</h5><p>对于频繁查询HBase的应用场景，可以考虑在应用程序和Hbase之间做一层缓存系统，新的查询先去缓存查，缓存没有再去查Hbase。</p>
+<h4 id="写入优化"><a href="#写入优化" class="headerlink" title="写入优化"></a>写入优化</h4><p>写也是Hbase常有的操作之一，并且Hbase在写入操作上有着其他NoSQL无法比拟的优势，下面讲如何优化写入操作</p>
+<h5 id="关闭写WAL日志"><a href="#关闭写WAL日志" class="headerlink" title="关闭写WAL日志"></a>关闭写WAL日志</h5><p>一般为了保证系统的高可用性，WAL日志默认是开启状态，WAL主要用于灾难恢复的，如果应用可以容忍一定的数据丢失风险，可以在写数据的时候，关闭写WAL。</p>
+<p><strong>风险：</strong> 当RegionServer宕机时，写入的数据出现丢失，且无法恢复</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ca5ae2d21~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image.png"
+                ></p>
+<h5 id="设置AutoFlush"><a href="#设置AutoFlush" class="headerlink" title="设置AutoFlush"></a>设置AutoFlush</h5><p>Htable有一个属性是AutoFlush，该属性用于支持客户端的批量更新，默认是true，当客户端每收到一条数据，立刻发送到服务端，如果设置为false，当客户端提交put请求时候，先将该请求在客户端缓存，到达阈值的时候或者执行hbase.flushcommits()，才向RegionServer提交请求。</p>
+<p><strong>风险</strong> 在请求未发送到RegionServer之前客户端崩溃，数据也会丢失</p>
+<div class="highlight-container" data-rel="Lua"><figure class="iseeu highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">table</span>.setAutoFlush(<span class="literal">false</span>);</span><br><span class="line">      <span class="built_in">table</span>.setWriteBufferSize( <span class="number">12</span> * <span class="number">1024</span> * <span class="number">1024</span> );</span><br></pre></td></tr></table></figure></div>
+
+<h5 id="预创建Region"><a href="#预创建Region" class="headerlink" title="预创建Region"></a>预创建Region</h5><p>一般表刚开始只有一个Region，插入该表的数据都会保存在此Region中，插入该表的所有塑化剂都会保存在该Region中，当到达一定的阈值时，才发生分裂。 这样开始时刻针对该表的写操作都集中在某台服务器上，造成这台服务器的压力很紧张，同时对整个集群资源的浪费</p>
+<p>建议刚开始的时候预创建Region，可以使用Hbase自带的RegionSplitter</p>
+<h5 id="延迟日志flush"><a href="#延迟日志flush" class="headerlink" title="延迟日志flush"></a>延迟日志flush</h5><p>默认写入操作，首先写入WAL，并且在1S内写入HDFS，这个时间默认是1S，可以通过参数配置</p>
+<p>hbase.regionserver.optionallogflushinterval</p>
+<p>可以配置大一点的值，比如5s，这段时间数据会保留在内存中，直到RegionServer周期性的执行flush操作。</p>
+<h3 id="Scan的重要参数"><a href="#Scan的重要参数" class="headerlink" title="Scan的重要参数"></a>Scan的重要参数</h3><p>Scan是操作Hbase中非常常用的一个操作，虽然前面的Hbase API操作简单的介绍了Scan的操作，但不够详细，由于Scan非常常用，关于其详细的整理也是很有必要的。</p>
+<h5 id="Scan"><a href="#Scan" class="headerlink" title="Scan"></a>Scan</h5><p>HBase中的数据表通过划分成一个个的Region来实现数据的分片，每一个Region关联一个RowKey的范围区间，而每一个Region中的数据，按RowKey的字典顺序进行组织。</p>
+<p>正是基于这种设计，使得HBase能够轻松应对这类查询：”指定一个RowKey的范围区间，获取该区间的所有记录”， 这类查询在HBase被称之为Scan。</p>
+<p>1 . 构建Scan，指定startRow与stopRow，如果未指定的话会进行全表扫描 2 . 获取ResultScanner 3 . 遍历查询结果 4 . 关闭ResultScanner</p>
+<div class="highlight-container" data-rel="Java"><figure class="iseeu highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">stringFilter</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> HBaseConfiguration.create();</span><br><span class="line">        <span class="comment">// 获取Table实例</span></span><br><span class="line">        <span class="type">HTable</span> <span class="variable">table</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HTable</span>(conf, <span class="string">&quot;user&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 构建Scan</span></span><br><span class="line">        <span class="type">Scan</span> <span class="variable">scan</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Scan</span>();</span><br><span class="line">        scan = scan.setStartRow(Bytes.toBytes(<span class="string">&quot;startRowxxx&quot;</span>)).setStopRow(Bytes.toBytes(<span class="string">&quot;StopRowxxx&quot;</span>));</span><br><span class="line">        <span class="type">RowFilter</span> <span class="variable">filter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RowFilter</span>(</span><br><span class="line">                CompareFilter.CompareOp.EQUAL,</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">BinaryComparator</span>(Bytes.toBytes(<span class="string">&quot;224382618261914241&quot;</span>))</span><br><span class="line">        );</span><br><span class="line"></span><br><span class="line">        scan.setFilter(filter);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 获取resultScanner</span></span><br><span class="line">        <span class="type">ResultScanner</span> <span class="variable">scanner</span> <span class="operator">=</span> table.getScanner(scan);</span><br><span class="line">        <span class="type">Result</span> <span class="variable">result</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 处理结果</span></span><br><span class="line">        <span class="keyword">while</span> ((result = scanner.next()) != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="type">byte</span>[] value = result.getValue(Bytes.toBytes(<span class="string">&quot;ship&quot;</span>), Bytes.toBytes(<span class="string">&quot;addr&quot;</span>));</span><br><span class="line">            <span class="keyword">if</span> (value == <span class="literal">null</span> || value.length == <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(</span><br><span class="line">                    <span class="keyword">new</span> <span class="title class_">String</span>(value)</span><br><span class="line">            );</span><br><span class="line">            System.out.println(<span class="string">&quot;hello World&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="comment">// 关闭ResultScanner</span></span><br><span class="line">        scanner.close();</span><br><span class="line">        table.close();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>其它的设置参数</p>
+<h5 id="Caching-设置一次RPC请求批量读取的Results数量"><a href="#Caching-设置一次RPC请求批量读取的Results数量" class="headerlink" title="Caching: 设置一次RPC请求批量读取的Results数量"></a>Caching: 设置一次RPC请求批量读取的Results数量</h5><p>下面的示例代码设定了一次读取回来的Results数量为100：</p>
+<div class="highlight-container" data-rel="Ini"><figure class="iseeu highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scan.setCaching(100)<span class="comment">;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>Client每一次往RegionServer发送scan请求，都会批量拿回一批数据(由Caching决定过了每一次拿回的Results数量)，然后放到本次的Result Cache中：</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2019/2/15/168f018ca777e151~tplv-t2oaga2asx-zoom-in-crop-mark:1512:0:0:0.awebp"
+                      alt="image"
+                ></p>
+<p>应用每一次读取数据时，都是从本地的Result Cache中获取的。如果Result Cache中的数据读完了，则Client会再次往RegionServer发送scan请求获取更多的数据。</p>
+<h5 id="Batch-设置每一个Result中的列的数量"><a href="#Batch-设置每一个Result中的列的数量" class="headerlink" title="Batch: 设置每一个Result中的列的数量"></a>Batch: 设置每一个Result中的列的数量</h5><p>下面的示例代码设定了每一个Result中的列的数量的限制值为3：</p>
+<div class="highlight-container" data-rel="Ini"><figure class="iseeu highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scan.setBatch(3)<span class="comment">;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>该参数适用于一行数据过大的场景，这样，一行数据被请求的列会被拆成多个Results返回给Client。</p>
+<p>举例说明如下：</p>
+<p>假设一行数据中共有十个列： {Col01，Col02，Col03，Col04，Col05，Col06，Col07，Col08，Col09, Col10} 假设Scan中设置的Batch为3，那么，这一行数据将会被拆成4个Results返回：</p>
+<div class="highlight-container" data-rel="Rust"><figure class="iseeu highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Result1 <span class="punctuation">-&gt;</span> &#123;Col01，Col02，Col03&#125;</span><br><span class="line">Result2 <span class="punctuation">-&gt;</span> &#123;Col04，Col05，Col06&#125;</span><br><span class="line">Result3 <span class="punctuation">-&gt;</span> &#123;Col07，Col08，Col09&#125;</span><br><span class="line">Result4 <span class="punctuation">-&gt;</span> &#123;Col10&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>关于Caching参数，我们说明了是Client每一次从RegionServer侧获取到的Results的数量，上例中，一行数据被拆成了4个Results，这将会导致Caching中的计数器被减了4次。结合Caching与Batch，我们再列举一个稍复杂的例子：</p>
+<p>假设，Scan的参数设置如下：</p>
+<p>final byte[] start &#x3D; Bytes.toBytes(“Row1”); final byte[] stop &#x3D; Bytes.toBytes(“Row5”); Scan scan &#x3D; new Scan(); scan.withStartRow(start).withStopRow(stop); scan.setCaching(10); scan.setBatch(3);</p>
+<p>待读取的数据RowKey与所关联的列集如下所示：</p>
+<p>Row1:  {Col01，Col02，Col03，Col04，Col05，Col06，Col07，Col08，Col09，Col10}<br> Row2:  {Col01，Col02，Col03，Col04，Col05，Col06，Col07，Col08，Col09，Col10，Col11}<br> Row3:  {Col01，Col02，Col03，Col04，Col05，Col06，Col07，Col08，Col09，Col10}</p>
+<p>再回顾一下Caching与Batch的定义：</p>
+<p>Caching:  影响一次读取返回的Results数量。</p>
+<p>Batch:  限定了一个Result中所包含的列的数量，如果一行数据被请求的列的数量超出Batch限制，那么这行数据会被拆成多个Results。</p>
+<p>那么， Client往RegionServer第一次请求所返回的结果集如下所示：</p>
+<p>Result1   -&gt;   Row1:  {Col01，Col02，Col03} Result2   -&gt;   Row1:  {Col04，Col05，Col06} Result3   -&gt;   Row1:  {Col07，Col08，Col09} Result4   -&gt;   Row1:  {Col10} Result5   -&gt;   Row2:  {Col01，Col02，Col03} Result6   -&gt;   Row2:  {Col04，Col05，Col06} Result7   -&gt;   Row2:  {Col07，Col08，Col09} Result8   -&gt;   Row2:  {Col10，Col11} Result9   -&gt;   Row3:  {Col01，Col02，Col03} Result10  -&gt;   Row3:  {Col04，Col05，Col06}</p>
+<h5 id="Limit-限制一次Scan操作所获取的行的数量"><a href="#Limit-限制一次Scan操作所获取的行的数量" class="headerlink" title="Limit: 限制一次Scan操作所获取的行的数量"></a>Limit: 限制一次Scan操作所获取的行的数量</h5><p>同SQL语法中的limit子句，限制一次Scan操作所获取的行的总量：</p>
+<p>scan.setLimit(10000);</p>
+<p>注意：Limit参数是在2.0版本中新引入的。但在2.0.0版本中，当Batch与Limit同时设置时，似乎还存在一个BUG，初步分析问题原因应该与BatchScanResultCache中的numberOfCompletedRows计数器逻辑处理有关。因此，暂时不建议同时设置这两个参数。</p>
+<h5 id="CacheBlock-RegionServer侧是否要缓存本次Scan所涉及的HFileBlocks"><a href="#CacheBlock-RegionServer侧是否要缓存本次Scan所涉及的HFileBlocks" class="headerlink" title="CacheBlock: RegionServer侧是否要缓存本次Scan所涉及的HFileBlocks"></a>CacheBlock: RegionServer侧是否要缓存本次Scan所涉及的HFileBlocks</h5><p>scan.setCacheBlocks(true);</p>
+<p>e) Raw Scan:  是否可以读取到删除标识以及被删除但尚未被清理的数据</p>
+<p>scan.setRaw(true);</p>
+<h5 id="MaxResultSize-从内存占用量的维度限制一次Scan的返回结果集"><a href="#MaxResultSize-从内存占用量的维度限制一次Scan的返回结果集" class="headerlink" title="MaxResultSize:  从内存占用量的维度限制一次Scan的返回结果集"></a>MaxResultSize:  从内存占用量的维度限制一次Scan的返回结果集</h5><p>下面的示例代码将返回结果集的最大值设置为5MB：</p>
+<p>scan.setMaxResultSize(5 * 1024 * 1024);</p>
+<h5 id="Reversed-Scan-反向扫描"><a href="#Reversed-Scan-反向扫描" class="headerlink" title="Reversed Scan: 反向扫描"></a>Reversed Scan: 反向扫描</h5><p>普通的Scan操作是按照字典顺序从小到大的顺序读取的，而Reversed Scan则恰好相反：</p>
+<p>scan.setReversed(true);</p>
+<h5 id="带Filter的Scan"><a href="#带Filter的Scan" class="headerlink" title="带Filter的Scan"></a>带Filter的Scan</h5><p>Filter可以在Scan的结果集基础之上，对返回的记录设置更多条件值，这些条件可以与RowKey有关，可以与列名有关，也可以与列值有关，还可以将多个Filter条件组合在一起，等等。</p>
+<p>最常用的Filter是SingleColumnValueFilter，基于它，可以实现如下类似的查询：</p>
+<p>“返回满足条件{列I:D的值大于等于10}的所有行”</p>
+<p>示例代码如下：</p>
+<p>Filter丰富了HBase的查询能力，但使用Filter之前，需要注意一点：Filter可能会导致查询响应时延变的不可控制。因为我们无法预测，为了找到一条符合条件的记录，背后需要扫描多少数据量，如果在有效限制了Scan范围区间(通过设置StartRow与StopRow限制)的前提下，该问题能够得到有效的控制。这些信息都要求使用Filter之前应该详细调研自己的业务数据模型。</p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>本文有点长，作为参考吧</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>Title:</strong> 重生之-我终于学会了Hbase</li>
+        <li><strong>Author:</strong> Mr.zh</li>
+        <li><strong>Created at
+                :</strong> 2024-05-06 17:00:14</li>
+        
+            <li>
+                <strong>Updated at
+                    :</strong> 2024-06-06 17:08:54
+            </li>
+        
+        <li>
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/05/06/重生之-我终于学会了Hbase/
+        </li>
+        <li>
+            <strong>
+                License:
+            </strong>
+            
+
+            
+                This work is licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY-NC-SA 4.0</a>.
+            
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/NoSQL/">#NoSQL</a>&nbsp;
+                    </li>
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/HBase/">#HBase</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
+
+        
+
+        
+            <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
+                
+                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2024/06/04/%E4%B8%80%E6%96%87%E8%AE%B2%E6%87%82Kafka/"
+                        >
+                            <span class="left arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">一文讲懂Kafka</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
+                        <a class="next"
+                        rel="next"
+                        href="/2024/04/29/Git%E7%9A%84%E4%BD%BF%E7%94%A8/"
+                        >
+                            <span class="title flex justify-center items-center">
+                                <span class="post-nav-title-item">Git的使用</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex justify-center items-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">On this page</div>
+        <div class="page-title">重生之-我终于学会了Hbase</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%A5%E9%97%A8Hbase%EF%BC%8C%E7%9C%8B%E8%BF%99%E4%B8%80%E7%AF%87%E5%B0%B1%E5%A4%9F%E4%BA%86"><span class="nav-text">入门Hbase，看这一篇就够了</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E8%A7%88"><span class="nav-text">概览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E9%83%A8%E5%BA%94%E7%94%A8"><span class="nav-text">内部应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hbase%E6%9E%B6%E6%9E%84"><span class="nav-text">Hbase架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hbase%E5%8D%95%E6%9C%BA%E6%A8%A1%E5%BC%8F%E5%AE%89%E8%A3%85"><span class="nav-text">Hbase单机模式安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hbase%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-text">Hbase数据模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hbase%E8%A1%A8-Schema-%E8%AE%BE%E8%AE%A1%E8%A6%81%E7%82%B9"><span class="nav-text">Hbase表(Schema)设计要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java-API%E6%93%8D%E4%BD%9C"><span class="nav-text">Java API操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E4%BC%98%E5%8C%96"><span class="nav-text">操作优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scan%E7%9A%84%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0"><span class="nav-text">Scan的重要参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-text">最后</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer mt-5 py-5 h-auto text-base text-third-text-color relative border-t-2 border-t-border-color">
+    <div class="info-container py-3 text-center">
+        
+        <div class="text-center">
+            &copy;
+            
+              <span>2022</span>
+              -
+            
+            2024&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">Mr.zh</a>
+            
+                
+                <p class="post-count space-x-0.5">
+                    <span>
+                        16 posts in total
+                    </span>
+                    
+                        <span>
+                            61k words in total
+                        </span>
+                    
+                </p>
+            
+        </div>
+        
+            <script data-swup-reload-script src="https://cn.vercount.one/js"></script>
+            <div class="relative text-center lg:absolute lg:right-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-right">
+                
+                    <span id="busuanzi_container_site_uv" class="lg:!block">
+                        <span class="text-sm">VISITOR COUNT</span>
+                        <span id="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="lg:!block">
+                        <span class="text-sm">TOTAL PAGE VIEWS</span>
+                        <span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="relative text-center lg:absolute lg:left-[20px] lg:top-1/2 lg:-translate-y-1/2 lg:text-left">
+            <span class="lg:block text-sm">POWERED BY <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg class="relative top-[2px] inline-block align-baseline" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" class="text-base" href="https://hexo.io">Hexo</a></span>
+            <span class="text-sm lg:block">THEME&nbsp;<a class="text-base" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.6.1</a></span>
+        </div>
+        
+        
+            <div>
+                Blog up for <span class="odometer" id="runtime_days" ></span> days <span class="odometer" id="runtime_hours"></span> hrs <span class="odometer" id="runtime_minutes"></span> Min <span class="odometer" id="runtime_seconds"></span> Sec
+            </div>
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex justify-center items-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex justify-center items-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex justify-center items-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex justify-center items-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex justify-center items-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fa-solid fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fa-solid fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fa-solid fa-spinner fa-spin-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+    <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/Swup.min.js"></script><script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/SwupSlideTheme.min.js"></script><script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/SwupScriptsPlugin.min.js"></script><script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/SwupProgressPlugin.min.js"></script><script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/SwupScrollPlugin.min.js"></script><script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/SwupPreloadPlugin.min.js"></script>
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+            new SwupPreloadPlugin(),
+        ],
+        containers: ["#swup"],
+    });
+</script>
+
+
+
+
+
+
+<script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/imageViewer.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/utils.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/main.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/layouts/navbarShrink.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/scrollTopBottom.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/lightDarkSwitch.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/layouts/categoryList.js"></script>
+
+
+    <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/localSearch.js"></script>
+
+
+
+    <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/codeBlock.js"></script>
+
+
+
+    <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/layouts/lazyload.js"></script>
+
+
+
+    <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/runtime.js"></script>
+    <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/odometer.min.js"></script>
+    <link rel="stylesheet" href="//evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/assets/odometer-theme-minimal.css">
+
+
+
+  <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/Typed.min.js"></script>
+  <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/plugins/typed.js"></script>
+
+
+
+
+
+    <script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/minimasonry.min.js"></script>
+    <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/plugins/masonry.js"></script>
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        <script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/tools/tocToggle.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/layouts/toc.js"></script><script type="module" src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/plugins/tabs.js"></script>
+    
+</div>
+
+
+    <div id="aplayer"></div>
+<script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/libs/APlayer.min.js"></script>
+<script src="https://evan.beee.top/projects/hexo-theme-redefine@2.6.1/source/js/plugins/aplayer.js"></script>
+
+</body>
+</html>
