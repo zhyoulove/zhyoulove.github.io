@@ -5581,4 +5581,29 @@
         <tag>关系型数据库</tag>
       </tags>
   </entry>
+  <entry>
+    <title>《阿里巴巴大数据实践读所获》</title>
+    <url>/2024/04/18/%E3%80%8A%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%E5%A4%A7%E6%95%B0%E6%8D%AE%E5%AE%9E%E8%B7%B5%E8%AF%BB%E6%89%80%E8%8E%B7%E3%80%8B/</url>
+    <content><![CDATA[<h1 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h1><p>最近得到某位师兄推荐的一本书，一直在读，虽说还未读完，便觉得是好书，不应该草草过去，故记录下来，希望能达到<strong>“书读百遍，其义自见”</strong>的地步。</p>
+<h1 id="二、体系架构"><a href="#二、体系架构" class="headerlink" title="二、体系架构"></a>二、体系架构</h1><p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="https://cdn.jsdelivr.net/gh/zhyoulove/my-images/images/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4-%E5%A4%A7%E6%95%B0%E6%8D%AE%E4%BD%93%E7%B3%BB.png"
+                     
+                ></p>
+<h1 id="三、等我更新"><a href="#三、等我更新" class="headerlink" title="三、等我更新"></a>三、等我更新</h1><div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="code"><pre><span class="line">没有深入理解和消化至少60%的东西，不敢狂言乱语</span><br></pre></td></tr></table></figure></div>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>大数据</category>
+      </categories>
+      <tags>
+        <tag>架构</tag>
+        <tag>大数据</tag>
+      </tags>
+  </entry>
 </search>
